@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00BCD4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0097A7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="box1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF9800;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F57C00;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="675" fill="url(#bg1)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="100" cy="100" r="80" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1100" cy="575" r="120" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="200" cy="500" r="60" fill="rgba(255,255,255,0.1)"/>
+  
+  <!-- Toy Box Icon -->
+  <g transform="translate(500, 180)">
+    <!-- Box body -->
+    <rect x="0" y="60" width="200" height="140" rx="10" fill="url(#box1)" stroke="#E65100" stroke-width="3"/>
+    <!-- Box lid -->
+    <rect x="-10" y="40" width="220" height="30" rx="5" fill="#FFB74D" stroke="#E65100" stroke-width="3"/>
+    <!-- Handle -->
+    <rect x="80" y="25" width="40" height="20" rx="5" fill="#FFB74D" stroke="#E65100" stroke-width="2"/>
+    
+    <!-- Toys sticking out -->
+    <!-- Ball -->
+    <circle cx="50" cy="70" r="25" fill="#E91E63"/>
+    <circle cx="40" cy="60" r="8" fill="rgba(255,255,255,0.4)"/>
+    
+    <!-- Star -->
+    <polygon points="150,50 156,70 178,70 160,82 168,102 150,88 132,102 140,82 122,70 144,70" fill="#4CAF50"/>
+    
+    <!-- Teddy ear -->
+    <circle cx="100" cy="55" r="20" fill="#8D6E63"/>
+    <circle cx="100" cy="55" r="12" fill="#A1887F"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="600" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">
+    🎁 Spielkisten
+  </text>
+  <text x="600" y="480" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="rgba(255,255,255,0.9)" text-anchor="middle">
+    Für unsere Erstklässler
+  </text>
+  
+  <!-- Placeholder notice -->
+  <rect x="400" y="580" width="400" height="40" rx="20" fill="rgba(0,0,0,0.3)"/>
+  <text x="600" y="607" font-family="system-ui, sans-serif" font-size="16" fill="white" text-anchor="middle">
+    📷 Platzhalter – Echtes Foto einfügen
+  </text>
+</svg>

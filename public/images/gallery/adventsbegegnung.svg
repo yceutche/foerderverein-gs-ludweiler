@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1B5E20;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="675" fill="url(#bg2)"/>
+  
+  <!-- Snow dots -->
+  <circle cx="100" cy="80" r="4" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="250" cy="120" r="3" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="400" cy="60" r="5" fill="rgba(255,255,255,0.7)"/>
+  <circle cx="550" cy="100" r="3" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="700" cy="50" r="4" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="850" cy="90" r="5" fill="rgba(255,255,255,0.7)"/>
+  <circle cx="1000" cy="70" r="3" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="1100" cy="110" r="4" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="150" cy="200" r="3" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="1050" cy="180" r="4" fill="rgba(255,255,255,0.5)"/>
+  
+  <!-- Christmas Tree -->
+  <g transform="translate(500, 100)">
+    <!-- Tree layers -->
+    <polygon points="100,0 30,100 170,100" fill="#388E3C"/>
+    <polygon points="100,60 20,180 180,180" fill="#43A047"/>
+    <polygon points="100,130 0,280 200,280" fill="#4CAF50"/>
+    <!-- Trunk -->
+    <rect x="80" y="280" width="40" height="50" fill="#795548"/>
+    <!-- Star -->
+    <polygon points="100,0 105,15 120,15 108,24 113,40 100,30 87,40 92,24 80,15 95,15" fill="#FFD700"/>
+    <!-- Ornaments -->
+    <circle cx="70" cy="120" r="10" fill="#E91E63"/>
+    <circle cx="130" cy="150" r="10" fill="#FF9800"/>
+    <circle cx="60" cy="200" r="10" fill="#2196F3"/>
+    <circle cx="140" cy="230" r="10" fill="#E91E63"/>
+    <circle cx="100" cy="180" r="10" fill="#FFD700"/>
+  </g>
+  
+  <!-- Candles -->
+  <g transform="translate(200, 350)">
+    <rect x="0" y="30" width="30" height="60" fill="#F5F5F5"/>
+    <ellipse cx="15" cy="30" rx="15" ry="5" fill="#E0E0E0"/>
+    <ellipse cx="15" cy="20" rx="8" ry="15" fill="#FF9800"/>
+    <ellipse cx="15" cy="15" rx="4" ry="8" fill="#FFEB3B"/>
+  </g>
+  <g transform="translate(950, 350)">
+    <rect x="0" y="30" width="30" height="60" fill="#F5F5F5"/>
+    <ellipse cx="15" cy="30" rx="15" ry="5" fill="#E0E0E0"/>
+    <ellipse cx="15" cy="20" rx="8" ry="15" fill="#FF9800"/>
+    <ellipse cx="15" cy="15" rx="4" ry="8" fill="#FFEB3B"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="600" y="480" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">
+    🎄 Adventsbegegnung
+  </text>
+  <text x="600" y="540" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="rgba(255,255,255,0.9)" text-anchor="middle">
+    Gemeinsam feiern
+  </text>
+  
+  <!-- Placeholder notice -->
+  <rect x="400" y="600" width="400" height="40" rx="20" fill="rgba(0,0,0,0.3)"/>
+  <text x="600" y="627" font-family="system-ui, sans-serif" font-size="16" fill="white" text-anchor="middle">
+    📷 Platzhalter – Echtes Foto einfügen
+  </text>
+</svg>

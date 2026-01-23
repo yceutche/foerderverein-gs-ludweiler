@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-sans text-gray-800 bg-white;
+  }
+
+  /* Improved focus states for accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+  }
+
+  /* Skip link for accessibility */
+  .skip-link {
+    @apply absolute -top-10 left-4 z-50 px-4 py-2 bg-primary-600 text-white rounded-md transition-all;
+  }
+  
+  .skip-link:focus {
+    @apply top-4;
+  }
+}
+
+/* Component styles */
+@layer components {
+  /* Button variants */
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 font-semibold rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent-500 text-white hover:bg-accent-600 active:bg-accent-700 focus-visible:ring-accent-500 shadow-md hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply btn bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 focus-visible:ring-primary-500 shadow-md hover:shadow-lg;
+  }
+
+  .btn-outline {
+    @apply btn border-2 border-primary-600 text-primary-600 hover:bg-primary-50 active:bg-primary-100 focus-visible:ring-primary-500;
+  }
+
+  .btn-ghost {
+    @apply btn text-primary-600 hover:bg-primary-50 active:bg-primary-100 focus-visible:ring-primary-500;
+  }
+
+  .btn-lg {
+    @apply px-8 py-4 text-lg;
+  }
+
+  .btn-sm {
+    @apply px-4 py-2 text-sm;
+  }
+
+  /* Card styles */
+  .card {
+    @apply bg-white rounded-2xl shadow-soft hover:shadow-medium transition-shadow duration-300;
+  }
+
+  .card-bordered {
+    @apply card border border-gray-100;
+  }
+
+  /* Section styles */
+  .section {
+    @apply py-16 md:py-24;
+  }
+
+  .section-tight {
+    @apply py-12 md:py-16;
+  }
+
+  .container-narrow {
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-wide {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Heading styles */
+  .heading-1 {
+    @apply text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight;
+  }
+
+  .heading-2 {
+    @apply text-2xl sm:text-3xl font-bold text-gray-900 leading-tight;
+  }
+
+  .heading-3 {
+    @apply text-xl sm:text-2xl font-semibold text-gray-900;
+  }
+
+  /* Microcopy */
+  .microcopy {
+    @apply text-sm text-gray-500;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-100 text-primary-700;
+  }
+
+  .badge-success {
+    @apply badge bg-success-100 text-success-700;
+  }
+
+  .badge-accent {
+    @apply badge bg-accent-100 text-accent-700;
+  }
+}
+
+/* Utility classes */
+@layer utilities {
+  /* Gradient backgrounds */
+  .bg-gradient-hero {
+    @apply bg-gradient-to-br from-primary-50 via-white to-accent-50;
+  }
+
+  .bg-gradient-section {
+    @apply bg-gradient-to-b from-gray-50 to-white;
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-accent-500;
+  }
+
+  /* Smooth scroll offset for fixed header */
+  .scroll-mt-header {
+    scroll-margin-top: 100px;
+  }
+
+  /* Animation delay utilities */
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-progress {
+  animation: progress linear forwards;
+}
