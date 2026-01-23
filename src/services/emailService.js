@@ -8,10 +8,84 @@
  * DSGVO-konform:
  * - Der Verein erhält die vollständige IBAN im PDF
  * - Das Mitglied erhält eine Bestätigung mit maskierter IBAN
+ * 
+ * SICHERHEIT:
+ * - Input-Validierung vor Verarbeitung
+ * - Sanitization gegen XSS
+ * - Rate Limiting sollte im Backend implementiert werden
  */
 
 // Email-Empfänger des Fördervereins
 const VEREIN_EMAIL = 'grundschuleludweiler@schule.saarland'
+
+/**
+ * Validiert eine deutsche IBAN
+ * @param {string} iban - Die zu validierende IBAN
+ * @returns {boolean} - true wenn gültig
+ */
+export function validateIBAN(iban) {
+  if (!iban) return false
+  
+  // Entferne Leerzeichen und konvertiere zu Großbuchstaben
+  const cleanIban = iban.replace(/\s/g, '').toUpperCase()
+  
+  // Deutsche IBAN: DE + 2 Prüfziffern + 8 Bankleitzahl + 10 Kontonummer = 22 Zeichen
+  if (!/^DE\d{20}$/.test(cleanIban)) {
+    return false
+  }
+  
+  // IBAN-Prüfsummen-Validierung (ISO 7064 Mod 97-10)
+  const rearranged = cleanIban.slice(4) + cleanIban.slice(0, 4)
+  const numericIban = rearranged.replace(/[A-Z]/g, (char) => (char.charCodeAt(0) - 55).toString())
+  
+  // Modulo 97 Berechnung für große Zahlen
+  let remainder = numericIban
+  while (remainder.length > 2) {
+    const block = remainder.slice(0, 9)
+    remainder = (parseInt(block, 10) % 97).toString() + remainder.slice(9)
+  }
+  
+  return parseInt(remainder, 10) % 97 === 1
+}
+
+/**
+ * Validiert eine E-Mail-Adresse
+ * @param {string} email - Die zu validierende E-Mail
+ * @returns {boolean} - true wenn gültig
+ */
+export function validateEmail(email) {
+  if (!email) return false
+  // RFC 5322 konformer Regex (vereinfacht)
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+  return emailRegex.test(email) && email.length <= 254
+}
+
+/**
+ * Sanitiert User-Input gegen XSS
+ * @param {string} input - Der zu sanitierende String
+ * @returns {string} - Sanitierter String
+ */
+export function sanitizeInput(input) {
+  if (!input || typeof input !== 'string') return ''
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;')
+    .trim()
+}
+
+/**
+ * Validiert PLZ (deutsche Postleitzahl)
+ * @param {string} plz - Die zu validierende PLZ
+ * @returns {boolean} - true wenn gültig
+ */
+export function validatePLZ(plz) {
+  if (!plz) return false
+  return /^\d{5}$/.test(plz.trim())
+}
 
 /**
  * Maskiert eine IBAN für DSGVO-konforme Bestätigungsmails

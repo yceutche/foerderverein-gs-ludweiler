@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { X, FileText, Download, CheckCircle, AlertCircle, Loader2, Mail } from 'lucide-react'
-import { sendFormSubmissionEmails, maskIBAN } from '../services/emailService'
+import { sendFormSubmissionEmails, maskIBAN, validateIBAN, validateEmail, validatePLZ, sanitizeInput } from '../services/emailService'
 
 export default function SEPAFormModal({ isOpen, onClose }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -56,8 +56,15 @@ export default function SEPAFormModal({ isOpen, onClose }) {
     if (!formData.vorname.trim()) newErrors.vorname = 'Bitte Vornamen eingeben'
     if (!formData.nachname.trim()) newErrors.nachname = 'Bitte Nachnamen eingeben'
     if (!formData.strasse.trim()) newErrors.strasse = 'Bitte Straße eingeben'
-    if (!formData.plz.trim()) newErrors.plz = 'Bitte PLZ eingeben'
+    if (!formData.plz.trim()) {
+      newErrors.plz = 'Bitte PLZ eingeben'
+    } else if (!validatePLZ(formData.plz)) {
+      newErrors.plz = 'Bitte gültige 5-stellige PLZ eingeben'
+    }
     if (!formData.ort.trim()) newErrors.ort = 'Bitte Ort eingeben'
+    if (formData.email && !validateEmail(formData.email)) {
+      newErrors.email = 'Bitte gültige E-Mail-Adresse eingeben'
+    }
     if (!formData.satzungAkzeptiert) newErrors.satzungAkzeptiert = 'Bitte Satzung akzeptieren'
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -66,7 +73,11 @@ export default function SEPAFormModal({ isOpen, onClose }) {
   const validateStep2 = () => {
     const newErrors = {}
     if (!formData.kontoinhaber.trim()) newErrors.kontoinhaber = 'Bitte Kontoinhaber eingeben'
-    if (!formData.iban.trim()) newErrors.iban = 'Bitte IBAN eingeben'
+    if (!formData.iban.trim()) {
+      newErrors.iban = 'Bitte IBAN eingeben'
+    } else if (!validateIBAN(formData.iban)) {
+      newErrors.iban = 'Bitte gültige deutsche IBAN eingeben (DE + 20 Ziffern)'
+    }
     if (!formData.kreditinstitut.trim()) newErrors.kreditinstitut = 'Bitte Kreditinstitut eingeben'
     if (!formData.sepaEinwilligung) newErrors.sepaEinwilligung = 'Bitte SEPA-Einwilligung erteilen'
     if (!formData.datenschutzAkzeptiert) newErrors.datenschutzAkzeptiert = 'Bitte Datenschutz akzeptieren'
@@ -91,21 +102,34 @@ export default function SEPAFormModal({ isOpen, onClose }) {
       setEmailStatus(null)
       
       try {
-        // Prepare data for email service
+        // Prepare and sanitize data for email service
         const emailData = {
-          vorname: formData.vorname,
-          nachname: formData.nachname,
-          strasse: `${formData.strasse} ${formData.hausnummer}`.trim(),
-          plz: formData.plz,
-          ort: formData.ort,
-          email: formData.email,
-          telefon: formData.telefon,
-          beitrag: parseInt(formData.beitrag === 'other' ? formData.customBeitrag : formData.beitrag),
-          zusatzSpende: formData.spende ? parseInt(formData.spende) : 0,
-          kontoinhaber: formData.kontoinhaber,
-          iban: formData.iban.replace(/\s/g, ''),
-          bic: formData.bic,
-          kreditinstitut: formData.kreditinstitut,
+          vorname: sanitizeInput(formData.vorname),
+          nachname: sanitizeInput(formData.nachname),
+          strasse: sanitizeInput(`${formData.strasse} ${formData.hausnummer}`.trim()),
+          plz: sanitizeInput(formData.plz),
+          ort: sanitizeInput(formData.ort),
+          email: formData.email.trim().toLowerCase(),
+          telefon: sanitizeInput(formData.telefon),
+          beitrag: Math.max(13, parseInt(formData.beitrag === 'other' ? formData.customBeitrag : formData.beitrag) || 13),
+          zusatzSpende: Math.max(0, parseInt(formData.spende) || 0),
+          kontoinhaber: sanitizeInput(formData.kontoinhaber),
+          iban: formData.iban.replace(/\s/g, '').toUpperCase(),
+          bic: sanitizeInput(formData.bic).toUpperCase(),
+          kreditinstitut: sanitizeInput(formData.kreditinstitut),
+        }
+        
+        // Final validation check
+        if (!validateEmail(emailData.email)) {
+          setEmailStatus({ success: false, message: 'Ungültige E-Mail-Adresse.' })
+          setIsSubmitting(false)
+          return
+        }
+        
+        if (!validateIBAN(emailData.iban)) {
+          setEmailStatus({ success: false, message: 'Ungültige IBAN.' })
+          setIsSubmitting(false)
+          return
         }
         
         // Send emails
