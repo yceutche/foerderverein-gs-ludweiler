@@ -3,22 +3,22 @@ import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
 
 const galleryImages = [
   {
-    src: '/images/gallery/spielkisten.svg',
+    src: '/images/gallery/spielkisten.png',
     alt: 'Kinder spielen mit den neuen Spielkisten zum Schulbeginn',
     caption: 'Spielkisten für unsere Erstklässler',
   },
   {
-    src: '/images/gallery/adventsbegegnung.svg',
+    src: '/images/gallery/adventsbegegnung.png',
     alt: 'Familien bei der gemeinsamen Adventsbegegnung in der Schule',
     caption: 'Gemeinsam feiern – Adventsbegegnung',
   },
   {
-    src: '/images/gallery/lesewettbewerb.svg',
+    src: '/images/gallery/lesewettbewerb.png',
     alt: 'Stolze Gewinner des Schullesewettbewerbs mit Buchgutscheinen',
     caption: 'Lesewettbewerb – Preisverleihung',
   },
   {
-    src: '/images/gallery/abschlussfeier.svg',
+    src: '/images/gallery/abschlussfeier.png',
     alt: 'Viertklässler bei ihrer Abschlussfeier',
     caption: 'Abschlussfeier der 4. Klassen',
   },

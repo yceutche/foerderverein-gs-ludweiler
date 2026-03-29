@@ -4,7 +4,7 @@ import { useSEPAForm } from '../App'
 
 const navItems = [
   { label: 'Über uns', href: '#ueber-uns' },
-  { label: 'Was wir fördern', href: '#was-wir-unterstuetzen' },
+  { label: 'Was wir fördern', href: '#was-wir-foerdern' },
   { label: 'Mitmachen', href: '#mitmachen' },
   { label: 'Termine', href: '#termine' },
   { label: 'Spenden', href: '#spenden' },
