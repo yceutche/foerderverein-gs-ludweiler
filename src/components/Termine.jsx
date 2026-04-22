@@ -34,7 +34,7 @@ const schulferien = [
     zeitraum: '16. – 20. Februar 2026', 
     icon: PartyPopper, 
     farbe: 'bg-purple-100 text-purple-700 border-purple-200',
-    vergangen: false 
+    vergangen: true 
   },
   { 
     name: 'Osterferien', 
