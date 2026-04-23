@@ -3,9 +3,12 @@ import { Lock, Eye, EyeOff } from 'lucide-react'
 
 const PASSWORD = '!2026LuDWeiler100%'
 const SESSION_KEY = 'fv_access'
+const EXPIRY_MINUTES = 30
 
-export function isAuthenticated() {
-  return sessionStorage.getItem(SESSION_KEY) === '1'
+function isAuthenticated() {
+  const ts = sessionStorage.getItem(SESSION_KEY)
+  if (!ts) return false
+  return Date.now() - parseInt(ts, 10) < EXPIRY_MINUTES * 60 * 1000
 }
 
 export default function PasswordGate({ children }) {
@@ -17,7 +20,7 @@ export default function PasswordGate({ children }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (input === PASSWORD) {
-      sessionStorage.setItem(SESSION_KEY, '1')
+      sessionStorage.setItem(SESSION_KEY, Date.now().toString())
       setAuthenticated(true)
     } else {
       setError(true)
