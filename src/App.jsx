@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import PasswordGate from './components/PasswordGate'
+import DevBanner from './components/DevBanner'
 import Impressum from './components/Impressum'
 import Datenschutz from './components/Datenschutz'
 import Header from './components/Header'
@@ -41,6 +42,7 @@ function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
     <PasswordGate>
+    <DevBanner />
     <SEPAFormContext.Provider value={{ isSepaFormOpen, openSepaForm, closeSepaForm }}>
       <Routes>
         <Route path="/impressum" element={<Impressum />} />
