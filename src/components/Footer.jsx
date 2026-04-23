@@ -1,4 +1,5 @@
 import { Heart, Mail, Phone, FileText, Shield, BookOpen } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const footerLinks = {
   verein: [
@@ -111,13 +112,13 @@ export default function Footer() {
             <ul className="space-y-2">
               {footerLinks.rechtliches.map((link) => (
                 <li key={link.href}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="flex items-center gap-2 text-sm text-gray-400 hover:text-primary-400 transition-colors"
                   >
                     <link.icon className="w-3 h-3" aria-hidden="true" />
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

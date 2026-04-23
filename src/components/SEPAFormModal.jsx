@@ -810,7 +810,7 @@ export default function SEPAFormModal({ isOpen, onClose }) {
                         className="w-5 h-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500 mt-0.5"
                       />
                       <span className="text-sm text-gray-700">
-                        Ich habe die <a href="/datenschutz" target="_blank" className="text-primary-600 hover:underline">Datenschutzerklärung</a> gelesen und akzeptiere diese. <span className="text-red-500">*</span>
+                        Ich habe die <a href="/foerderverein-gs-ludweiler/datenschutz" target="_blank" className="text-primary-600 hover:underline">Datenschutzerklärung</a> gelesen und akzeptiere diese. <span className="text-red-500">*</span>
                       </span>
                     </label>
                     {errors.datenschutzAkzeptiert && (
