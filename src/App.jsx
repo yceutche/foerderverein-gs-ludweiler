@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react'
+import PasswordGate from './components/PasswordGate'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import TrustBar from './components/TrustBar'
@@ -35,6 +36,7 @@ function App() {
   const closeSepaForm = () => setIsSepaFormOpen(false)
 
   return (
+    <PasswordGate>
     <SEPAFormContext.Provider value={{ isSepaFormOpen, openSepaForm, closeSepaForm }}>
       <div className="min-h-screen bg-white">
         <Header />
@@ -58,6 +60,7 @@ function App() {
         <SEPAFormModal isOpen={isSepaFormOpen} onClose={closeSepaForm} />
       </div>
     </SEPAFormContext.Provider>
+    </PasswordGate>
   )
 }
 
