@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+const isCloudflare = process.env.CF_PAGES_BUILD === 'true'
+
 export default defineConfig({
-  base: '/foerderverein-gs-ludweiler/',
+  base: isCloudflare ? '/' : '/foerderverein-gs-ludweiler/',
   plugins: [react()],
   server: {
     port: 3000,
