@@ -1,5 +1,8 @@
 import { createContext, useContext, useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import PasswordGate from './components/PasswordGate'
+import Impressum from './components/Impressum'
+import Datenschutz from './components/Datenschutz'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import TrustBar from './components/TrustBar'
@@ -36,31 +39,39 @@ function App() {
   const closeSepaForm = () => setIsSepaFormOpen(false)
 
   return (
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
     <PasswordGate>
     <SEPAFormContext.Provider value={{ isSepaFormOpen, openSepaForm, closeSepaForm }}>
-      <div className="min-h-screen bg-white">
-        <Header />
-        <main>
-          <ImageGallery />
-          <Hero />
-          <TrustBar />
-          <WasWirUnterstuetzen />
-          <WirOrganisieren />
-          <SoKoenntIhrHelfen />
-          <AktuelleProjekte />
-          <Transparenz />
-          <Termine />
-          <Kontakt />
-          <FAQ />
-          <AbschlussCTA />
-        </main>
-        <Footer />
-        <MobileCTA />
-        <ScrollToTop />
-        <SEPAFormModal isOpen={isSepaFormOpen} onClose={closeSepaForm} />
-      </div>
+      <Routes>
+        <Route path="/impressum" element={<Impressum />} />
+        <Route path="/datenschutz" element={<Datenschutz />} />
+        <Route path="*" element={
+          <div className="min-h-screen bg-white">
+            <Header />
+            <main>
+              <ImageGallery />
+              <Hero />
+              <TrustBar />
+              <WasWirUnterstuetzen />
+              <WirOrganisieren />
+              <SoKoenntIhrHelfen />
+              <AktuelleProjekte />
+              <Transparenz />
+              <Termine />
+              <Kontakt />
+              <FAQ />
+              <AbschlussCTA />
+            </main>
+            <Footer />
+            <MobileCTA />
+            <ScrollToTop />
+            <SEPAFormModal isOpen={isSepaFormOpen} onClose={closeSepaForm} />
+          </div>
+        } />
+      </Routes>
     </SEPAFormContext.Provider>
     </PasswordGate>
+    </BrowserRouter>
   )
 }
 
