@@ -6,8 +6,8 @@ const feiertage = [
   { name: '1. Weihnachtstag', datum: '25. Dezember 2025', wochentag: 'Donnerstag', vergangen: true },
   { name: '2. Weihnachtstag', datum: '26. Dezember 2025', wochentag: 'Freitag', vergangen: true },
   { name: 'Neujahr', datum: '1. Januar 2026', wochentag: 'Donnerstag', vergangen: true },
-  { name: 'Karfreitag', datum: '3. April 2026', wochentag: 'Freitag', vergangen: false },
-  { name: 'Ostermontag', datum: '6. April 2026', wochentag: 'Montag', vergangen: false },
+  { name: 'Karfreitag', datum: '3. April 2026', wochentag: 'Freitag', vergangen: true },
+  { name: 'Ostermontag', datum: '6. April 2026', wochentag: 'Montag', vergangen: true },
   { name: 'Tag der Arbeit', datum: '1. Mai 2026', wochentag: 'Freitag', vergangen: false },
   { name: 'Christi Himmelfahrt', datum: '14. Mai 2026', wochentag: 'Donnerstag', vergangen: false },
   { name: 'Pfingstmontag', datum: '25. Mai 2026', wochentag: 'Montag', vergangen: false },
@@ -41,7 +41,7 @@ const schulferien = [
     zeitraum: '7. – 17. April 2026', 
     icon: Flower2, 
     farbe: 'bg-pink-100 text-pink-700 border-pink-200',
-    vergangen: false 
+    vergangen: true 
   },
   { 
     name: 'Sommerferien', 
