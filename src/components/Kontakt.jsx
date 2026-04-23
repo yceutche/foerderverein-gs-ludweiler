@@ -27,7 +27,7 @@ export default function Kontakt() {
                 <div>
                   <p className="text-sm text-gray-500">Ansprechpartnerin</p>
                   <p className="text-xl font-semibold text-gray-900">
-                    Frau Patricia Sarda-Seewald
+                    Frau Patrizia Sarda-Seewald
                   </p>
                 </div>
               </div>

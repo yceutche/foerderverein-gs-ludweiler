@@ -87,7 +87,7 @@ export default function Footer() {
             <div className="space-y-3 mb-6">
               <p className="text-sm text-gray-400">
                 <strong className="text-gray-300">Vorstand:</strong><br />
-                Patricia Sarda-Seewald<br />
+                Patrizia Sarda-Seewald<br />
                 Stephanie Höhn<br />
                 Tamara Junker
               </p>
