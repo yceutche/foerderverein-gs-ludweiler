@@ -32,7 +32,7 @@ export default function Impressum() {
           <section>
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Vertreten durch</h2>
             <p>
-              Patrizia Sarda-Seewald (1. Vorsitzende)<br />
+              Patricia Sarda-Seewald (1. Vorsitzende)<br />
               Stephanie Höhn<br />
               Tamara Junker
             </p>

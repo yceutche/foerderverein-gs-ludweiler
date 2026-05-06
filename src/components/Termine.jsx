@@ -1,4 +1,4 @@
-import { Calendar, Sun, Snowflake, Flower2, TreePine, PartyPopper, Flag } from 'lucide-react'
+import { Calendar, Sun, Snowflake, Flower2, TreePine, PartyPopper, Flag, BookOpen } from 'lucide-react'
 
 const feiertage = [
   { name: 'Tag der Deutschen Einheit', datum: '3. Oktober 2025', wochentag: 'Freitag', vergangen: true },
@@ -8,7 +8,7 @@ const feiertage = [
   { name: 'Neujahr', datum: '1. Januar 2026', wochentag: 'Donnerstag', vergangen: true },
   { name: 'Karfreitag', datum: '3. April 2026', wochentag: 'Freitag', vergangen: true },
   { name: 'Ostermontag', datum: '6. April 2026', wochentag: 'Montag', vergangen: true },
-  { name: 'Tag der Arbeit', datum: '1. Mai 2026', wochentag: 'Freitag', vergangen: false },
+  { name: 'Tag der Arbeit', datum: '1. Mai 2026', wochentag: 'Freitag', vergangen: true },
   { name: 'Christi Himmelfahrt', datum: '14. Mai 2026', wochentag: 'Donnerstag', vergangen: false },
   { name: 'Pfingstmontag', datum: '25. Mai 2026', wochentag: 'Montag', vergangen: false },
   { name: 'Fronleichnam', datum: '4. Juni 2026', wochentag: 'Donnerstag', vergangen: false },
@@ -50,6 +50,23 @@ const schulferien = [
     farbe: 'bg-yellow-100 text-yellow-700 border-yellow-200',
     vergangen: false 
   },
+]
+
+const schultermine = [
+  { name: '1. Pädagogischer Tag', datum: '12. November 2025', info: 'Kein Unterricht, Betreuung geöffnet', vergangen: true },
+  { name: 'Elterninfo Klasse 4', datum: '26. November 2025', info: 'Online-Format, 19 Uhr', vergangen: true },
+  { name: '2. Pädagogischer Tag', datum: '13. Januar 2026', info: 'Kein Unterricht, Betreuung geöffnet', vergangen: true },
+  { name: 'Halbjahreszeugnisse (Kl. 2–4)', datum: '30. Januar 2026', info: 'Unterrichtsende 10:45 Uhr', vergangen: true },
+  { name: 'Beweglicher Ferientag', datum: '15. Mai 2026', info: 'Unterrichtsfrei, Betreuung geöffnet', vergangen: false },
+  { name: 'Sportfest Ludweiler (3.+4. Kl.)', datum: '2. Juni 2026', info: '', vergangen: false },
+  { name: 'Sportfest Lauterbach & Ludweiler (1.+2. Kl.)', datum: '3. Juni 2026', info: '', vergangen: false },
+  { name: 'Beweglicher Ferientag', datum: '5. Juni 2026', info: 'Unterrichtsfrei, Betreuung geschlossen!', vergangen: false },
+  { name: 'Sommerfest Lauterbach', datum: '13. Juni 2026', info: '14 – 18 Uhr · Ausgleichstag 15. Juni (unterrichtsfrei, Betreuung geöffnet)', vergangen: false },
+  { name: '3. Pädagogischer Tag', datum: '16. Juni 2026', info: 'Kein Unterricht, Betreuung für FGTS geöffnet', vergangen: false },
+  { name: 'Jahreszeugnisse Kl. 1+2', datum: '17. Juni 2026', info: 'Beratungsgespräche 17.6.–26.6.', vergangen: false },
+  { name: 'Elternabend neue Erstklässler', datum: '22. Juni 2026', info: '18 Uhr, Multifunktionsraum FGTS Ludweiler', vergangen: false },
+  { name: 'Verabschiedung Klassen 4', datum: '25. Juni 2026', info: 'Gottesdienst 17 Uhr, Feier ab 18 Uhr – Stammschule Ludweiler', vergangen: false },
+  { name: 'Jahreszeugnisse Kl. 3+4 & letzter Schultag', datum: '26. Juni 2026', info: 'Unterrichtsende für alle 10:45 Uhr', vergangen: false },
 ]
 
 export default function Termine() {
@@ -157,6 +174,54 @@ export default function Termine() {
                   Alle Feiertage dieses Schuljahres sind vorbei.
                 </p>
               )}
+            </div>
+          </div>
+        </div>
+
+        {/* Schultermine Card - Full Width */}
+        <div className="mt-8 max-w-5xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-soft border border-gray-100 overflow-hidden">
+            <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-4">
+              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <BookOpen className="w-5 h-5" />
+                Schultermine 2025/2026
+              </h3>
+              <p className="text-emerald-100 text-sm">GS Ludweiler-Lauterbach</p>
+            </div>
+            <div className="p-6">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {schultermine.map((termin) => (
+                  <div
+                    key={termin.name + termin.datum}
+                    className={`p-3 rounded-xl border transition-all ${
+                      termin.vergangen
+                        ? 'bg-gray-50 border-gray-200 opacity-50'
+                        : 'bg-emerald-50 border-emerald-200 hover:shadow-md'
+                    }`}
+                  >
+                    <div className="flex items-start gap-2">
+                      <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                        termin.vergangen ? 'bg-gray-400' : 'bg-emerald-500'
+                      }`} />
+                      <div>
+                        <span className={`font-semibold text-sm block ${
+                          termin.vergangen ? 'line-through text-gray-400' : 'text-gray-900'
+                        }`}>
+                          {termin.name}
+                        </span>
+                        <span className={`text-xs font-medium ${
+                          termin.vergangen ? 'text-gray-400' : 'text-emerald-700'
+                        }`}>
+                          {termin.datum}
+                        </span>
+                        {termin.info && (
+                          <span className="text-xs text-gray-500 block mt-0.5">{termin.info}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
