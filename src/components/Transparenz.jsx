@@ -16,7 +16,7 @@ const transparencyPoints = [
 ]
 
 const vorstand = [
-  'Patricia Sarda-Seewald',
+  'Patrizia Sarda-Seewald',
   'Stephanie Höhn',
   'Tamara Junker',
 ]

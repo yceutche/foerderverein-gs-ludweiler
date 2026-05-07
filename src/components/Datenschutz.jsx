@@ -25,7 +25,7 @@ export default function Datenschutz() {
             <p>
               Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br /><br />
               Förderverein der Grundschule Ludweiler/Lauterbach – Standort Ludweiler e. V.<br />
-              Vertreten durch: Patricia Sarda-Seewald (1. Vorsitzende)<br />
+              Vertreten durch: Patrizia Sarda-Seewald (1. Vorsitzende)<br />
               E-Mail: <a href="mailto:grundschuleludweiler@schule.saarland" className="text-primary-600 hover:underline">grundschuleludweiler@schule.saarland</a><br />
               Telefon: 06898 / 3903780
             </p>
