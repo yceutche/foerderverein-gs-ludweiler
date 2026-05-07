@@ -89,8 +89,7 @@ export default function Footer() {
               <p className="text-sm text-gray-400">
                 <strong className="text-gray-300">Vorstand:</strong><br />
                 Patrizia Sarda-Seewald<br />
-                Stephanie Höhn<br />
-                Tamara Junker
+                Stephanie Höhn
               </p>
               <a
                 href="tel:+4968983903780"

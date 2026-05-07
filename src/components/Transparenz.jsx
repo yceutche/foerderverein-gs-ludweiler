@@ -18,7 +18,6 @@ const transparencyPoints = [
 const vorstand = [
   'Patrizia Sarda-Seewald',
   'Stephanie Höhn',
-  'Tamara Junker',
 ]
 
 export default function Transparenz() {
