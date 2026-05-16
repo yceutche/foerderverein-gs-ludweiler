@@ -20,7 +20,7 @@ import emailjs from '@emailjs/browser'
  */
 
 // Email-Empfänger des Fördervereins
-const VEREIN_EMAIL = 'grundschuleludweiler@schule.saarland'
+const VEREIN_EMAIL = 'digitalevinfo@gmail.com'
 
 /**
  * Validiert eine deutsche IBAN
