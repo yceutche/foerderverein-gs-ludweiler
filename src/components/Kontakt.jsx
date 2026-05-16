@@ -1,6 +1,25 @@
-import { User, Phone, Mail, Send } from 'lucide-react'
+import { useState } from 'react'
+import { User, Phone, Mail, Send, CheckCircle, AlertCircle, Loader } from 'lucide-react'
+import { sendKontaktEmail } from '../services/emailService'
 
 export default function Kontakt() {
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
+  const [status, setStatus] = useState(null) // null | 'sending' | 'success' | 'error'
+
+  const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setStatus('sending')
+    try {
+      await sendKontaktEmail(form)
+      setStatus('success')
+      setForm({ name: '', email: '', subject: '', message: '' })
+    } catch {
+      setStatus('error')
+    }
+  }
+
   return (
     <section
       id="kontakt"
@@ -79,7 +98,21 @@ export default function Kontakt() {
             {/* Quick Contact Form */}
             <div className="card-bordered p-8">
               <h3 className="heading-3 mb-6">Schnellkontakt</h3>
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+
+              {status === 'success' ? (
+                <div className="flex flex-col items-center justify-center gap-4 py-10 text-center">
+                  <CheckCircle className="w-14 h-14 text-green-500" />
+                  <p className="text-lg font-semibold text-gray-900">Nachricht gesendet!</p>
+                  <p className="text-gray-500 text-sm">Wir melden uns so bald wie möglich bei euch.</p>
+                  <button
+                    onClick={() => setStatus(null)}
+                    className="btn-ghost text-sm mt-2"
+                  >
+                    Weitere Nachricht senden
+                  </button>
+                </div>
+              ) : (
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                     Name
@@ -88,6 +121,8 @@ export default function Kontakt() {
                     type="text"
                     id="name"
                     name="name"
+                    value={form.name}
+                    onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-shadow"
                     placeholder="Euer Name"
                     required
@@ -101,6 +136,8 @@ export default function Kontakt() {
                     type="email"
                     id="email"
                     name="email"
+                    value={form.email}
+                    onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-shadow"
                     placeholder="eure@email.de"
                     required
@@ -113,6 +150,8 @@ export default function Kontakt() {
                   <select
                     id="subject"
                     name="subject"
+                    value={form.subject}
+                    onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-shadow"
                     required
                   >
@@ -131,20 +170,41 @@ export default function Kontakt() {
                   <textarea
                     id="message"
                     name="message"
+                    value={form.message}
+                    onChange={handleChange}
                     rows={4}
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-shadow resize-none"
                     placeholder="Eure Nachricht an uns..."
                     required
                   />
                 </div>
+
+                {status === 'error' && (
+                  <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    Senden fehlgeschlagen. Bitte versuche es erneut oder schreib uns direkt per E-Mail.
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="btn-secondary w-full inline-flex items-center justify-center gap-2"
+                  disabled={status === 'sending'}
+                  className="btn-secondary w-full inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  <Send className="w-5 h-5" aria-hidden="true" />
-                  Nachricht senden
+                  {status === 'sending' ? (
+                    <>
+                      <Loader className="w-5 h-5 animate-spin" aria-hidden="true" />
+                      Wird gesendet…
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" aria-hidden="true" />
+                      Nachricht senden
+                    </>
+                  )}
                 </button>
               </form>
+              )}
             </div>
           </div>
         </div>

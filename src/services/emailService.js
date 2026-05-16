@@ -584,6 +584,46 @@ async function sendMembershipEmails(formData) {
 }
 `
 
+/**
+ * Sendet die Kontaktformular-Nachricht an den Verein via EmailJS.
+ *
+ * Template-Variablen (EmailJS-Template: VITE_EMAILJS_TEMPLATE_KONTAKT):
+ *   {{to_email}}   – Empfänger (Verein)
+ *   {{from_name}}  – Name des Absenders
+ *   {{from_email}} – E-Mail des Absenders (auch als reply_to)
+ *   {{subject}}    – Gewählter Betreff
+ *   {{message}}    – Nachrichtentext
+ *   {{datum}}      – Datum des Eingangs
+ *
+ * @param {{ name: string, email: string, subject: string, message: string }} data
+ */
+export async function sendKontaktEmail(data) {
+  const PUBLIC_KEY   = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+  const SERVICE_ID   = import.meta.env.VITE_EMAILJS_SERVICE_ID
+  const TPL_KONTAKT  = import.meta.env.VITE_EMAILJS_TEMPLATE_KONTAKT
+
+  if (!PUBLIC_KEY || !SERVICE_ID || !TPL_KONTAKT) {
+    console.error(
+      '[EmailJS] Fehlende Umgebungsvariable VITE_EMAILJS_TEMPLATE_KONTAKT.\n' +
+      'Bitte in .env.local konfigurieren.'
+    )
+    throw new Error('EmailJS nicht konfiguriert – Kontaktformular konnte nicht gesendet werden.')
+  }
+
+  const params = {
+    to_email:   VEREIN_EMAIL,
+    from_name:  sanitizeInput(data.name),
+    from_email: data.email.trim().toLowerCase(),
+    subject:    sanitizeInput(data.subject),
+    message:    sanitizeInput(data.message),
+    datum:      formatDate(),
+    reply_to:   data.email.trim().toLowerCase(),
+  }
+
+  const result = await emailjs.send(SERVICE_ID, TPL_KONTAKT, params, PUBLIC_KEY)
+  return { success: result.status === 200 }
+}
+
 export default {
   maskIBAN,
   formatDate,
@@ -591,5 +631,6 @@ export default {
   createMemberEmailContent,
   createVereinEmailContent,
   sendFormSubmissionEmails,
+  sendKontaktEmail,
   VEREIN_EMAIL
 }
