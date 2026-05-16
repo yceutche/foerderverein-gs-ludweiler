@@ -8,6 +8,7 @@ export default function SoKoenntIhrHelfen() {
   const [selectedAmount, setSelectedAmount] = useState(13)
   const [customAmount, setCustomAmount] = useState('')
   const [additionalDonation, setAdditionalDonation] = useState(false)
+  const [donationAmount, setDonationAmount] = useState('')
   const [copiedField, setCopiedField] = useState(null)
   const [donationMethod, setDonationMethod] = useState('bank') // 'bank' or 'paypal'
   const { openSepaForm } = useSEPAForm()
@@ -106,15 +107,35 @@ export default function SoKoenntIhrHelfen() {
                 <input
                   type="checkbox"
                   checked={additionalDonation}
-                  onChange={(e) => setAdditionalDonation(e.target.checked)}
+                  onChange={(e) => { setAdditionalDonation(e.target.checked); if (!e.target.checked) setDonationAmount('') }}
                   className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                 />
                 Ich möchte zusätzlich einmalig spenden (optional)
               </label>
+              {additionalDonation && (
+                <div className="mt-2 flex items-center gap-2">
+                  <div className="relative w-36">
+                    <input
+                      type="number"
+                      value={donationAmount}
+                      onChange={(e) => setDonationAmount(e.target.value)}
+                      placeholder="Betrag"
+                      min="1"
+                      className="w-full pl-3 pr-8 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                      aria-label="Spendenbetrag eingeben"
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm">€</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             <button 
-              onClick={openSepaForm}
+              onClick={() => openSepaForm({
+                beitrag: customAmount ? 'other' : String(selectedAmount || 13),
+                customBeitrag: customAmount || '',
+                spende: additionalDonation && donationAmount ? donationAmount : '',
+              })}
               className="btn-primary w-full mb-3 inline-flex items-center justify-center gap-2"
             >
               <FileText className="w-5 h-5" aria-hidden="true" />

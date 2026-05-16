@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import PasswordGate from './components/PasswordGate'
 import DevBanner from './components/DevBanner'
 import Impressum from './components/Impressum'
 import Datenschutz from './components/Datenschutz'
@@ -35,13 +34,13 @@ export function useSEPAForm() {
 
 function App() {
   const [isSepaFormOpen, setIsSepaFormOpen] = useState(false)
+  const [sepaInitialData, setSepaInitialData] = useState({})
 
-  const openSepaForm = () => setIsSepaFormOpen(true)
-  const closeSepaForm = () => setIsSepaFormOpen(false)
+  const openSepaForm = (data = {}) => { setSepaInitialData(data); setIsSepaFormOpen(true) }
+  const closeSepaForm = () => { setIsSepaFormOpen(false); setSepaInitialData({}) }
 
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
-    <PasswordGate>
     <DevBanner />
     <SEPAFormContext.Provider value={{ isSepaFormOpen, openSepaForm, closeSepaForm }}>
       <Routes>
@@ -67,12 +66,11 @@ function App() {
             <Footer />
             <MobileCTA />
             <ScrollToTop />
-            <SEPAFormModal isOpen={isSepaFormOpen} onClose={closeSepaForm} />
+            <SEPAFormModal isOpen={isSepaFormOpen} onClose={closeSepaForm} initialData={sepaInitialData} />
           </div>
         } />
       </Routes>
     </SEPAFormContext.Provider>
-    </PasswordGate>
     </BrowserRouter>
   )
 }

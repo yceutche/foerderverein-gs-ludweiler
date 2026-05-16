@@ -375,37 +375,120 @@ Anmeldung eingegangen am: ${formatDate()}
   }
 }
 
+// ── E-Mail-Inhalte für Selbstüberweisung ────────────────────────────────────
+// TODO: Vereinskonto-Daten aus pdfService.VEREINSKONTO synchron halten
+const TRANSFER_IBAN = 'DE83 5935 0110 0000 0123 45'  // TODO: Echte IBAN
+const TRANSFER_BIC  = 'KRSADE55'                      // TODO: Echter BIC
+const TRANSFER_BANK = 'Kreissparkasse Saarlouis'      // TODO: Echte Bank
+
+export function createMemberTransferEmailContent(formData) {
+  return {
+    subject: `Willkommen beim Förderverein der Grundschule Ludweiler! 🎉`,
+    html: `
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+        <div style="text-align:center;margin-bottom:24px;">
+          <h1 style="color:#00BCD4;font-size:24px;margin-bottom:8px;">Herzlich Willkommen! 🎉</h1>
+          <p style="color:#666;font-size:16px;">Förderverein der Grundschule Ludweiler-Lauterbach e.V.</p>
+        </div>
+        <div style="background:#f8fafc;border-radius:12px;padding:24px;margin-bottom:24px;">
+          <h2 style="color:#333;font-size:18px;margin-bottom:16px;">Hallo ${formData.vorname}! 👋</h2>
+          <p style="color:#444;line-height:1.6;">Vielen Dank für Deinen Mitgliedsantrag! Wir freuen uns über Deine Unterstützung.</p>
+        </div>
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:24px;">
+          <h3 style="color:#333;font-size:16px;margin-bottom:16px;">📋 Deine Mitgliedsdaten</h3>
+          <table style="width:100%;border-collapse:collapse;">
+            <tr><td style="padding:8px 0;color:#666;width:140px;">Name:</td><td style="padding:8px 0;color:#333;font-weight:500;">${formData.vorname} ${formData.nachname}</td></tr>
+            <tr><td style="padding:8px 0;color:#666;">Mitgliedsbeitrag:</td><td style="padding:8px 0;color:#333;font-weight:500;">${formData.beitrag} € / Jahr</td></tr>
+            ${formData.zusatzSpende > 0 ? `<tr><td style="padding:8px 0;color:#666;">Zusatzspende:</td><td style="padding:8px 0;color:#333;font-weight:500;">${formData.zusatzSpende} € einmalig</td></tr>` : ''}
+          </table>
+        </div>
+        <div style="background:#e0f7fa;border:1px solid #80deea;border-radius:12px;padding:24px;margin-bottom:24px;">
+          <h3 style="color:#00695c;font-size:16px;margin-bottom:12px;">🏦 Bitte überweise den Mitgliedsbeitrag an:</h3>
+          <table style="width:100%;border-collapse:collapse;">
+            <tr><td style="padding:6px 0;color:#666;width:140px;">IBAN:</td><td style="padding:6px 0;color:#333;font-family:monospace;font-weight:600;">${TRANSFER_IBAN}</td></tr>
+            <tr><td style="padding:6px 0;color:#666;">BIC:</td><td style="padding:6px 0;color:#333;font-family:monospace;">${TRANSFER_BIC}</td></tr>
+            <tr><td style="padding:6px 0;color:#666;">Kreditinstitut:</td><td style="padding:6px 0;color:#333;">${TRANSFER_BANK}</td></tr>
+          </table>
+          <div style="margin-top:12px;background:#fff;padding:10px;border-radius:8px;">
+            <strong style="color:#00695c;">Verwendungszweck:</strong>
+            <span style="margin-left:8px;font-family:monospace;">Mitgliedsbeitrag ${formData.vorname} ${formData.nachname}</span>
+          </div>
+        </div>
+        <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:24px;margin-bottom:24px;">
+          <h3 style="color:#166534;font-size:16px;margin-bottom:8px;">✅ Nächste Schritte</h3>
+          <ol style="color:#166534;line-height:1.8;margin:0;padding-left:20px;">
+            <li>PDF-Antrag herunterladen und unterschreiben</li>
+            <li>Unterschriebenes Dokument hochladen oder einreichen</li>
+            <li>Mitgliedsbeitrag überweisen</li>
+          </ol>
+        </div>
+        <div style="text-align:center;margin-top:32px;padding-top:24px;border-top:1px solid #e2e8f0;">
+          <p style="color:#999;font-size:12px;">Förderverein der Grundschule Ludweiler-Lauterbach e.V.<br>Fragen? Schreib uns an: ${VEREIN_EMAIL}</p>
+        </div>
+      </div>`,
+    text: `Herzlich Willkommen beim Förderverein!\n\nHallo ${formData.vorname}!\n\nBitte überweise den Mitgliedsbeitrag an:\nIBAN: ${TRANSFER_IBAN}\nBIC: ${TRANSFER_BIC}\nVerwendungszweck: Mitgliedsbeitrag ${formData.vorname} ${formData.nachname}\n\nFragen? ${VEREIN_EMAIL}`
+  }
+}
+
+export function createVereinTransferEmailContent(formData) {
+  return {
+    subject: `Neue Mitgliedsanmeldung (Überweisung): ${formData.vorname} ${formData.nachname}`,
+    html: `
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+        <div style="background:#00BCD4;color:white;padding:24px;border-radius:12px 12px 0 0;text-align:center;">
+          <h1 style="font-size:20px;margin:0;">📬 Neue Mitgliedsanmeldung – Zahlung per Überweisung</h1>
+        </div>
+        <div style="background:#fff;border:1px solid #e2e8f0;border-top:0;border-radius:0 0 12px 12px;padding:24px;">
+          <h3 style="color:#333;font-size:16px;border-bottom:1px solid #e2e8f0;padding-bottom:8px;">👤 Persönliche Daten</h3>
+          <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
+            <tr><td style="padding:8px 0;color:#666;width:140px;">Name:</td><td style="padding:8px 0;color:#333;font-weight:500;">${formData.vorname} ${formData.nachname}</td></tr>
+            <tr><td style="padding:8px 0;color:#666;">Adresse:</td><td style="padding:8px 0;color:#333;">${formData.strasse}, ${formData.plz} ${formData.ort}</td></tr>
+            <tr><td style="padding:8px 0;color:#666;">E-Mail:</td><td style="padding:8px 0;color:#333;"><a href="mailto:${formData.email}">${formData.email}</a></td></tr>
+            ${formData.telefon ? `<tr><td style="padding:8px 0;color:#666;">Telefon:</td><td style="padding:8px 0;color:#333;">${formData.telefon}</td></tr>` : ''}
+          </table>
+          <h3 style="color:#333;font-size:16px;border-bottom:1px solid #e2e8f0;padding-bottom:8px;">💰 Beitrag</h3>
+          <p style="color:#333;">Mitgliedsbeitrag: <strong>${formData.beitrag} € / Jahr</strong>${formData.zusatzSpende > 0 ? ` + ${formData.zusatzSpende} € Spende` : ''}</p>
+          <div style="background:#fff3cd;padding:12px;border-radius:8px;margin-top:16px;">
+            <p style="color:#856404;margin:0;">⚠️ Zahlungsweise: <strong>Selbstüberweisung</strong> – Kein SEPA-Mandat hinterlegt.</p>
+          </div>
+        </div>
+      </div>`,
+    text: `Neue Mitgliedsanmeldung (Überweisung)\n\nName: ${formData.vorname} ${formData.nachname}\nAdresse: ${formData.strasse}, ${formData.plz} ${formData.ort}\nE-Mail: ${formData.email}\nBeitrag: ${formData.beitrag} € / Jahr\nZahlungsweise: Selbstüberweisung`
+  }
+}
+
 /**
- * Sendet die Emails (simuliert für Frontend-only)
- * 
+ * Sendet die Emails (simuliert für Frontend-only).
+ *
  * HINWEIS: In der Produktion sollte dies über ein sicheres Backend erfolgen!
  * Optionen:
- * 1. Node.js Backend mit Nodemailer
- * 2. Serverless Function (AWS Lambda, Vercel, Netlify)
- * 3. Email-Service API (SendGrid, Mailgun, AWS SES)
+ *  1. Node.js Backend mit Nodemailer
+ *  2. Serverless Function (AWS Lambda, Vercel, Netlify)
+ *  3. Email-Service API (SendGrid, Mailgun, AWS SES)
+ *
+ * @param {object} formData    - Sanitisierte Formulardaten
+ * @param {'sepa'|'transfer'} paymentMethod - Gewählte Zahlungsart
  */
-export async function sendFormSubmissionEmails(formData) {
-  // Erstelle Email-Inhalte
-  const memberEmail = createMemberEmailContent(formData)
-  const vereinEmail = createVereinEmailContent(formData)
-  
-  // Generiere PDFs
-  const memberPDF = generatePDFBase64(formData, true) // Mit maskierter IBAN
-  const vereinPDF = generatePDFBase64(formData, false) // Mit vollständiger IBAN
-  
-  // In der Produktion: API-Call zum Backend
-  // Für Demo: Zeige was gesendet würde
+export async function sendFormSubmissionEmails(formData, paymentMethod = 'sepa') {
+  const memberEmail = paymentMethod === 'transfer'
+    ? createMemberTransferEmailContent(formData)
+    : createMemberEmailContent(formData)
+  const vereinEmail = paymentMethod === 'transfer'
+    ? createVereinTransferEmailContent(formData)
+    : createVereinEmailContent(formData)
+
   console.log('=== EMAIL SERVICE ===')
+  console.log('Zahlungsart:', paymentMethod)
   console.log('Email an Mitglied:', formData.email)
   console.log('Betreff:', memberEmail.subject)
-  console.log('IBAN (maskiert):', maskIBAN(formData.iban))
-  console.log('')
+  if (paymentMethod === 'sepa') {
+    console.log('IBAN (maskiert):', maskIBAN(formData.iban))
+  }
   console.log('Email an Verein:', VEREIN_EMAIL)
   console.log('Betreff:', vereinEmail.subject)
-  console.log('IBAN (vollständig):', formData.iban)
   console.log('=====================')
-  
-  // Simuliere API-Aufruf
+
+  // Simuliere API-Aufruf – in Produktion: echter Backend-Call
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
@@ -414,7 +497,7 @@ export async function sendFormSubmissionEmails(formData) {
         vereinEmailSent: true,
         message: 'Emails wurden erfolgreich versendet'
       })
-    }, 1000)
+    }, 900)
   })
 }
 
