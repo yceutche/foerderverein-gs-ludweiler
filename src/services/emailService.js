@@ -1,4 +1,5 @@
 import emailjs from '@emailjs/browser'
+import { VEREINSKONTO } from './pdfService'
 
 /**
  * Email-Service für SEPA-Formular – powered by EmailJS
@@ -380,10 +381,10 @@ Anmeldung eingegangen am: ${formatDate()}
 }
 
 // ── E-Mail-Inhalte für Selbstüberweisung ────────────────────────────────────
-// TODO: Vereinskonto-Daten aus pdfService.VEREINSKONTO synchron halten
-const TRANSFER_IBAN = 'DE83 5935 0110 0000 0123 45'  // TODO: Echte IBAN
-const TRANSFER_BIC  = 'KRSADE55'                      // TODO: Echter BIC
-const TRANSFER_BANK = 'Kreissparkasse Saarlouis'      // TODO: Echte Bank
+// Vereinskonto-Daten aus pdfService importiert (single source of truth)
+const TRANSFER_IBAN = VEREINSKONTO.iban
+const TRANSFER_BIC  = VEREINSKONTO.bic
+const TRANSFER_BANK = VEREINSKONTO.bank
 
 export function createMemberTransferEmailContent(formData) {
   return {
