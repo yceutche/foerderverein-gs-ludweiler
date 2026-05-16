@@ -1,18 +1,22 @@
+import emailjs from '@emailjs/browser'
+
 /**
- * Email-Service für SEPA-Formular
- * 
- * Dieser Service simuliert das Versenden von E-Mails.
- * In der Produktion sollte er mit einem echten Backend verbunden werden
- * (z.B. Node.js mit Nodemailer, AWS SES, SendGrid, etc.)
- * 
+ * Email-Service für SEPA-Formular – powered by EmailJS
+ *
+ * Benötigte Umgebungsvariablen (in .env.local):
+ *   VITE_EMAILJS_PUBLIC_KEY       – Account → API Keys → Public Key
+ *   VITE_EMAILJS_SERVICE_ID       – Email Services → Service ID
+ *   VITE_EMAILJS_TEMPLATE_MEMBER  – Template-ID für Mitglied-Bestätigung
+ *   VITE_EMAILJS_TEMPLATE_VEREIN  – Template-ID für Verein-Benachrichtigung
+ *
  * DSGVO-konform:
- * - Der Verein erhält die vollständige IBAN im PDF
- * - Das Mitglied erhält eine Bestätigung mit maskierter IBAN
- * 
+ * - Der Verein erhält die vollständige IBAN (Template: verein_template)
+ * - Das Mitglied erhält eine Bestätigung mit maskierter IBAN (member_template)
+ *
  * SICHERHEIT:
  * - Input-Validierung vor Verarbeitung
  * - Sanitization gegen XSS
- * - Rate Limiting sollte im Backend implementiert werden
+ * - Rate Limiting ist im EmailJS-Dashboard konfigurierbar
  */
 
 // Email-Empfänger des Fördervereins
@@ -458,47 +462,81 @@ export function createVereinTransferEmailContent(formData) {
 }
 
 /**
- * Sendet die Emails (simuliert für Frontend-only).
+ * Sendet beide E-Mails über EmailJS:
+ *   1. Bestätigung an das neue Mitglied  (maskierte IBAN)
+ *   2. Benachrichtigung an den Verein    (vollständige IBAN)
  *
- * HINWEIS: In der Produktion sollte dies über ein sicheres Backend erfolgen!
- * Optionen:
- *  1. Node.js Backend mit Nodemailer
- *  2. Serverless Function (AWS Lambda, Vercel, Netlify)
- *  3. Email-Service API (SendGrid, Mailgun, AWS SES)
+ * Konfiguration: .env.local → VITE_EMAILJS_* Variablen
  *
- * @param {object} formData    - Sanitisierte Formulardaten
+ * @param {object} formData          - Sanitisierte Formulardaten aus prepareEmailData()
  * @param {'sepa'|'transfer'} paymentMethod - Gewählte Zahlungsart
  */
 export async function sendFormSubmissionEmails(formData, paymentMethod = 'sepa') {
-  const memberEmail = paymentMethod === 'transfer'
-    ? createMemberTransferEmailContent(formData)
-    : createMemberEmailContent(formData)
-  const vereinEmail = paymentMethod === 'transfer'
-    ? createVereinTransferEmailContent(formData)
-    : createVereinEmailContent(formData)
+  const PUBLIC_KEY   = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+  const SERVICE_ID   = import.meta.env.VITE_EMAILJS_SERVICE_ID
+  const TPL_MEMBER   = import.meta.env.VITE_EMAILJS_TEMPLATE_MEMBER
+  const TPL_VEREIN   = import.meta.env.VITE_EMAILJS_TEMPLATE_VEREIN
 
-  console.log('=== EMAIL SERVICE ===')
-  console.log('Zahlungsart:', paymentMethod)
-  console.log('Email an Mitglied:', formData.email)
-  console.log('Betreff:', memberEmail.subject)
-  if (paymentMethod === 'sepa') {
-    console.log('IBAN (maskiert):', maskIBAN(formData.iban))
+  if (!PUBLIC_KEY || !SERVICE_ID || !TPL_MEMBER || !TPL_VEREIN) {
+    console.error(
+      '[EmailJS] Fehlende Umgebungsvariablen.\n' +
+      'Bitte VITE_EMAILJS_PUBLIC_KEY, VITE_EMAILJS_SERVICE_ID,\n' +
+      'VITE_EMAILJS_TEMPLATE_MEMBER und VITE_EMAILJS_TEMPLATE_VEREIN\n' +
+      'in .env.local konfigurieren.'
+    )
+    throw new Error('EmailJS nicht konfiguriert – E-Mails konnten nicht versendet werden.')
   }
-  console.log('Email an Verein:', VEREIN_EMAIL)
-  console.log('Betreff:', vereinEmail.subject)
-  console.log('=====================')
 
-  // Simuliere API-Aufruf – in Produktion: echter Backend-Call
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        success: true,
-        memberEmailSent: true,
-        vereinEmailSent: true,
-        message: 'Emails wurden erfolgreich versendet'
-      })
-    }, 900)
-  })
+  const isSepa = paymentMethod === 'sepa'
+
+  // ── Template-Parameter für die Mitglieds-Bestätigungsmail ──────────────
+  const memberParams = {
+    to_email:        formData.email,
+    to_name:         `${formData.vorname} ${formData.nachname}`,
+    vorname:         formData.vorname,
+    nachname:        formData.nachname,
+    adresse:         `${formData.strasse}, ${formData.plz} ${formData.ort}`,
+    beitrag:         formData.beitrag,
+    zusatz_spende:   formData.zusatzSpende > 0 ? `${formData.zusatzSpende} €` : '–',
+    zahlungsart:     isSepa ? 'SEPA-Lastschrift' : 'Selbstüberweisung',
+    iban_masked:     isSepa ? maskIBAN(formData.iban) : '–',
+    kreditinstitut:  isSepa ? formData.kreditinstitut : '–',
+    datum:           formatDate(),
+    reply_to:        VEREIN_EMAIL,
+  }
+
+  // ── Template-Parameter für die Verein-Benachrichtigungsmail ────────────
+  const vereinParams = {
+    to_email:        VEREIN_EMAIL,
+    to_name:         'Förderverein GS Ludweiler',
+    vorname:         formData.vorname,
+    nachname:        formData.nachname,
+    adresse:         `${formData.strasse}, ${formData.plz} ${formData.ort}`,
+    email_mitglied:  formData.email,
+    telefon:         formData.telefon || '–',
+    beitrag:         formData.beitrag,
+    zusatz_spende:   formData.zusatzSpende > 0 ? `${formData.zusatzSpende} €` : '–',
+    zahlungsart:     isSepa ? 'SEPA-Lastschrift' : 'Selbstüberweisung',
+    kontoinhaber:    isSepa ? formData.kontoinhaber : '–',
+    iban_voll:       isSepa ? formData.iban : '–',
+    bic:             isSepa ? (formData.bic || '–') : '–',
+    kreditinstitut:  isSepa ? formData.kreditinstitut : '–',
+    datum:           formatDate(),
+    reply_to:        formData.email,
+  }
+
+  // ── Versand ─────────────────────────────────────────────────────────────
+  const [memberResult, vereinResult] = await Promise.all([
+    emailjs.send(SERVICE_ID, TPL_MEMBER, memberParams, PUBLIC_KEY),
+    emailjs.send(SERVICE_ID, TPL_VEREIN, vereinParams, PUBLIC_KEY),
+  ])
+
+  return {
+    success: memberResult.status === 200 && vereinResult.status === 200,
+    memberEmailSent: memberResult.status === 200,
+    vereinEmailSent: vereinResult.status === 200,
+    message: 'E-Mails erfolgreich versendet',
+  }
 }
 
 /**
