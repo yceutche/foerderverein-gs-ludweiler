@@ -15,7 +15,7 @@ const footerLinks = {
   rechtliches: [
     { label: 'Impressum', href: '/impressum', icon: FileText },
     { label: 'Datenschutz', href: '/datenschutz', icon: Shield },
-    { label: 'Satzung (PDF)', href: '/satzung.pdf', icon: BookOpen },
+    { label: 'Satzung (PDF)', href: '/foerderverein-gs-ludweiler/docs/SatzungVR837.pdf', icon: BookOpen },
   ],
 }
 
@@ -111,6 +111,18 @@ export default function Footer() {
             <ul className="space-y-2">
               {footerLinks.rechtliches.map((link) => (
                 <li key={link.href}>
+                  {link.href.endsWith('.pdf') ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${link.label} – öffnet in neuem Tab`}
+                      className="flex items-center gap-2 text-sm text-gray-400 hover:text-primary-400 transition-colors"
+                    >
+                      <link.icon className="w-3 h-3" aria-hidden="true" />
+                      {link.label}
+                    </a>
+                  ) : (
                   <Link
                     to={link.href}
                     className="flex items-center gap-2 text-sm text-gray-400 hover:text-primary-400 transition-colors"
@@ -118,6 +130,7 @@ export default function Footer() {
                     <link.icon className="w-3 h-3" aria-hidden="true" />
                     {link.label}
                   </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -132,6 +145,11 @@ export default function Footer() {
             </p>
             <p className="text-sm text-gray-500 flex items-center gap-1">
               Mit <Heart className="w-4 h-4 text-red-500" aria-hidden="true" /> für unsere Kinder
+            </p>
+          </div>
+          <div className="mt-3 text-center">
+            <p className="text-xs text-gray-600">
+              Eingetragener gemeinnütziger Verein · VR 837 · Amtsgericht Saarbrücken
             </p>
           </div>
           <div className="mt-4 text-center">

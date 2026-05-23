@@ -9,7 +9,7 @@ const feiertage = [
   { name: 'Karfreitag', datum: '3. April 2026', wochentag: 'Freitag', vergangen: true },
   { name: 'Ostermontag', datum: '6. April 2026', wochentag: 'Montag', vergangen: true },
   { name: 'Tag der Arbeit', datum: '1. Mai 2026', wochentag: 'Freitag', vergangen: true },
-  { name: 'Christi Himmelfahrt', datum: '14. Mai 2026', wochentag: 'Donnerstag', vergangen: false },
+  { name: 'Christi Himmelfahrt', datum: '14. Mai 2026', wochentag: 'Donnerstag', vergangen: true },
   { name: 'Pfingstmontag', datum: '25. Mai 2026', wochentag: 'Montag', vergangen: false },
   { name: 'Fronleichnam', datum: '4. Juni 2026', wochentag: 'Donnerstag', vergangen: false },
 ]
@@ -57,7 +57,7 @@ const schultermine = [
   { name: 'Elterninfo Klasse 4', datum: '26. November 2025', info: 'Online-Format, 19 Uhr', vergangen: true },
   { name: '2. Pädagogischer Tag', datum: '13. Januar 2026', info: 'Kein Unterricht, Betreuung geöffnet', vergangen: true },
   { name: 'Halbjahreszeugnisse (Kl. 2–4)', datum: '30. Januar 2026', info: 'Unterrichtsende 10:45 Uhr', vergangen: true },
-  { name: 'Beweglicher Ferientag', datum: '15. Mai 2026', info: 'Unterrichtsfrei, Betreuung geöffnet', vergangen: false },
+  { name: 'Beweglicher Ferientag', datum: '15. Mai 2026', info: 'Unterrichtsfrei, Betreuung geöffnet', vergangen: true },
   { name: 'Sportfest Ludweiler (3.+4. Kl.)', datum: '2. Juni 2026', info: '', vergangen: false },
   { name: 'Sportfest Lauterbach & Ludweiler (1.+2. Kl.)', datum: '3. Juni 2026', info: '', vergangen: false },
   { name: 'Beweglicher Ferientag', datum: '5. Juni 2026', info: 'Unterrichtsfrei, Betreuung geschlossen!', vergangen: false },

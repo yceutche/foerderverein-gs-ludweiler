@@ -12,9 +12,29 @@ const faqs = [
     answer: 'Es handelt sich um eine Familienmitgliedschaft.',
   },
   {
+    question: 'Müssen beide Elternteile Mitglied werden?',
+    answer:
+      'Nein – bei Ehepaaren oder beiden Erziehungsberechtigten eines Kindes reicht ein gemeinsamer Mitgliedsbeitrag. Es wird also nur einmal gezahlt.',
+  },
+  {
     question: 'Wie wird der Beitrag bezahlt?',
     answer:
       'Der Beitrag ist ein Jahresbeitrag und wird über ein SEPA-Lastschriftmandat eingezogen.',
+  },
+  {
+    question: 'Wer kann Mitglied werden?',
+    answer:
+      'Jede natürliche oder juristische Person, die sich mit der Grundschule Ludweiler-Lauterbach verbunden fühlt – also nicht nur Eltern, sondern auch Großeltern, Freunde der Schule oder Unternehmen aus der Region.',
+  },
+  {
+    question: 'Wie kündige ich die Mitgliedschaft?',
+    answer:
+      'Der Austritt ist schriftlich beim Vorstand zu erklären – spätestens drei Monate vor Ende des Schuljahres.',
+  },
+  {
+    question: 'Was passiert mit unserem Geld?',
+    answer:
+      'Alle Mittel des Vereins fließen ausschließlich in die satzungsmäßigen Zwecke – direkt für die Kinder unserer Schule. Kein Mitglied und keine Person erhält Zuwendungen aus den Vereinsmitteln. Der Verein ist selbstlos und gemeinnützig tätig.',
   },
   {
     question: 'Kann ich auch spenden, ohne Mitglied zu werden?',
@@ -24,6 +44,16 @@ const faqs = [
     question: 'Welche Aktionen unterstützt der Förderverein konkret?',
     answer:
       'Zum Beispiel Spielkisten für die 1. Klassen, Nikolausaktion, Bücher/Buchgutscheine, Buskosten, Klassenfotos, Schulbibliothek sowie Abschlussfeier & Adventsbegegnung.',
+  },
+  {
+    question: 'Arbeitet der Vorstand ehrenamtlich?',
+    answer:
+      'Ja – alle Vorstandsmitglieder sind ehrenamtlich tätig. Notwendige Aufwendungen können erstattet werden, aber es gibt keine Vergütung.',
+  },
+  {
+    question: 'Wie oft gibt es eine Mitgliederversammlung?',
+    answer:
+      'Einmal pro Schuljahr findet eine ordentliche Mitgliederversammlung statt. Die Einladung erfolgt mindestens eine Woche vorher per Aushang an der Grundschule Ludweiler oder auf anderen geeigneten Wegen.',
   },
 ]
 

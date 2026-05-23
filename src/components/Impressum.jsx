@@ -23,7 +23,7 @@ export default function Impressum() {
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Angaben gemäß § 5 TMG</h2>
             <p>
               Förderverein der Grundschule Ludweiler/Lauterbach – Standort Ludweiler e. V.<br />
-              <span className="text-amber-600 text-sm">[Straße und Hausnummer bitte ergänzen]</span><br />
+              Schulstraße 12<br />
               66333 Völklingen (Ortsteil Ludweiler)<br />
               Saarland, Deutschland
             </p>
@@ -49,7 +49,7 @@ export default function Impressum() {
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Vereinsregister</h2>
             <p>
               Eingetragen im Vereinsregister beim Amtsgericht Saarbrücken<br />
-              Registernummer: <span className="text-amber-600 text-sm">[Vereinsregister-Nummer bitte ergänzen]</span>
+              Registernummer: VR 837
             </p>
           </section>
 

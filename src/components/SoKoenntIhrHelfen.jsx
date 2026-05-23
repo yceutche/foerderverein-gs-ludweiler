@@ -11,6 +11,15 @@ export default function SoKoenntIhrHelfen() {
   const [donationAmount, setDonationAmount] = useState('')
   const [copiedField, setCopiedField] = useState(null)
   const [donationMethod, setDonationMethod] = useState('bank') // 'bank' or 'paypal'
+  const [spendeErwuenscht, setSpendeErwuenscht] = useState(false)
+  const [spendenAdresse, setSpendenAdresse] = useState({
+    vorname: '',
+    nachname: '',
+    strasse: '',
+    hausnummer: '',
+    plz: '',
+    ort: '',
+  })
   const { openSepaForm } = useSEPAForm()
 
   const bankDetails = {
@@ -27,6 +36,16 @@ export default function SoKoenntIhrHelfen() {
     setCopiedField(field)
     setTimeout(() => setCopiedField(null), 2000)
   }
+
+  const isAddressValid =
+    spendenAdresse.vorname.trim() !== '' &&
+    spendenAdresse.nachname.trim() !== '' &&
+    spendenAdresse.strasse.trim() !== '' &&
+    spendenAdresse.hausnummer.trim() !== '' &&
+    /^\d{5}$/.test(spendenAdresse.plz.trim()) &&
+    spendenAdresse.ort.trim() !== ''
+
+  const canProceedPaypal = !spendeErwuenscht || isAddressValid
 
   return (
     <section
@@ -284,15 +303,108 @@ export default function SoKoenntIhrHelfen() {
                   <p className="text-sm text-gray-600 text-center mb-4">
                     Schnell und sicher mit PayPal spenden
                   </p>
+
+                  {/* Checkbox: Spendenquittung erwünscht */}
+                  <label className="flex items-start gap-2 text-sm text-gray-700 cursor-pointer mb-4 p-3 bg-white rounded-lg border border-gray-200">
+                    <input
+                      type="checkbox"
+                      checked={spendeErwuenscht}
+                      onChange={(e) => {
+                        setSpendeErwuenscht(e.target.checked)
+                        if (!e.target.checked) setSpendenAdresse({ vorname: '', nachname: '', strasse: '', hausnummer: '', plz: '', ort: '' })
+                      }}
+                      className="mt-0.5 w-4 h-4 text-[#0070ba] border-gray-300 rounded focus:ring-[#0070ba] flex-shrink-0"
+                    />
+                    <span>Ich möchte eine <strong>Spendenquittung</strong> erhalten</span>
+                  </label>
+
+                  {/* Adressfelder – nur wenn Quittung erwünscht */}
+                  {spendeErwuenscht && (
+                    <div className="space-y-2 mb-4">
+                      <p className="text-xs text-gray-500">
+                        Für die Spendenquittung benötigen wir Ihre Postanschrift:
+                      </p>
+                      <div className="grid grid-cols-2 gap-2">
+                        <input
+                          type="text"
+                          placeholder="Vorname *"
+                          value={spendenAdresse.vorname}
+                          onChange={(e) => setSpendenAdresse(prev => ({ ...prev, vorname: e.target.value }))}
+                          className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#0070ba] focus:border-transparent bg-white"
+                          aria-label="Vorname"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Nachname *"
+                          value={spendenAdresse.nachname}
+                          onChange={(e) => setSpendenAdresse(prev => ({ ...prev, nachname: e.target.value }))}
+                          className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#0070ba] focus:border-transparent bg-white"
+                          aria-label="Nachname"
+                        />
+                      </div>
+                      <div className="grid grid-cols-3 gap-2">
+                        <input
+                          type="text"
+                          placeholder="Straße *"
+                          value={spendenAdresse.strasse}
+                          onChange={(e) => setSpendenAdresse(prev => ({ ...prev, strasse: e.target.value }))}
+                          className="col-span-2 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#0070ba] focus:border-transparent bg-white"
+                          aria-label="Straße"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Nr. *"
+                          value={spendenAdresse.hausnummer}
+                          onChange={(e) => setSpendenAdresse(prev => ({ ...prev, hausnummer: e.target.value }))}
+                          className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#0070ba] focus:border-transparent bg-white"
+                          aria-label="Hausnummer"
+                        />
+                      </div>
+                      <div className="grid grid-cols-3 gap-2">
+                        <input
+                          type="text"
+                          placeholder="PLZ *"
+                          value={spendenAdresse.plz}
+                          onChange={(e) => setSpendenAdresse(prev => ({ ...prev, plz: e.target.value }))}
+                          className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#0070ba] focus:border-transparent bg-white"
+                          maxLength={5}
+                          aria-label="Postleitzahl"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Ort *"
+                          value={spendenAdresse.ort}
+                          onChange={(e) => setSpendenAdresse(prev => ({ ...prev, ort: e.target.value }))}
+                          className="col-span-2 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#0070ba] focus:border-transparent bg-white"
+                          aria-label="Ort"
+                        />
+                      </div>
+                    </div>
+                  )}
+
                   <a
-                    href={`https://www.paypal.com/donate?business=${encodeURIComponent(paypalEmail)}&currency_code=EUR&item_name=${encodeURIComponent('Spende Förderverein GS Ludweiler')}`}
+                    href={canProceedPaypal
+                      ? `https://www.paypal.com/donate?business=${encodeURIComponent(paypalEmail)}&currency_code=EUR&item_name=${encodeURIComponent('Spende Förderverein GS Ludweiler')}`
+                      : undefined
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#0070ba] hover:bg-[#003087] text-white font-semibold rounded-xl transition-colors"
+                    onClick={(e) => { if (!canProceedPaypal) e.preventDefault() }}
+                    aria-disabled={!canProceedPaypal}
+                    className={`w-full flex items-center justify-center gap-2 px-4 py-3 font-semibold rounded-xl transition-colors ${
+                      canProceedPaypal
+                        ? 'bg-[#0070ba] hover:bg-[#003087] text-white cursor-pointer'
+                        : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    }`}
                   >
                     <CreditCard className="w-5 h-5" aria-hidden="true" />
                     Mit PayPal spenden
                   </a>
+                  {spendeErwuenscht && !isAddressValid && (
+                    <p className="text-xs text-amber-600 text-center mt-2">
+                      Bitte alle Adressfelder ausfüllen, um fortzufahren.
+                    </p>
+                  )}
                 </div>
                 <p className="microcopy text-center mb-4">
                   Du wirst zu PayPal weitergeleitet.

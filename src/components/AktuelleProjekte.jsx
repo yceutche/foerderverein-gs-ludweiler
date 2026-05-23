@@ -55,13 +55,13 @@ export default function AktuelleProjekte() {
                 <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
                   <project.icon className="w-6 h-6 text-primary-600" aria-hidden="true" />
                 </div>
-                <span className={project.statusColor}>{project.status}</span>
+                <span className={`${project.statusColor} hidden`}>{project.status}</span>
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">{project.title}</h3>
               <p className="text-sm text-gray-500 mb-4">{project.description}</p>
               
               {/* Progress bar */}
-              <div className="space-y-2">
+              <div className="space-y-2 hidden">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Fortschritt</span>
                   <span className="font-medium text-primary-600">{project.progress}%</span>

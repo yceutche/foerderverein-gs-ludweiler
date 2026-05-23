@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hosting-Entscheidungsanalyse — Förderverein GS Ludweiler</title>
+  <style>
+    :root {
+      --blue-dark:   #1e3a5f;
+      --blue:        #2563eb;
+      --blue-light:  #dbeafe;
+      --green:       #059669;
+      --green-light: #d1fae5;
+      --amber:       #d97706;
+      --amber-light: #fef3c7;
+      --red:         #dc2626;
+      --red-light:   #fee2e2;
+      --gray-50:     #f8fafc;
+      --gray-100:    #f1f5f9;
+      --gray-200:    #e2e8f0;
+      --gray-600:    #475569;
+      --gray-800:    #1e293b;
+      --radius:      8px;
+      --shadow:      0 2px 8px rgba(0,0,0,.10);
+      --shadow-lg:   0 8px 30px rgba(0,0,0,.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-800);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    /* ── HEADER ── */
+    .page-header {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, #2d4e8a 100%);
+      color: #fff;
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+    }
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: .4rem;
+    }
+    .page-header .subtitle {
+      font-size: 1.1rem;
+      opacity: .85;
+      margin-bottom: 1.2rem;
+    }
+    .page-header .meta {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: .25rem .75rem;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .3px;
+    }
+    .badge-blue   { background: rgba(255,255,255,.15); color: #fff; }
+    .badge-green  { background: var(--green-light); color: var(--green); }
+    .badge-amber  { background: var(--amber-light); color: #92400e; }
+    .badge-red    { background: var(--red-light); color: var(--red); }
+    .badge-gray   { background: var(--gray-200); color: var(--gray-600); }
+
+    /* ── NAV ── */
+    nav.toc {
+      background: #fff;
+      border-bottom: 1px solid var(--gray-200);
+      padding: .8rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    nav.toc ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .3rem .5rem;
+    }
+    nav.toc a {
+      color: var(--blue-dark);
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 600;
+      padding: .2rem .5rem;
+      border-radius: 4px;
+      transition: background .15s;
+    }
+    nav.toc a:hover { background: var(--blue-light); color: var(--blue); }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem 2.5rem;
+      margin-bottom: 2rem;
+    }
+    .section h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+      border-bottom: 3px solid var(--blue);
+      padding-bottom: .5rem;
+      margin-bottom: 1.4rem;
+    }
+    .section h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--blue-dark);
+      margin: 1.6rem 0 .6rem;
+    }
+    .section h4 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin: 1.2rem 0 .4rem;
+    }
+    p { margin-bottom: .8rem; }
+
+    /* ── ALERTS ── */
+    .alert {
+      border-radius: var(--radius);
+      padding: .9rem 1.2rem;
+      margin: 1rem 0;
+      font-size: .9rem;
+      display: flex;
+      gap: .7rem;
+      align-items: flex-start;
+    }
+    .alert-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: .1rem; }
+    .alert-warning { background: var(--amber-light); border-left: 4px solid var(--amber); }
+    .alert-success { background: var(--green-light); border-left: 4px solid var(--green); }
+    .alert-info    { background: var(--blue-light);  border-left: 4px solid var(--blue); }
+    .alert-danger  { background: var(--red-light);   border-left: 4px solid var(--red); }
+
+    /* ── TABLES ── */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      box-shadow: 0 0 0 1px var(--gray-200);
+      margin: 1rem 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .85rem;
+    }
+    thead th {
+      background: var(--blue-dark);
+      color: #fff;
+      padding: .6rem .9rem;
+      text-align: left;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    thead th:first-child { border-radius: 6px 0 0 0; }
+    thead th:last-child  { border-radius: 0 6px 0 0; }
+    tbody tr:nth-child(even) { background: var(--gray-50); }
+    tbody tr:hover { background: var(--blue-light); }
+    tbody td {
+      padding: .55rem .9rem;
+      border-bottom: 1px solid var(--gray-200);
+      vertical-align: top;
+    }
+    .col-highlight { background: rgba(16,185,129,.08) !important; font-weight: 600; }
+    .col-best { color: var(--green); font-weight: 700; }
+    .col-warn { color: var(--amber); font-weight: 600; }
+    .col-bad  { color: var(--red);   font-weight: 600; }
+
+    /* ── PROVIDER CARDS ── */
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin: 1.2rem 0;
+    }
+    .provider-card {
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      position: relative;
+    }
+    .provider-card.recommended {
+      border-color: var(--green);
+      box-shadow: 0 0 0 2px var(--green-light);
+    }
+    .provider-card .rec-badge {
+      position: absolute;
+      top: -10px;
+      right: 10px;
+      background: var(--green);
+      color: #fff;
+      font-size: .7rem;
+      font-weight: 700;
+      padding: .15rem .55rem;
+      border-radius: 10px;
+    }
+    .provider-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+      margin-bottom: .2rem;
+    }
+    .provider-location {
+      font-size: .78rem;
+      color: var(--gray-600);
+      margin-bottom: .7rem;
+    }
+    .provider-price {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+    }
+    .provider-price span {
+      font-size: .85rem;
+      font-weight: 400;
+      color: var(--gray-600);
+    }
+    .provider-price-note {
+      font-size: .75rem;
+      color: var(--gray-600);
+      margin-bottom: .7rem;
+    }
+    .provider-features {
+      list-style: none;
+      font-size: .82rem;
+      margin-top: .5rem;
+    }
+    .provider-features li {
+      padding: .2rem 0;
+      display: flex;
+      gap: .4rem;
+      align-items: flex-start;
+    }
+    .provider-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .provider-features li.warn::before { content: '⚠'; color: var(--amber); }
+    .provider-features li.no::before { content: '✗'; color: var(--red); }
+
+    /* ── SCORE BARS ── */
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .score-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .score-card.winner {
+      background: var(--green-light);
+      border-color: var(--green);
+    }
+    .score-label {
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--gray-600);
+      margin-bottom: .4rem;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .score-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+      line-height: 1;
+    }
+    .score-card.winner .score-value { color: var(--green); }
+    .score-bar {
+      height: 6px;
+      background: var(--gray-200);
+      border-radius: 3px;
+      margin-top: .5rem;
+      overflow: hidden;
+    }
+    .score-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--blue);
+      transition: width .4s;
+    }
+    .score-card.winner .score-fill { background: var(--green); }
+
+    /* ── RISK TABLE ── */
+    .risk-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+    .risk-green  { background: var(--green); }
+    .risk-amber  { background: var(--amber); }
+    .risk-red    { background: var(--red); }
+
+    /* ── RECOMMENDATION BOX ── */
+    .rec-box {
+      background: linear-gradient(135deg, var(--green-light) 0%, #ecfdf5 100%);
+      border: 2px solid var(--green);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      margin: 1.5rem 0;
+    }
+    .rec-box h3 {
+      color: var(--green);
+      margin-top: 0;
+      font-size: 1.15rem;
+    }
+    .rec-box ol, .rec-box ul {
+      padding-left: 1.2rem;
+      margin-top: .5rem;
+    }
+    .rec-box li { margin-bottom: .4rem; font-size: .92rem; }
+
+    .second-rec-box {
+      background: var(--blue-light);
+      border: 2px solid var(--blue);
+      border-radius: var(--radius);
+      padding: 1.2rem 2rem;
+      margin: 1rem 0;
+    }
+
+    .warn-box {
+      background: var(--amber-light);
+      border: 2px solid var(--amber);
+      border-radius: var(--radius);
+      padding: 1.2rem 2rem;
+      margin: 1rem 0;
+    }
+
+    /* ── CODE ── */
+    pre, code {
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: .82rem;
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: var(--radius);
+    }
+    pre {
+      padding: 1rem 1.2rem;
+      overflow-x: auto;
+      margin: .8rem 0;
+    }
+    code:not(pre > code) {
+      background: var(--gray-100);
+      color: var(--red);
+      padding: .1rem .35rem;
+      border-radius: 4px;
+    }
+
+    /* ── COST TABLE HIGHLIGHT ── */
+    tr.total-row td {
+      background: var(--blue-dark) !important;
+      color: #fff !important;
+      font-weight: 700;
+    }
+    tr.best-row td {
+      background: var(--green-light) !important;
+      color: var(--green) !important;
+      font-weight: 700;
+    }
+
+    /* ── VERSION SPLIT HEADER ── */
+    .version-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .version-pill {
+      background: var(--blue-dark);
+      color: #fff;
+      font-size: .85rem;
+      font-weight: 700;
+      padding: .3rem 1rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* ── PHASE DIVIDER ── */
+    .phase-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem 0 1rem;
+    }
+    .phase-divider::before, .phase-divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: var(--gray-200);
+    }
+    .phase-divider-label {
+      background: var(--blue-dark);
+      color: #fff;
+      padding: .4rem 1.2rem;
+      border-radius: 20px;
+      font-size: .82rem;
+      font-weight: 700;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--gray-600);
+      font-size: .8rem;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      nav.toc, .page-header .meta { display: none; }
+      .section { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+      body { background: #fff; }
+      a { color: inherit; text-decoration: none; }
+    }
+
+    @media (max-width: 680px) {
+      .page-header h1 { font-size: 1.4rem; }
+      .section { padding: 1.2rem 1rem; }
+      .provider-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header class="page-header">
+  <h1>Hosting-Entscheidungsanalyse</h1>
+  <p class="subtitle">Förderverein Grundschule Ludweiler-Lauterbach e.V.</p>
+  <div class="meta">
+    <span class="badge badge-blue">📅 Mai 2026</span>
+    <span class="badge badge-blue">🏛️ Eingetragener Verein (e.V.)</span>
+    <span class="badge badge-blue">📍 Saarland — UDS Zuständig</span>
+    <span class="badge badge-blue">⚖️ DSGVO + BDSG + §10b EStG</span>
+    <span class="badge badge-blue">🔒 Senior Hosting-Engineer | DSGVO-Rechtsberatung | IT-Architekt</span>
+  </div>
+</header>
+
+<!-- ═══════════════════════ NAV ═══════════════════════ -->
+<nav class="toc" aria-label="Inhaltsverzeichnis">
+  <ul>
+    <li><a href="#s1">1. Ausgangslage</a></li>
+    <li><a href="#s2">2. DSGVO-Rahmen</a></li>
+    <li><a href="#s3">3. Anforderungen</a></li>
+    <li><a href="#s4">4. Anbieterprofile</a></li>
+    <li><a href="#s5">5. Version 1 (Status Quo)</a></li>
+    <li><a href="#s6">6. Version 2 (Admin)</a></li>
+    <li><a href="#s7">7. DSGVO-Matrix</a></li>
+    <li><a href="#s8">8. Architektur</a></li>
+    <li><a href="#s9">9. Migrationsplan</a></li>
+    <li><a href="#s10">10. Kosten 3 Jahre</a></li>
+    <li><a href="#s11">11. Fazit</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+<!-- ═══ 1 AUSGANGSLAGE ═══ -->
+<section class="section" id="s1">
+  <h2>1. Ausgangslage &amp; Projektbeschreibung</h2>
+
+  <h3>Aktueller Websitestand</h3>
+  <p>Die Website ist eine <strong>React/Vite Single-Page-Application (SPA)</strong>, aktuell gehostet auf <strong>Cloudflare Pages</strong> (CDN, kostenlos, US-Unternehmen).</p>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Komponente</th><th>Status</th><th>Handlungsbedarf</th></tr></thead>
+      <tbody>
+        <tr><td>React/Vite SPA</td><td>✅ Cloudflare Pages</td><td>Optional: zu dt. Hoster migrieren</td></tr>
+        <tr><td>E-Mail-Versand</td><td class="col-warn">⚠️ EmailJS (AWS USA)</td><td><strong>Vor Go-Live ablösen!</strong></td></tr>
+        <tr><td>SEPA-Mandat PDF</td><td>✅ Client-seitig</td><td>Kein Handlungsbedarf</td></tr>
+        <tr><td>Domain + SSL</td><td>❓ Prüfen</td><td>Bei Hoster einrichten</td></tr>
+        <tr><td>AVV E-Mail-Dienst</td><td class="col-warn">⚠️ EmailJS: fraglich</td><td>Mit neuem Hoster abschließen</td></tr>
+        <tr><td>Datenschutzerklärung</td><td>❓ Prüfen</td><td>Hoster + Dienste nennen</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-danger">
+    <span class="alert-icon">🚨</span>
+    <div><strong>Unmittelbares DSGVO-Risiko:</strong> EmailJS überträgt personenbezogene Daten (Name, E-Mail, ggf. IBAN) auf US-Server (AWS). Bei einer Datenschutzprüfung durch das <strong>Unabhängige Datenschutzzentrum Saarland (UDS)</strong> kann dies beanstandet werden. Handlungsbedarf besteht <strong>vor Go-Live</strong>.</div>
+  </div>
+
+  <h3>Geplante Erweiterungen — Version 2</h3>
+  <ul style="padding-left:1.3rem;margin-top:.5rem;font-size:.9rem;">
+    <li>Mitgliederverwaltung (Stammdaten, Status, Beitrittsdatum)</li>
+    <li>Beitrags- und SEPA-Mandatverwaltung</li>
+    <li><strong>Automatische Generierung und Versendung von Spendenbescheinigungen (§10b EStG)</strong></li>
+    <li>Reporting und Vereinsstatistiken</li>
+    <li>Rollenverwaltung (Vorstand, Kassierer)</li>
+  </ul>
+
+  <div class="table-wrapper" style="margin-top:1.2rem;">
+    <table>
+      <thead><tr><th>Merkmal</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Rechtsform</td><td>Eingetragener Verein (e.V.)</td></tr>
+        <tr><td>Gemeinnütziger Zweck</td><td>§ 52 AO — Förderung der Bildung</td></tr>
+        <tr><td>Sitz</td><td>Ludweiler-Lauterbach, Saarland</td></tr>
+        <tr><td>Aufsichtsbehörde DSGVO</td><td><strong>Unabhängiges Datenschutzzentrum Saarland (UDS)</strong></td></tr>
+        <tr><td>Zuständiges Finanzamt</td><td>Finanzamt Saarlouis</td></tr>
+        <tr><td>Steuerliche Besonderheit</td><td>Zuwendungsbestätigungen nach § 10b EStG i.V.m. § 50 EStDV</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ 2 DSGVO ═══ -->
+<section class="section" id="s2">
+  <h2>2. DSGVO-Rechtsrahmen für eingetragene Vereine</h2>
+
+  <h3>2.1 Relevante Rechtsgrundlagen</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Norm</th><th>Inhalt</th><th>Relevanz für Förderverein</th></tr></thead>
+      <tbody>
+        <tr><td><code>Art. 6 Abs. 1 lit. b</code></td><td>Vertragserfüllung</td><td>Mitgliedschaft = Vertragsverhältnis → Mitgliederdaten zulässig</td></tr>
+        <tr><td><code>Art. 6 Abs. 1 lit. c</code></td><td>Rechtliche Verpflichtung</td><td>Buchführung, Spendenbescheinigungen (§ 147 AO: 10 Jahre)</td></tr>
+        <tr><td><code>Art. 6 Abs. 1 lit. f</code></td><td>Berechtigtes Interesse</td><td>Vereinsinterne Kommunikation mit Mitgliedern</td></tr>
+        <tr><td><strong><code>Art. 28 DSGVO</code></strong></td><td><strong>Auftragsverarbeitung</strong></td><td><strong>AVV-Pflicht mit Hoster — ohne AVV ist Hosting rechtswidrig!</strong></td></tr>
+        <tr><td><code>Art. 30 DSGVO</code></td><td>Verarbeitungsverzeichnis</td><td>Empfohlen; ab 250 regelmäßigen Verarbeitern Pflicht</td></tr>
+        <tr><td><code>Art. 32 DSGVO</code></td><td>TOMs</td><td>HTTPS, Verschlüsselung, Zugriffskontrolle</td></tr>
+        <tr><td><code>Art. 33/34 DSGVO</code></td><td>Meldepflicht Datenpannen</td><td>72 Stunden an UDS Saarland</td></tr>
+        <tr><td><strong><code>Art. 44 ff. DSGVO</code></strong></td><td><strong>Drittlandtransfer</strong></td><td><strong>Datenübertragung in USA (EmailJS!) bedarf Rechtsgrundlage</strong></td></tr>
+        <tr><td><code>§ 38 BDSG</code></td><td>Datenschutzbeauftragter</td><td>Ab 20 Personen, die regelmäßig Daten verarbeiten</td></tr>
+        <tr><td><code>§ 10b EStG</code></td><td>Steuerlicher Spendenabzug</td><td>Grundlage für Zuwendungsbestätigungen</td></tr>
+        <tr><td><code>§ 50 EStDV</code></td><td>Form der Zuwendungsbestätigung</td><td>Elektronisch seit 2017 zulässig (§ 50 Abs. 1a EStDV)</td></tr>
+        <tr><td><code>§ 147 AO</code></td><td>Aufbewahrungsfristen</td><td>Buchungsbelege inkl. Spendenbescheinigungen: <strong>10 Jahre</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>2.2 Pflichtdokumente für den Verein</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>#</th><th>Dokument</th><th>Rechtsgrundlage</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Datenschutzerklärung (muss <em>jeden</em> Hoster nennen)</td><td>Art. 13 DSGVO</td><td class="col-warn">⚠️ Bei EmailJS-Ablösung aktualisieren</td></tr>
+        <tr><td>2</td><td>Auftragsverarbeitungsvertrag (AVV)</td><td>Art. 28 DSGVO</td><td class="col-warn">⚠️ Mit neuem Hoster abschließen</td></tr>
+        <tr><td>3</td><td>Verarbeitungsverzeichnis</td><td>Art. 30 DSGVO</td><td class="col-warn">⚠️ Erstellen empfohlen</td></tr>
+        <tr><td>4</td><td>Technische und Org. Maßnahmen (TOM)</td><td>Art. 32 DSGVO</td><td class="col-warn">⚠️ Dokumentieren</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>2.3 Spendenbescheinigungen — Rechtliche Anforderungen</h3>
+  <p>Zuwendungsbestätigungen nach <strong>§ 10b EStG i.V.m. § 50 EStDV</strong> müssen enthalten: Name + Anschrift des Zuwendenden, Betrag + Datum, Vereinsdaten + Steuernummer, Bestätigung der Gemeinnützigkeit.</p>
+  <div class="alert alert-success">
+    <span class="alert-icon">✅</span>
+    <div><strong>Automatischer Versand per E-Mail</strong> ist rechtlich unbedenklich (§ 50 Abs. 1a EStDV seit 2017), wenn: (a) AVV mit Hoster vorliegt, (b) Serverstandort Deutschland, (c) Daten ausschließlich für diesen Zweck genutzt werden.</div>
+  </div>
+  <div class="alert alert-warning">
+    <span class="alert-icon">⚠️</span>
+    <div><strong>IBAN-Schutz:</strong> Die IBAN ist ein personenbezogenes, finanzbezogenes Datum. Übertragung über US-Server (EmailJS) bei SEPA-Mandaten ist ein erhöhtes Haftungsrisiko für den Vorstand des Vereins persönlich.</div>
+  </div>
+
+  <h3>2.4 SEPA-Lastschriftmandat — Rechtliche und technische Anforderungen</h3>
+  <p>Der Förderverein erhebt Mitgliedsbeiträge per <strong>SEPA-Lastschrift (Core Direct Debit)</strong>. Dies unterliegt spezifischen rechtlichen und technischen Anforderungen, die die Hosting-Entscheidung direkt beeinflussen.</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Norm</th><th>Inhalt</th><th>Relevanz</th></tr></thead>
+      <tbody>
+        <tr><td><code>EU-VO Nr. 260/2012</code></td><td>SEPA-Verordnung — einheitliche Zahlungsformate</td><td>Vorschrift für <strong>pain.008</strong>-XML-Format bei der Hausbank</td></tr>
+        <tr><td><code>PSD2 (EU 2015/2366)</code></td><td>Zahlungsdienste-Richtlinie</td><td>Sicherheitsanforderungen im Zahlungsverkehr</td></tr>
+        <tr><td><code>Art. 6 Abs. 1 lit. b DSGVO</code></td><td>Vertragserfüllung</td><td>IBAN-Verarbeitung für Beitragseinzug zulässig</td></tr>
+        <tr><td><strong><code>Art. 32 DSGVO</code></strong></td><td><strong>Technische Sicherheit</strong></td><td><strong>Verschlüsselung der IBAN im Ruhezustand — Pflicht (AES-256)</strong></td></tr>
+        <tr><td><strong><code>Art. 83 DSGVO</code></strong></td><td><strong>Bußgeldtatbestände</strong></td><td><strong>Klartext-IBAN in DB = bis 10 Mio. € oder 2 % Jahresumsatz</strong></td></tr>
+        <tr><td><code>§ 675f BGB</code></td><td>Zahlungsdienstvertrag</td><td>Rechtsverhältnis Gläubiger / Zahlungspflichtiger</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>SEPA-Mandat: Pflichtinhalte (EU-Verordnung Nr. 260/2012)</h4>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Pflichtfeld</th><th>Beschreibung</th><th>Beispiel</th></tr></thead>
+      <tbody>
+        <tr><td>Name + Anschrift Zahler</td><td>Mitglied des Vereins</td><td>Max Mustermann, Hauptstr. 1, 66333 Völklingen</td></tr>
+        <tr><td>IBAN des Zahlers</td><td>Bankkonto des Mitglieds — <strong>verschlüsselt speichern!</strong></td><td>DE89 3704 0044 0532 0130 00</td></tr>
+        <tr><td>Name + <strong>Gläubiger-ID</strong> des Vereins</td><td>Pflichtangabe des SEPA-Gläubigers</td><td>DE98ZZZ09999999999</td></tr>
+        <tr><td><strong>Mandatsreferenz</strong></td><td>Eindeutig pro Mandat</td><td><code>FVL-2026-001</code></td></tr>
+        <tr><td>Datum der Unterzeichnung</td><td>Mandatsdatum</td><td>16.05.2026</td></tr>
+        <tr><td>Art des Mandats</td><td>FRST = Erst-Lastschrift / RCUR = wiederkehrend</td><td>RCUR (Jahresbeitrag)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-danger" style="margin-top:1rem;">
+    <span class="alert-icon">🚨</span>
+    <div><strong>Aktuelles EmailJS-Risiko (gravierendster DSGVO-Verstoß):</strong> Die IBAN wird beim SEPA-Formular aktuell über EmailJS (AWS USA) übertragen. Finanzdaten auf US-Servern sind gegenüber dem UDS Saarland nicht rechtfertigbar. <strong>Vor Go-Live zwingend beheben.</strong></div>
+  </div>
+  <div class="alert alert-warning">
+    <span class="alert-icon">⚠️</span>
+    <div><strong>36-Monate-Verfallsregel (EU 260/2012, Art. 5):</strong> Ein SEPA-Mandat verfällt nach 36 Monaten ohne Nutzung. Das System muss ablaufende Mandate automatisch erkennen und das Mitglied kontaktieren.</div>
+  </div>
+  <div class="alert alert-warning">
+    <span class="alert-icon">⚠️</span>
+    <div><strong>Rückbuchungsrisiko:</strong> Mitglieder können SEPA-Lastschriften bis zu <strong>8 Wochen</strong> (autorisiert) bzw. <strong>13 Monate</strong> (unautorisiert) zurückbuchen. Mandate müssen mindestens 14 Monate archiviert werden (§ 675x BGB).</div>
+  </div>
+
+  <h4>SEPA-Einfluss auf die Hosting-Entscheidung</h4>
+  <p>Das Vorhandensein von SEPA-Mandaten (IBAN-Speicherung) <strong>verschärft die DSGVO-Anforderungen an den Hoster erheblich:</strong></p>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Anforderung durch SEPA</th><th>IONOS</th><th>STRATO</th><th>netcup</th><th>all-inkl</th></tr></thead>
+      <tbody>
+        <tr><td>Serverstandort DE (Pflicht bei IBAN)</td><td>✅</td><td>✅</td><td class="col-best">✅ (eigen)</td><td class="col-best">✅ (eigen)</td></tr>
+        <tr><td>Tägliche Backups Mandatsdaten</td><td>✅</td><td>✅</td><td>✅</td><td class="col-best">✅ garantiert tägl.</td></tr>
+        <tr><td>AVV deckt Finanzdaten (IBAN) ab</td><td class="col-warn">🟡 Standard-AVV</td><td class="col-warn">🟡 Standard-AVV</td><td>✅</td><td class="col-best">✅ ausführlichster</td></tr>
+        <tr><td>Kein US-Konzernbezug bei IBAN-Daten</td><td class="col-bad">❌ United Internet AG</td><td class="col-bad">❌ United Internet AG</td><td class="col-best">✅ eigentümergeführt</td><td class="col-best">✅ Familienunternehmen</td></tr>
+        <tr class="total-row"><td><strong>SEPA DSGVO-Gesamteignung</strong></td><td>🟡 <strong>Bedingt</strong></td><td>🟡 <strong>Bedingt</strong></td><td>🟢 <strong>Gut</strong></td><td>🟢 <strong>Optimal</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Technische Anforderungen SEPA-Verwaltung (Version 2)</h4>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Anforderung</th><th>Standard / Technologie</th><th>Hosting-Relevanz</th></tr></thead>
+      <tbody>
+        <tr><td>SEPA XML-Datei generieren</td><td><strong>pain.008</strong> (ISO 20022) — PHP-Library <code>php-sepa-xml</code></td><td>Bankeneinreichung — lokal, kein Drittdienst</td></tr>
+        <tr><td>IBAN verschlüsselt speichern</td><td>AES-256 (<code>openssl_encrypt</code>)</td><td><strong>Art. 32 DSGVO — Pflicht</strong></td></tr>
+        <tr><td>Mandatsreferenz eindeutig</td><td><code>FVL-[JAHR]-[NR]</code></td><td>EU-Verordnung 260/2012</td></tr>
+        <tr><td>Mandatsgültigkeit tracken (36 Mo.)</td><td>Cron-Job + MySQL <code>DATEDIFF</code></td><td>Automatische Erkennung ablaufender Mandate</td></tr>
+        <tr><td>Vorankündigung (Pre-Notification)</td><td>PHPMailer</td><td>Mind. 1 Tag vor Einzug (vertraglich abweichbar)</td></tr>
+        <tr><td>PDF-Mandat archivieren</td><td>TCPDF + Dateisystem</td><td>Beweissicherung bei Streitfall</td></tr>
+        <tr><td>Bankexport SEPA XML</td><td>Gesicherter Download / SFTP</td><td>Übermittlung an Hausbank (Kreissparkasse Saarlouis)</td></tr>
+        <tr><td>Rückbuchungs-Management</td><td>MySQL Status-Tracking</td><td>Widerspruchsfrist 8 / 13 Monate</td></tr>
+        <tr><td>Tägliches Backup Mandatsdaten</td><td><code>mysqldump</code> + Cron</td><td>Mandatsverlust = Einzug unmöglich</td></tr>
+        <tr><td>Mandate-Archivierung (14 Mo.)</td><td>Datenbank + Archiv-Status</td><td>Rückbuchungsschutz § 675x BGB</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-success">
+    <span class="alert-icon">✅</span>
+    <div><strong>Konsequenz für Hosting-Wahl:</strong> all-inkl.com (eigenes RZ Dresden, tägliche Backups, ausführlichster AVV inkl. Finanzdaten, kein US-Konzern) ist der <strong>einzige Anbieter im Vergleich, der alle SEPA-DSGVO-Anforderungen ohne Einschränkungen erfüllt</strong>.</div>
+  </div>
+
+</section>
+
+<!-- ═══ 3 ANFORDERUNGEN ═══ -->
+<section class="section" id="s3">
+  <h2>3. Anforderungsanalyse in zwei Phasen</h2>
+
+  <div class="version-header">
+    <span class="version-pill">Version 1</span>
+    <h3 style="margin:0;font-size:1rem;">Aktuelle Website — Status Quo + E-Mail-Ablösung</h3>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Anforderung</th><th>Priorität</th><th>Aktuell</th><th>Handlungsbedarf</th></tr></thead>
+      <tbody>
+        <tr><td>Statisches SPA Hosting</td><td><span class="badge badge-green">Pflicht</span></td><td>✅ Cloudflare Pages</td><td>Optional: zu dt. Hoster</td></tr>
+        <tr><td>PHP-Backend für E-Mail-Versand</td><td><span class="badge badge-red">Kritisch</span></td><td class="col-warn">⚠️ EmailJS (US)</td><td><strong>→ PHP + PHPMailer umstellen</strong></td></tr>
+        <tr><td>E-Mail Mitgliedsantrag</td><td><span class="badge badge-red">Kritisch</span></td><td class="col-warn">⚠️ EmailJS (US)</td><td>Mit PHP-Backend ablösen</td></tr>
+        <tr><td>E-Mail Kontaktformular</td><td><span class="badge badge-red">Kritisch</span></td><td class="col-warn">⚠️ EmailJS (US)</td><td>Mit PHP-Backend ablösen</td></tr>
+        <tr><td>AVV mit E-Mail-Dienstleister</td><td><span class="badge badge-red">Kritisch</span></td><td class="col-warn">⚠️ EmailJS: fraglich</td><td>Mit neuem Hoster abschließen</td></tr>
+        <tr><td>Datenschutzerklärung aktuell</td><td><span class="badge badge-red">Kritisch</span></td><td class="col-warn">❓ Prüfen</td><td>Hoster + Dienste nennen</td></tr>
+        <tr><td>Domain + SSL/TLS</td><td><span class="badge badge-green">Pflicht</span></td><td>❓ Prüfen</td><td>Bei Hoster einrichten</td></tr>
+        <tr><td>SEPA-Mandat PDF</td><td><span class="badge badge-gray">OK</span></td><td>✅ client-seitig</td><td>Kein Handlungsbedarf</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="version-header" style="margin-top:1.8rem;">
+    <span class="version-pill">Version 2</span>
+    <h3 style="margin:0;font-size:1rem;">Admin-Bereich mit erweiterten Funktionen</h3>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Anforderung</th><th>Priorität</th><th>Technologie</th></tr></thead>
+      <tbody>
+        <tr><td>Mitgliederverwaltung (CRUD)</td><td><span class="badge badge-red">Pflicht</span></td><td>PHP REST-API + MySQL</td></tr>
+        <tr><td>Authentifizierung (Rollen: Vorstand, Kassierer)</td><td><span class="badge badge-red">Pflicht</span></td><td>PHP Sessions + JWT + HTTPS</td></tr>
+        <tr><td>Spendenbescheinigungen generieren (PDF)</td><td><span class="badge badge-red">Pflicht</span></td><td>TCPDF / mPDF (PHP, lokal)</td></tr>
+        <tr><td>Spendenbescheinigungen versenden (E-Mail)</td><td><span class="badge badge-red">Pflicht</span></td><td>PHPMailer + SMTP</td></tr>
+        <tr><td>SEPA-Mandatverwaltung</td><td><span class="badge badge-red">Pflicht</span></td><td>MySQL</td></tr>
+        <tr><td>Automatische Jahresend-Verarbeitung</td><td><span class="badge badge-red">Pflicht</span></td><td>Cron-Jobs</td></tr>
+        <tr><td>IBAN verschlüsselt speichern</td><td><span class="badge badge-red">Pflicht</span></td><td>AES-256 (PHP openssl)</td></tr>
+        <tr><td>Datenbankbackup automatisch</td><td><span class="badge badge-red">Pflicht</span></td><td>Cron + mysqldump</td></tr>
+        <tr><td>Datenlöschkonzept nach Austritt</td><td><span class="badge badge-red">Pflicht</span></td><td>Cron-Job + Archivierung</td></tr>
+        <tr><td>Reporting / Dashboard</td><td><span class="badge badge-amber">Soll</span></td><td>PHP + Chart.js</td></tr>
+        <tr><td>Audit-Log (wer hat was geändert)</td><td><span class="badge badge-amber">Soll</span></td><td>MySQL Logging</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ 4 ANBIETERPROFILE ═══ -->
+<section class="section" id="s4">
+  <h2>4. Anbieterprofile</h2>
+
+  <div class="provider-grid">
+
+    <div class="provider-card">
+      <div class="provider-name">IONOS</div>
+      <div class="provider-location">📍 Montabaur — United Internet AG (Konzern)</div>
+      <div class="provider-price">11 €<span>/Mo (Plus)</span></div>
+      <div class="provider-price-note">1 €/Mo für 12 Monate + <strong>10 € Einrichtung</strong></div>
+      <ul class="provider-features">
+        <li>200 GB, ∞ MySQL DBs, 2 E-Mails</li>
+        <li>PHP 8.x, SSH, Git, CDN</li>
+        <li>ISO 27001, AVV ✅</li>
+        <li>Serverstandort: DE ✅</li>
+        <li class="warn">US-Konzernzugehörigkeit (XETRA: IOS)</li>
+        <li class="no">ISO 27701 fehlt</li>
+        <li class="no">Lockpreismodell — teuer ab Jahr 2</li>
+      </ul>
+    </div>
+
+    <div class="provider-card">
+      <div class="provider-name">STRATO</div>
+      <div class="provider-location">📍 Berlin — IONOS Group (gleiche Konzernmutter!)</div>
+      <div class="provider-price">9 €<span>/Mo (Basic)</span></div>
+      <div class="provider-price-note">1 €/Mo für 12 Monate, 0 € Einrichtung</div>
+      <ul class="provider-features">
+        <li>100 GB, 25 MySQL DBs, 2 E-Mails, 3 Domains</li>
+        <li>PHP 8.4, SSH, Git, WP-CLI</li>
+        <li>ISO 27001, BSI Trusted Cloud ✅</li>
+        <li>100 % Ökostrom seit 2008 ✅</li>
+        <li class="warn">Gleiche Konzernmutter wie IONOS</li>
+        <li class="no">ISO 27701 fehlt</li>
+        <li class="no">Lockpreismodell — teuer ab Jahr 2</li>
+      </ul>
+    </div>
+
+    <div class="provider-card">
+      <div class="provider-name">netcup</div>
+      <div class="provider-location">📍 Karlsruhe / Nürnberg — Eigentümergeführte GmbH</div>
+      <div class="provider-price">4,03 €<span>/Mo (WH 2000)</span></div>
+      <div class="provider-price-note"><strong>Dauerpreis — kein Lockpreismodell!</strong></div>
+      <ul class="provider-features">
+        <li>150 GB SSD, PHP 8.x, MySQL, SSH</li>
+        <li>3 Domains, Plesk Panel</li>
+        <li>ISO 27001 ✅</li>
+        <li><strong>ISO 27701 (Datenschutz-MGMT) ✅ — einzigartig!</strong></li>
+        <li>Eigenes RZ in Nürnberg ✅</li>
+        <li>Mindestlaufzeit: <strong>1 Monat!</strong></li>
+        <li class="warn">Technisches Interface (Plesk) — Einrichtung erfordert Erfahrung</li>
+      </ul>
+    </div>
+
+    <div class="provider-card recommended">
+      <div class="rec-badge">⭐ EMPFEHLUNG</div>
+      <div class="provider-name">all-inkl.com</div>
+      <div class="provider-location">📍 Freiberg/Sachsen — Familienunternehmen (Einzelunternehmen)</div>
+      <div class="provider-price">5 €<span>/Mo (WH Classic)</span></div>
+      <div class="provider-price-note">Kein Lockpreis, 0 € Einrichtung, keine versteckten Limits</div>
+      <ul class="provider-features">
+        <li>100 GB, <strong>∞ MySQL DBs</strong>, <strong>∞ E-Mails</strong>, 1 Domain</li>
+        <li>PHP 8.x, SSH, tägl. Backups</li>
+        <li>ISO 27001, <strong>ausführlichster AVV der Branche ✅</strong></li>
+        <li>Eigenes RZ in <strong>Dresden ✅</strong></li>
+        <li><strong>Kein US-Konzernbezug ✅</strong></li>
+        <li><strong>Bester Support in Deutschland ✅</strong></li>
+        <li class="warn">ISO 27701 nicht zertifiziert</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="alert alert-info">
+    <span class="alert-icon">ℹ️</span>
+    <div><strong>Wichtiger Hinweis zu STRATO:</strong> STRATO gehört seit 2017 zur IONOS Group (United Internet AG) — dieselbe Konzernmutter wie IONOS. Trotz eigenem Betrieb teilen beide denselben Konzernhintergrund. Dies ist bei DSGVO-Bewertungen relevant.</div>
+  </div>
+</section>
+
+<!-- ═══ 5 VERSION 1 ═══ -->
+<section class="section" id="s5">
+  <h2>5. Version 1 — Aktueller Websitestand</h2>
+  <p style="color:var(--gray-600);margin-bottom:1.2rem;">Szenario: React/Vite SPA + PHP-Backend als EmailJS-Ersatz + Domain + SSL. <strong>Kein Admin-Bereich.</strong></p>
+
+  <h3>Empfohlene Pakete je Anbieter</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Anbieter</th><th>Paket</th><th>Normal/Mo</th><th>Begründung</th></tr></thead>
+      <tbody>
+        <tr><td>IONOS</td><td>Plus</td><td>11 €</td><td>∞ DBs, PHP, SSH — aber teuer + 10 € Einrichtung</td></tr>
+        <tr><td>STRATO</td><td>Basic</td><td>9 €</td><td>25 DBs, PHP 8.4, 0 € Einrichtung, 3 Domains</td></tr>
+        <tr><td>netcup</td><td>WH 2000</td><td>4,03 €</td><td>150 GB SSD, Dauerpreis, 1 Monat Mindestlaufzeit</td></tr>
+        <tr class="col-highlight"><td><strong>all-inkl</strong></td><td><strong>WH Classic</strong></td><td><strong>~5 €</strong></td><td><strong>∞ DBs + ∞ E-Mails, kein Lockpreis, bestes DSGVO</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Vollständiger Vergleich Version 1</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Kriterium</th>
+          <th>IONOS Plus</th>
+          <th>STRATO Basic</th>
+          <th>netcup WH 2000</th>
+          <th>all-inkl Classic</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Preis/Mo (Normalpreis)</strong></td><td>11 €</td><td>9 €</td><td class="col-best">4,03 €</td><td>~5 €</td></tr>
+        <tr><td><strong>Preis Jahr 1</strong></td><td>22 € + 10 € EG</td><td class="col-best">~12 €</td><td>~48 €</td><td>~60 €</td></tr>
+        <tr><td><strong>Preis ab Jahr 2</strong></td><td>132 €/J</td><td>108 €/J</td><td class="col-best">48 €/J</td><td>~60 €/J</td></tr>
+        <tr><td>PHP-Backend E-Mail</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>MySQL-Datenbanken</td><td>∞</td><td>25</td><td>✅</td><td class="col-best">∞</td></tr>
+        <tr><td>SMTP-Relay</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>E-Mail-Postfächer</td><td>2</td><td>2</td><td>Mehrere</td><td class="col-best">∞</td></tr>
+        <tr><td>SSL/TLS kostenlos</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>Domain inklusive</td><td>1</td><td class="col-best">3</td><td class="col-best">3</td><td>1</td></tr>
+        <tr><td>SSH-Zugang</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>Einrichtungsgebühr</td><td class="col-bad">10 €</td><td>0 €</td><td>0 €</td><td>0 €</td></tr>
+        <tr><td>Mindestlaufzeit</td><td>12 Mo.</td><td>12 Mo.</td><td class="col-best">1 Mo.</td><td>12 Mo.</td></tr>
+        <tr><td>Serverstandort</td><td>DE ✅</td><td>DE ✅</td><td class="col-best">DE (eigen) ✅</td><td class="col-best">DE (eigen) ✅</td></tr>
+        <tr><td>AVV</td><td>✅</td><td>✅</td><td>✅</td><td class="col-best">✅ (ausführlichster)</td></tr>
+        <tr><td>ISO 27001</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>ISO 27701 (Datenschutz)</td><td class="col-bad">❌</td><td class="col-bad">❌</td><td class="col-best">✅</td><td class="col-warn">—</td></tr>
+        <tr><td>Kein US-Konzern</td><td class="col-bad">❌</td><td class="col-bad">❌</td><td>✅</td><td class="col-best">✅ (Familienunternehmen)</td></tr>
+        <tr><td>Support-Qualität</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td class="col-best">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Benutzerfreundlichkeit</td><td class="col-best">⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Bewertung Version 1 (gewichtet)</h3>
+  <div class="score-grid">
+    <div class="score-card">
+      <div class="score-label">IONOS Plus</div>
+      <div class="score-value">6,3<small style="font-size:.8rem;font-weight:400"> / 10</small></div>
+      <div class="score-bar"><div class="score-fill" style="width:63%"></div></div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">STRATO Basic</div>
+      <div class="score-value">6,1<small style="font-size:.8rem;font-weight:400"> / 10</small></div>
+      <div class="score-bar"><div class="score-fill" style="width:61%"></div></div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">netcup WH 2000</div>
+      <div class="score-value">8,7<small style="font-size:.8rem;font-weight:400"> / 10</small></div>
+      <div class="score-bar"><div class="score-fill" style="width:87%"></div></div>
+    </div>
+    <div class="score-card winner">
+      <div class="score-label">all-inkl Classic ⭐</div>
+      <div class="score-value">9,6<small style="font-size:.8rem;font-weight:400"> / 10</small></div>
+      <div class="score-bar"><div class="score-fill" style="width:96%"></div></div>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <h3>✅ Empfehlung Version 1: all-inkl.com WH Classic (~5 €/Mo)</h3>
+    <p>Beste DSGVO-Konformität, unbegrenzte E-Mails und Datenbanken, eigenes RZ in Deutschland, ausführlichster AVV, bester Support — bei fairen dauerhaften Preisen.</p>
+    <p style="margin-top:.5rem;"><strong>Zweitempfehlung</strong> (Kostenoptimierung): netcup WH 2000 (4,03 €/Mo Dauerpreis) — wenn ein technisch versierter Freiwilliger die Einrichtung übernimmt und ISO 27701 Priorität hat.</p>
+  </div>
+</section>
+
+<!-- ═══ 6 VERSION 2 ═══ -->
+<section class="section" id="s6">
+  <h2>6. Version 2 — Admin-Bereich mit erweiterten Funktionen</h2>
+  <p style="color:var(--gray-600);margin-bottom:1.2rem;">Szenario: Mitgliederverwaltung + Spendenbescheinigungen (§10b EStG) + SEPA-Mandatverwaltung + Reporting + automatische E-Mails</p>
+
+  <h3>Technische Mindestanforderungen</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Anforderung</th><th>Mindestspezifikation</th><th>Begründung</th></tr></thead>
+      <tbody>
+        <tr><td>PHP-Version</td><td>8.1+</td><td>Moderne Libraries (TCPDF, PHPMailer)</td></tr>
+        <tr><td>MySQL-Datenbanken</td><td>≥ 2 (Prod + Dev Trennung)</td><td>Best Practice</td></tr>
+        <tr><td>SMTP-Relay</td><td>Ausgehende Mails mit eigenem Absender</td><td>Spendenbescheinigungen</td></tr>
+        <tr><td>Cron-Jobs</td><td>Ja</td><td>Jahresend-Automatisierung, Backup</td></tr>
+        <tr><td>SSH-Zugang</td><td>Ja</td><td>Composer, Deployment, Debugging</td></tr>
+        <tr><td>Auto. Backups</td><td>Täglich, ≥ 7 Tage</td><td>DSGVO Art. 32 (Verfügbarkeit)</td></tr>
+        <tr><td>HTTPS/TLS</td><td>Pflicht überall</td><td>Finanz- und Personendaten</td></tr>
+        <tr><td>Speicher</td><td>≥ 100 GB</td><td>PDF-Archiv + DB-Backups</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Vollständiger Vergleich Version 2</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Kriterium</th>
+          <th>IONOS Business</th>
+          <th>STRATO Plus</th>
+          <th>netcup WH 4000</th>
+          <th>all-inkl Business</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Preis/Mo (Normalpreis)</strong></td><td>19 €</td><td>12 €</td><td class="col-best">8,10 €</td><td>~10 €</td></tr>
+        <tr><td><strong>Preis Jahr 1</strong></td><td>22 € + 10 € EG</td><td class="col-best">~12 €</td><td>~97 €</td><td>~120 €</td></tr>
+        <tr><td><strong>Preis ab Jahr 2</strong></td><td>228 €/J</td><td>144 €/J</td><td class="col-best">97 €/J</td><td>~120 €/J</td></tr>
+        <tr><td>PHP 8.1+</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>MySQL-Datenbanken</td><td>∞</td><td>50</td><td>✅</td><td class="col-best">∞</td></tr>
+        <tr><td>Cron-Jobs</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>SSH-Zugang</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>Automatische Backups</td><td>✅</td><td>✅</td><td>✅</td><td class="col-best">✅ täglich</td></tr>
+        <tr><td>SMTP ausgehend</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>E-Mail-Postfächer</td><td>5</td><td>2</td><td>Mehrere</td><td class="col-best">∞</td></tr>
+        <tr><td>SSL/TLS kostenlos</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>Domain inklusive</td><td>1</td><td>5</td><td class="col-best">6</td><td>3</td></tr>
+        <tr><td>Eigenes Rechenzentrum</td><td>Teilweise</td><td>✅ Berlin</td><td class="col-best">✅ 100 % Nürnberg</td><td class="col-best">✅ 100 % Dresden</td></tr>
+        <tr><td>Serverstandort DE</td><td>✅</td><td>✅</td><td class="col-best">✅ (eigen)</td><td class="col-best">✅ (eigen)</td></tr>
+        <tr><td>AVV</td><td>✅</td><td>✅</td><td>✅</td><td class="col-best">✅ (ausführlichster)</td></tr>
+        <tr><td>ISO 27701</td><td class="col-bad">❌</td><td class="col-bad">❌</td><td class="col-best">✅</td><td class="col-warn">—</td></tr>
+        <tr><td>Kein US-Konzernbezug</td><td class="col-bad">❌</td><td class="col-bad">❌</td><td>✅</td><td class="col-best">✅</td></tr>
+        <tr><td>Datenlöschkonzept</td><td class="col-warn">❓</td><td class="col-warn">❓</td><td>✅</td><td class="col-best">✅</td></tr>
+        <tr><td>Spendenbescheinigungen DSGVO</td><td>✅</td><td>✅</td><td>✅</td><td class="col-best">✅ (optimal)</td></tr>
+        <tr><td><strong>SEPA: IBAN AES-256 (PHP)</strong></td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td><strong>SEPA: pain.008 XML Export</strong></td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td><strong>SEPA: tägl. Backup Mandatsdaten</strong></td><td>✅</td><td>✅</td><td>✅</td><td class="col-best">✅ garantiert tägl.</td></tr>
+        <tr><td><strong>SEPA: DSGVO-Gesamteignung</strong></td><td class="col-warn">🟡 Bedingt</td><td class="col-warn">🟡 Bedingt</td><td class="col-best">✅ Gut</td><td class="col-best">✅ Optimal</td></tr>
+        <tr><td>Support Admin-Setup</td><td class="col-best">⭐⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td class="col-best">⭐⭐⭐⭐⭐</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Bewertung Version 2 (gewichtet)</h3>
+  <div class="score-grid">
+    <div class="score-card">
+      <div class="score-label">IONOS Business</div>
+      <div class="score-value">6,6<small style="font-size:.8rem;font-weight:400"> / 10</small></div>
+      <div class="score-bar"><div class="score-fill" style="width:66%"></div></div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">STRATO Plus</div>
+      <div class="score-value">6,5<small style="font-size:.8rem;font-weight:400"> / 10</small></div>
+      <div class="score-bar"><div class="score-fill" style="width:65%"></div></div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">netcup WH 4000</div>
+      <div class="score-value">8,7<small style="font-size:.8rem;font-weight:400"> / 10</small></div>
+      <div class="score-bar"><div class="score-fill" style="width:87%"></div></div>
+    </div>
+    <div class="score-card winner">
+      <div class="score-label">all-inkl Business ⭐</div>
+      <div class="score-value">9,5<small style="font-size:.8rem;font-weight:400"> / 10</small></div>
+      <div class="score-bar"><div class="score-fill" style="width:95%"></div></div>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <h3>✅ Empfehlung Version 2: all-inkl.com WH Business (~10 €/Mo)</h3>
+    <p>Unbegrenzte Datenbanken und E-Mails, tägl. Backups, eigenes RZ Dresden, bester AVV, kein US-Konzernbezug — ideal für Spendenbescheinigungen, IBAN-Verwaltung und Mitgliederdaten.</p>
+  </div>
+</section>
+
+<!-- ═══ 7 DSGVO MATRIX ═══ -->
+<section class="section" id="s7">
+  <h2>7. DSGVO-Bewertungsmatrix</h2>
+  <p style="color:var(--gray-600);margin-bottom:1rem;">Maßgeschneidert für eingetragene Vereine nach deutschem Recht (DSGVO + BDSG 2023, zuständige Behörde: UDS Saarland)</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>DSGVO-Kriterium</th>
+          <th>Gewicht</th>
+          <th>IONOS</th>
+          <th>STRATO</th>
+          <th>netcup</th>
+          <th>all-inkl</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>AVV rechtssicher verfügbar (Art. 28)</td><td>20 %</td><td>8 / 10</td><td>8 / 10</td><td>9 / 10</td><td class="col-best">10 / 10</td></tr>
+        <tr><td>Serverstandort ausschließlich DE</td><td>20 %</td><td>7 / 10</td><td>8 / 10</td><td class="col-best">10 / 10</td><td class="col-best">10 / 10</td></tr>
+        <tr><td>Kein Drittlandtransfer (Art. 44 ff.)</td><td>20 %</td><td>6 / 10</td><td>7 / 10</td><td class="col-best">9 / 10</td><td class="col-best">10 / 10</td></tr>
+        <tr><td>ISO 27001 Zertifizierung</td><td>10 %</td><td>9 / 10</td><td>9 / 10</td><td class="col-best">10 / 10</td><td>9 / 10</td></tr>
+        <tr><td>ISO 27701 (Datenschutz-MgmtSystem)</td><td>10 %</td><td class="col-bad">0 / 10</td><td class="col-bad">0 / 10</td><td class="col-best">10 / 10</td><td>3 / 10</td></tr>
+        <tr><td>Datenschutzdokumentation Qualität</td><td>10 %</td><td>7 / 10</td><td>7 / 10</td><td>8 / 10</td><td class="col-best">10 / 10</td></tr>
+        <tr><td>Unabhängigkeit von US-Konzernen</td><td>10 %</td><td class="col-bad">3 / 10</td><td class="col-bad">3 / 10</td><td>8 / 10</td><td class="col-best">10 / 10</td></tr>
+        <tr class="total-row"><td><strong>DSGVO-Gesamtscore (gewichtet)</strong></td><td>100 %</td><td><strong>6,3 / 10</strong></td><td><strong>6,7 / 10</strong></td><td><strong>9,2 / 10</strong></td><td><strong>9,7 / 10</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Risikobewertung für UDS-Prüfung</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Risiko</th><th>IONOS</th><th>STRATO</th><th>netcup</th><th>all-inkl</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>US-Konzernzugehörigkeit</td>
+          <td><span class="risk-dot risk-amber"></span>Mittel</td>
+          <td><span class="risk-dot risk-amber"></span>Mittel</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+        </tr>
+        <tr>
+          <td>Drittlandtransfer-Gefahr</td>
+          <td><span class="risk-dot risk-amber"></span>Gering</td>
+          <td><span class="risk-dot risk-amber"></span>Gering</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+        </tr>
+        <tr>
+          <td>AVV-Lücken</td>
+          <td><span class="risk-dot risk-amber"></span>Gering</td>
+          <td><span class="risk-dot risk-amber"></span>Gering</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+        </tr>
+        <tr>
+          <td>Fehlende ISO 27701</td>
+          <td><span class="risk-dot risk-red"></span>Vorhanden</td>
+          <td><span class="risk-dot risk-red"></span>Vorhanden</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+          <td><span class="risk-dot risk-amber"></span>Gering</td>
+        </tr>
+        <tr>
+          <td>RZ außerhalb DE</td>
+          <td><span class="risk-dot risk-amber"></span>Gering</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+        </tr>
+        <tr class="total-row">
+          <td><strong>Gesamtrisiko UDS-Prüfung</strong></td>
+          <td>🔴 <strong>Erhöht</strong></td>
+          <td>🟡 <strong>Gering</strong></td>
+          <td>🟢 <strong>Minimal</strong></td>
+          <td>🟢 <strong>Minimal</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ 8 ARCHITEKTUR ═══ -->
+<section class="section" id="s8">
+  <h2>8. Architektur-Empfehlung</h2>
+
+  <h3>8.1 Architektur Version 1 — PHP-Backend (mit all-inkl)</h3>
+  <pre>[Browser des Nutzers]
+      │
+      ├─► [React/Vite SPA] — statische Dateien (build/)
+      │        └── auf all-inkl oder Cloudflare Pages deploybar
+      │
+      └─► [all-inkl PHP API] — https://foerderverein-ludweiler.de/api/
+               ├── send-email.php → PHPMailer → all-inkl SMTP
+               │     ├── Bestätigung an Mitglied
+               │     └── Benachrichtigung an Vorstand
+               └── contact.php → PHPMailer → info@foerderverein-ludweiler.de</pre>
+
+  <h4>PHPMailer Konfiguration (Beispiel)</h4>
+  <pre>// api/send-email.php
+require 'vendor/autoload.php';
+use PHPMailer\PHPMailer\PHPMailer;
+
+$mail = new PHPMailer(true);
+$mail-&gt;isSMTP();
+$mail-&gt;Host       = 'mail.all-inkl.com';
+$mail-&gt;SMTPAuth   = true;
+$mail-&gt;Username   = 'noreply@foerderverein-ludweiler.de';
+$mail-&gt;Password   = $_ENV['SMTP_PASSWORD']; // niemals hardcoded!
+$mail-&gt;SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+$mail-&gt;Port       = 587;</pre>
+
+  <h3>8.2 Architektur Version 2 — Admin-Bereich</h3>
+  <pre>[Browser — Öffentlich]        [Browser — Vorstand/Admin]
+        │                               │
+        ▼                               ▼
+[React SPA öffentlich]      [React Admin-SPA (geschützt)]
+        │                               │
+        └──────────────┬────────────────┘
+                       ▼
+             [all-inkl PHP REST-API]
+                       │
+          ┌────────────┼────────────────┐
+          ▼            ▼                ▼
+    [MySQL DB]   [PHPMailer+SMTP]   [TCPDF/mPDF]
+   Mitglieder     Spendenbescheini-  PDF-Generierung
+   Beiträge       gungen versenden   §50 EStDV konform
+   SEPA-Mandate
+                  [Cron-Jobs]
+                  - Jahresend: Bescheinigungen
+                  - Monatlich: SEPA-Export
+                  - Täglich: DB-Backup</pre>
+
+  <h3>8.3 Tech-Stack Version 2</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Schicht</th><th>Technologie</th><th>Begründung</th></tr></thead>
+      <tbody>
+        <tr><td>Frontend (öffentlich)</td><td>React + Vite + TailwindCSS</td><td>Konsistenz mit Bestandscode</td></tr>
+        <tr><td>Frontend (Admin)</td><td>React + Vite + TailwindCSS</td><td>Gleiches Ökosystem</td></tr>
+        <tr><td>Backend</td><td>PHP 8.2 + REST-API</td><td>Nativ auf all-inkl, kein Node-Server nötig</td></tr>
+        <tr><td>Datenbank</td><td>MySQL 8 / MariaDB</td><td>Inklusive, lokal, DSGVO-sicher</td></tr>
+        <tr><td>PDF-Generierung</td><td><strong>TCPDF</strong></td><td>PHP-nativ, kein externer Dienst, §50 EStDV-konform</td></tr>
+        <tr><td>E-Mail</td><td>PHPMailer + SMTP</td><td>Kein US-Drittanbieter mehr</td></tr>
+        <tr><td>Authentifizierung</td><td>PHP Sessions + JWT</td><td>Sicher ohne externe Auth-Dienste</td></tr>
+        <tr><td>IBAN-Verschlüsselung</td><td><strong>AES-256</strong> (openssl_encrypt)</td><td>Pflicht für Finanzdaten — Art. 32 DSGVO</td></tr>
+        <tr><td>Deployment</td><td>Git + SFTP-Hook</td><td>all-inkl unterstützt beides</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ 9 MIGRATIONSPLAN ═══ -->
+<section class="section" id="s9">
+  <h2>9. Migrations- und Umsetzungsplan</h2>
+
+  <div class="version-header">
+    <span class="version-pill">Version 1</span>
+    <h3 style="margin:0;font-size:1rem;">Sofortmaßnahmen — vor Go-Live</h3>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>#</th><th>Aufgabe</th><th>Zeitaufwand</th><th>Priorität</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>all-inkl.com WH Classic buchen</td><td>30 Min.</td><td><span class="badge badge-red">Hoch</span></td></tr>
+        <tr><td>2</td><td>AVV mit all-inkl abschließen (im Kundenportal)</td><td>1 Std.</td><td><span class="badge badge-red">Hoch</span></td></tr>
+        <tr><td>3</td><td>Domain registrieren / transferieren + DNS konfigurieren</td><td>1–2 Tage</td><td><span class="badge badge-red">Hoch</span></td></tr>
+        <tr><td>4</td><td>E-Mail-Postfächer anlegen (info@, vorstand@, kassierer@)</td><td>1 Std.</td><td><span class="badge badge-amber">Mittel</span></td></tr>
+        <tr><td>5</td><td>PHP-Backend erstellen (api/send-email.php + PHPMailer via Composer)</td><td>4–8 Std.</td><td><span class="badge badge-red">Hoch</span></td></tr>
+        <tr><td>6</td><td>EmailJS aus React-App entfernen + fetch() auf PHP-API umstellen</td><td>2–4 Std.</td><td><span class="badge badge-red">Hoch</span></td></tr>
+        <tr><td>7</td><td>React SPA bauen (npm run build) und auf all-inkl via SFTP deployen</td><td>1–2 Std.</td><td><span class="badge badge-red">Hoch</span></td></tr>
+        <tr><td>8</td><td>Datenschutzerklärung aktualisieren (all-inkl nennen, EmailJS entfernen)</td><td>2 Std.</td><td><span class="badge badge-red">Hoch</span></td></tr>
+        <tr><td>9</td><td>Alle Formulare testen (Mitgliedsantrag Selbstüberweisung + SEPA + Kontakt)</td><td>2 Std.</td><td><span class="badge badge-red">Hoch</span></td></tr>
+        <tr><td>10</td><td>.env.local EmailJS-Credentials archivieren (nicht löschen!)</td><td>30 Min.</td><td><span class="badge badge-amber">Mittel</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="version-header" style="margin-top:1.8rem;">
+    <span class="version-pill">Version 2</span>
+    <h3 style="margin:0;font-size:1rem;">Sprint-Planung Admin-Bereich</h3>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Sprint</th><th>Inhalt</th><th>Dauer</th></tr></thead>
+      <tbody>
+        <tr><td>Sprint 1</td><td>Datenbankdesign + PHP REST-API Grundstruktur + Authentifizierung</td><td>2 Wochen</td></tr>
+        <tr><td>Sprint 2</td><td>Mitgliederverwaltung (CRUD) + React Admin-UI</td><td>2 Wochen</td></tr>
+        <tr><td>Sprint 3</td><td>Beitragsverwaltung + SEPA-Mandatverwaltung</td><td>2 Wochen</td></tr>
+        <tr><td>Sprint 4</td><td>Spendenbescheinigung Generator (TCPDF, §50 EStDV konform)</td><td>1,5 Wochen</td></tr>
+        <tr><td>Sprint 5</td><td>Automatischer E-Mail-Versand + Cron-Jobs + Backup</td><td>1,5 Wochen</td></tr>
+        <tr><td>Sprint 6</td><td>Reporting-Dashboard + Vereinsstatistiken</td><td>2 Wochen</td></tr>
+        <tr><td>Sprint 7</td><td>Sicherheitsaudit + DSGVO-Review + Tests + Abnahme</td><td>1,5 Wochen</td></tr>
+        <tr class="total-row"><td><strong>Gesamt</strong></td><td></td><td><strong>~12,5 Wochen</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ 10 KOSTEN ═══ -->
+<section class="section" id="s10">
+  <h2>10. 3-Jahres-Kostenübersicht</h2>
+
+  <div class="phase-divider">
+    <span class="phase-divider-label">Version 1 — Nur Website</span>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Anbieter</th><th>Paket</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>3-Jahre-Total</th></tr></thead>
+      <tbody>
+        <tr><td>IONOS</td><td>Plus</td><td>22 € + 10 € EG</td><td>132 €</td><td>132 €</td><td class="col-bad"><strong>296 €</strong></td></tr>
+        <tr><td>STRATO</td><td>Basic</td><td>12 €</td><td>108 €</td><td>108 €</td><td><strong>228 €</strong></td></tr>
+        <tr class="best-row"><td><strong>netcup</strong></td><td>WH 2000</td><td>48 €</td><td>48 €</td><td>48 €</td><td><strong>144 € ⭐ günstigster</strong></td></tr>
+        <tr><td>all-inkl</td><td>WH Classic</td><td>60 €</td><td>60 €</td><td>60 €</td><td><strong>180 €</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="phase-divider">
+    <span class="phase-divider-label">Version 2 — Mit Admin-Bereich</span>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Anbieter</th><th>Paket</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>3-Jahre-Total</th></tr></thead>
+      <tbody>
+        <tr><td>IONOS</td><td>Business</td><td>22 € + 10 € EG</td><td>228 €</td><td>228 €</td><td class="col-bad"><strong>488 €</strong></td></tr>
+        <tr><td>STRATO</td><td>Plus</td><td>12 €</td><td>144 €</td><td>144 €</td><td><strong>300 €</strong></td></tr>
+        <tr class="best-row"><td><strong>netcup</strong></td><td>WH 4000</td><td>97 €</td><td>97 €</td><td>97 €</td><td><strong>291 € ⭐ günstigster</strong></td></tr>
+        <tr><td><strong>all-inkl</strong></td><td>WH Business</td><td>120 €</td><td>120 €</td><td>120 €</td><td><strong>360 €</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Upgrade-Pfad all-inkl (empfohlener Weg)</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Phase</th><th>Zeitraum</th><th>Paket</th><th>Kosten/Mo</th></tr></thead>
+      <tbody>
+        <tr><td>Sofort (Version 1)</td><td>Monate 1–6</td><td>WH Classic</td><td>~5 €</td></tr>
+        <tr><td>Upgrade (Version 2)</td><td>ab Monat ~6</td><td>WH Business</td><td>~10 €</td></tr>
+        <tr class="best-row"><td><strong>3-Jahres-Gesamtkosten</strong></td><td></td><td></td><td><strong>~300 € — günstiger als IONOS und STRATO!</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-info">
+    <span class="alert-icon">💡</span>
+    <div><strong>Lockpreis-Falle:</strong> IONOS und STRATO locken mit 1 €/Mo für 12 Monate. Ab Jahr 2 zahlen Sie deutlich mehr als bei netcup (dauerhaft 4,03 €) oder all-inkl (dauerhaft ~5 €). Über 3 Jahre ist IONOS <strong>doppelt so teuer</strong> wie netcup.</div>
+  </div>
+</section>
+
+<!-- ═══ 11 FAZIT ═══ -->
+<section class="section" id="s11">
+  <h2>11. Fazit &amp; Entscheidungsempfehlung</h2>
+
+  <h3>Gesamtbewertung</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th></th><th>IONOS</th><th>STRATO</th><th>netcup</th><th>all-inkl</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Score Version 1</strong></td><td>6,3 / 10</td><td>6,1 / 10</td><td>8,7 / 10</td><td class="col-best"><strong>9,6 / 10 ⭐</strong></td></tr>
+        <tr><td><strong>Score Version 2</strong></td><td>6,6 / 10</td><td>6,5 / 10</td><td>8,7 / 10</td><td class="col-best"><strong>9,5 / 10 ⭐</strong></td></tr>
+        <tr><td><strong>DSGVO-Score</strong></td><td>6,3 / 10</td><td>6,7 / 10</td><td>9,2 / 10</td><td class="col-best"><strong>9,7 / 10 ⭐</strong></td></tr>
+        <tr><td><strong>Kosten 3 J. (V1)</strong></td><td>296 €</td><td>228 €</td><td class="col-best"><strong>144 €</strong></td><td>180 €</td></tr>
+        <tr><td><strong>Kosten 3 J. (V2)</strong></td><td>488 €</td><td>300 €</td><td class="col-best"><strong>291 €</strong></td><td>360 €</td></tr>
+        <tr><td><strong>Risiko UDS-Prüfung</strong></td><td>🔴 Erhöht</td><td>🟡 Gering</td><td>🟢 Minimal</td><td class="col-best">🟢 Minimal</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rec-box">
+    <h3>🏆 Primärempfehlung: all-inkl.com</h3>
+    <ul>
+      <li><strong>Sofort (Version 1):</strong> WH Classic (~5 €/Mo)</li>
+      <li><strong>Bei Admin-Ausbau (Version 2):</strong> Upgrade auf WH Business (~10 €/Mo)</li>
+    </ul>
+    <h4 style="margin-top:1rem;color:var(--gray-800);">Rechtliche und technische Begründung:</h4>
+    <ol>
+      <li><strong>Höchste DSGVO-Sicherheit:</strong> Als Familienunternehmen ohne jeglichen US-Konzernbezug ist all-inkl.com der sicherste Anbieter für einen gemeinnützigen Verein, der Mitgliederdaten, IBAN und Spenderdaten verarbeitet. Bei einer Prüfung durch das UDS Saarland ist dies das stärkste Argument.</li>
+      <li><strong>Ausführlichster AVV der Branche:</strong> Der AVV von all-inkl.com wird als vorbildlich für DSGVO-Anforderungen bewertet — besonders wichtig bei Spenderdaten und SEPA-Mandaten.</li>
+      <li><strong>Spendenbescheinigungen DSGVO-konform:</strong> Automatisch generierte Zuwendungsbestätigungen (§10b EStG) werden auf deutschen Servern (Dresden) verarbeitet — kein Drittlandtransfer.</li>
+      <li><strong>Unbegrenzte E-Mails und Datenbanken:</strong> Mehrere Vorstandsmitglieder brauchen professionelle E-Mail-Adressen. Kein anderer Anbieter bietet dies ohne Aufpreis.</li>
+      <li><strong>Bester Support ohne IT-Abteilung:</strong> Für einen Verein ohne hauptamtliche IT ist der branchenweit beste Support ein wesentlicher Faktor.</li>
+      <li><strong>Transparente Preise:</strong> Keine Lockpreise, keine Einrichtungsgebühren, alles inklusive — wichtig für Vereinsbudgets.</li>
+    </ol>
+  </div>
+
+  <div class="second-rec-box">
+    <strong>💡 Zweitempfehlung: netcup WH 2000 / WH 4000</strong><br />
+    Für technisch versierte Administratoren: günstigster echter Dauerpreis (<strong>4,03 €/Mo</strong>), einzige <strong>ISO 27701-Zertifizierung</strong> im Vergleich und eigene Rechenzentren in Nürnberg. Kosten über 3 Jahre 30–50 % günstiger als all-inkl. Pleskoberfläche erfordert etwas Einarbeitungszeit.
+  </div>
+
+  <div class="warn-box">
+    <strong>⚠️ Nicht empfohlen für diesen Anwendungsfall: IONOS / STRATO</strong><br />
+    Beide Anbieter gehören zur gleichen Unternehmensgruppe (United Internet AG, Konzernmutter). Das Lockpreismodell ist für Vereine mit begrenztem Budget langfristig teurer. Keine ISO 27701-Zertifizierung. Erhöhtes DSGVO-Risiko durch Konzernstruktur bei einer UDS-Prüfung.
+  </div>
+</section>
+
+</div><!-- /.container -->
+
+<footer>
+  <p>Hosting-Entscheidungsanalyse — Förderverein Grundschule Ludweiler-Lauterbach e.V. | Stand: Mai 2026</p>
+  <p style="margin-top:.3rem;">Alle Preisangaben ohne Gewähr — vor Buchung auf den Anbieter-Websites prüfen. Erstellt aus Perspektive: Senior Hosting-Engineer | DSGVO-Rechtsberatung e.V. | IT-Architekt</p>
+</footer>
+
+</body>
+</html>

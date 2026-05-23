@@ -320,15 +320,11 @@ export default function SEPAFormModal({ isOpen, onClose, initialData = {} }) {
     setIsDownloading(true)
     try {
       const fname = `${formData.nachname}_${formData.vorname}`
-      let doc
       if (paymentMethod === 'sepa') {
-        doc = generateSEPAMandatPDF(formData)
-        downloadPDF(doc, `SEPA-Mandat_${fname}.pdf`)
+        downloadPDF(generateSEPAMandatPDF(formData), `SEPA-Mandat_${fname}.pdf`)
       } else {
-        doc = generateBeitrittsPDF(formData)
-        downloadPDF(doc, `Mitgliedsantrag_${fname}.pdf`)
+        downloadPDF(generateBeitrittsPDF(formData), `Mitgliedsantrag_${fname}.pdf`)
       }
-      await sendFormSubmissionEmails(prepareEmailData(), paymentMethod)
       setPdfDownloaded(true)
     } catch (err) {
       console.error('PDF-Fehler:', err)
@@ -339,11 +335,21 @@ export default function SEPAFormModal({ isOpen, onClose, initialData = {} }) {
 
   const handleSubmitTransfer = async () => {
     setIsSubmitting(true)
+    setEmailStatus(null)
     try {
-      if (!pdfDownloaded) await handleDownloadPDF()
-      setSubmitted(true)
-    } catch (err) {
-      console.error(err)
+      if (!pdfDownloaded) {
+        const fname = `${formData.nachname}_${formData.vorname}`
+        downloadPDF(generateBeitrittsPDF(formData), `Mitgliedsantrag_${fname}.pdf`)
+        setPdfDownloaded(true)
+      }
+      const result = await sendFormSubmissionEmails(prepareEmailData(), 'transfer')
+      if (result.success) {
+        setSubmitted(true)
+      } else {
+        setEmailStatus({ success: false, message: 'E-Mail-Versand fehlgeschlagen. Bitte erneut versuchen.' })
+      }
+    } catch {
+      setEmailStatus({ success: false, message: 'Ein Fehler ist aufgetreten. Bitte erneut versuchen.' })
     } finally {
       setIsSubmitting(false)
     }
@@ -855,7 +861,7 @@ export default function SEPAFormModal({ isOpen, onClose, initialData = {} }) {
                   {pdfDownloaded && (
                     <div className="mt-3 flex items-center gap-2 text-success-700 text-sm">
                       <CheckCircle className="w-4 h-4 flex-shrink-0" />
-                      PDF heruntergeladen – Bestätigungsmail wurde versendet.
+                      PDF heruntergeladen.
                     </div>
                   )}
                 </div>
@@ -882,6 +888,13 @@ export default function SEPAFormModal({ isOpen, onClose, initialData = {} }) {
                     {' '}oder über das Schulsekretariat einreichen.
                   </p>
                 </div>
+
+                {emailStatus && !emailStatus.success && (
+                  <div className="flex items-center gap-2 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-red-700 text-sm">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    {emailStatus.message}
+                  </div>
+                )}
 
                 <div className="flex justify-between items-center pt-5 border-t border-gray-100">
                   <button type="button" onClick={goBack} className="btn-ghost inline-flex items-center gap-2">

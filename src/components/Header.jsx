@@ -132,8 +132,8 @@ export default function Header() {
 
       {/* Microcopy under header */}
       <div
-        className={`hidden md:block text-center py-1 text-xs text-gray-500 transition-all duration-300 ${
-          isScrolled ? 'opacity-0 h-0' : 'opacity-100 bg-primary-50/50'
+        className={`hidden md:block text-center py-1 text-xs text-gray-500 transition-all duration-300 overflow-hidden ${
+          isScrolled ? 'opacity-0 h-0 py-0' : 'opacity-100 bg-primary-50'
         }`}
       >
         Schon ab 13 € pro Jahr (Familienmitgliedschaft).

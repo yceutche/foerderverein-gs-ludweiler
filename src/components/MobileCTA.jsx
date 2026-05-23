@@ -50,9 +50,6 @@ export default function MobileCTA() {
           <X className="w-5 h-5" aria-hidden="true" />
         </button>
       </div>
-      <p className="mt-2 text-center microcopy">
-        Schon ab 13 € pro Jahr (Familienmitgliedschaft)
-      </p>
     </div>
   )
 }

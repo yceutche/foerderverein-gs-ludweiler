@@ -20,6 +20,7 @@ import Footer from './components/Footer'
 import MobileCTA from './components/MobileCTA'
 import ScrollToTop from './components/ScrollToTop'
 import SEPAFormModal from './components/SEPAFormModal'
+import VorstandPage from './components/VorstandPage'
 
 // SEPA Form Context
 const SEPAFormContext = createContext()
@@ -46,6 +47,7 @@ function App() {
       <Routes>
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/datenschutz" element={<Datenschutz />} />
+        <Route path="/vorstand" element={<VorstandPage />} />
         <Route path="*" element={
           <div className="min-h-screen bg-white">
             <Header />

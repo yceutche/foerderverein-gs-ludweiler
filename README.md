@@ -94,7 +94,7 @@ foerderverein-gs-ludweiler/
 
 ## 📞 Kontakt
 
-**Ansprechpartnerin:** Frau Patricia Sarda-Seewald  
+**Ansprechpartnerin:** Frau Patrizia Sarda-Seewald  
 **Telefon:** 06898/3903780  
 **E-Mail:** grundschuleludweiler@schule.saarland
 
