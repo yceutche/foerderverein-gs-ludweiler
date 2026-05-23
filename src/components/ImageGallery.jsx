@@ -85,7 +85,7 @@ export default function ImageGallery() {
               aria-hidden={index !== currentIndex}
             >
               <img
-                src={image.src}
+                src={`${import.meta.env.BASE_URL}${image.src.replace(/^\//, '')}`}
                 alt={image.alt}
                 loading={index === 0 ? 'eager' : 'lazy'}
                 className="w-full h-full object-cover"

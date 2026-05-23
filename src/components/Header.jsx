@@ -1,20 +1,36 @@
 import { useState, useEffect } from 'react'
 import { Menu, X, Heart } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSEPAForm } from '../App'
 
 const navItems = [
-  { label: 'Über uns', href: '#ueber-uns' },
-  { label: 'Was wir fördern', href: '#was-wir-foerdern' },
-  { label: 'Mitmachen', href: '#mitmachen' },
-  { label: 'Termine', href: '#termine' },
-  { label: 'Spenden', href: '#spenden' },
-  { label: 'Kontakt', href: '#kontakt' },
+  { label: 'Über uns', href: '/#ueber-uns' },
+  { label: 'Was wir fördern', href: '/#was-wir-foerdern' },
+  { label: 'Projekte', to: '/projekte' },
+  { label: 'Mitmachen', href: '/#mitmachen' },
+  { label: 'Termine', href: '/#termine' },
+  { label: 'Spenden', href: '/#spenden' },
+  { label: 'Kontakt', href: '/#kontakt' },
 ]
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const { openSepaForm } = useSEPAForm()
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const handleHashClick = (e, href) => {
+    e.preventDefault()
+    setIsMenuOpen(false)
+    const hash = href.split('#')[1]
+    const el = document.getElementById(hash)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      navigate({ pathname: '/', hash: `#${hash}` })
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,7 +53,7 @@ export default function Header() {
           {/* Logo - NEU: Verwendet jetzt das Bild */}
           <a href="#" className="flex items-center gap-3 group" aria-label="Zur Startseite">
             <img 
-              src="/logo.png" 
+              src={`${import.meta.env.BASE_URL}logo.png`} 
               alt="Förderverein der Grundschule Ludweiler-Lauterbach Logo" 
               className="h-12 w-12 md:h-14 md:w-14 object-contain"
             />
@@ -53,21 +69,41 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 rounded-lg hover:bg-primary-50 transition-colors"
-              >
-                {item.label}
-              </a>
-            ))}
+            {navItems.map((item) =>
+              item.to ? (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    location.pathname === item.to
+                      ? 'text-primary-600 bg-primary-50 font-semibold'
+                      : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => handleHashClick(e, item.href)}
+                  className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    location.hash === '#' + item.href.split('#')[1]
+                      ? 'text-primary-600 bg-primary-50 font-semibold'
+                      : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
+                  }`}
+                >
+                  {item.label}
+                </a>
+              )
+            )}
           </div>
 
           {/* Desktop CTAs */}
           <div className="hidden lg:flex items-center gap-3">
             <a
-              href="#spenden"
+              href="/#spenden"
+              onClick={(e) => handleHashClick(e, '/#spenden')}
               className="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors"
             >
               Spenden
@@ -95,21 +131,40 @@ export default function Header() {
         {isMenuOpen && (
           <div className="lg:hidden bg-white border-t border-gray-100 py-4 animate-fade-in">
             <div className="flex flex-col gap-1">
-              {navItems.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="px-4 py-3 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
-                >
-                  {item.label}
-                </a>
-              ))}
+              {navItems.map((item) =>
+                item.to ? (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`px-4 py-3 rounded-lg transition-colors ${
+                      location.pathname === item.to
+                        ? 'text-primary-600 bg-primary-50 font-semibold'
+                        : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={(e) => handleHashClick(e, item.href)}
+                    className={`px-4 py-3 rounded-lg transition-colors ${
+                      location.hash === '#' + item.href.split('#')[1]
+                        ? 'text-primary-600 bg-primary-50 font-semibold'
+                        : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                )
+              )}
               <hr className="my-2 border-gray-100" />
               <div className="px-4 pt-2 flex flex-col gap-2">
                 <a
-                  href="#spenden"
-                  onClick={() => setIsMenuOpen(false)}
+                  href="/#spenden"
+                  onClick={(e) => handleHashClick(e, '/#spenden')}
                   className="btn-outline w-full text-center inline-flex items-center justify-center gap-2"
                 >
                   <Heart className="w-4 h-4" />

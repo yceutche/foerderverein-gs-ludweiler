@@ -19,8 +19,10 @@ import AbschlussCTA from './components/AbschlussCTA'
 import Footer from './components/Footer'
 import MobileCTA from './components/MobileCTA'
 import ScrollToTop from './components/ScrollToTop'
+import ScrollToHash from './components/ScrollToHash'
 import SEPAFormModal from './components/SEPAFormModal'
 import VorstandPage from './components/VorstandPage'
+import ProjektePage from './components/ProjektePage'
 
 // SEPA Form Context
 const SEPAFormContext = createContext()
@@ -43,11 +45,23 @@ function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
     <DevBanner />
+    <ScrollToHash />
     <SEPAFormContext.Provider value={{ isSepaFormOpen, openSepaForm, closeSepaForm }}>
       <Routes>
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/datenschutz" element={<Datenschutz />} />
         <Route path="/vorstand" element={<VorstandPage />} />
+        <Route path="/projekte" element={
+          <div className="min-h-screen bg-white">
+            <Header />
+            <main>
+              <ProjektePage />
+            </main>
+            <Footer />
+            <ScrollToTop />
+            <SEPAFormModal isOpen={isSepaFormOpen} onClose={closeSepaForm} initialData={sepaInitialData} />
+          </div>
+        } />
         <Route path="*" element={
           <div className="min-h-screen bg-white">
             <Header />

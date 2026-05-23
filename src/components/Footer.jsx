@@ -31,7 +31,7 @@ export default function Footer() {
             <a href="#" className="inline-flex items-center gap-3 mb-4 group">
               {/* NEU: Logo-Bild statt SVG */}
               <img 
-                src="/logo.png" 
+                src={`${import.meta.env.BASE_URL}logo.png`} 
                 alt="Förderverein Logo" 
                 className="h-12 w-12 object-contain bg-white rounded-full p-1"
               />
