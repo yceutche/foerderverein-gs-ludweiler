@@ -51,6 +51,7 @@ function App() {
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/datenschutz" element={<Datenschutz />} />
         <Route path="/vorstand" element={<VorstandPage />} />
+        <Route path="/hosting-entscheidung" element={<VorstandPage />} />
         <Route path="/projekte" element={
           <div className="min-h-screen bg-white">
             <Header />

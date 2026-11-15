@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { ArrowLeft, Download, ExternalLink, FileText } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import PasswordGate from './PasswordGate'
 
 function VorstandContent() {
   const [view, setView] = useState('full')
@@ -86,9 +85,5 @@ function VorstandContent() {
 }
 
 export default function VorstandPage() {
-  return (
-    <PasswordGate>
-      <VorstandContent />
-    </PasswordGate>
-  )
+  return <VorstandContent />
 }
