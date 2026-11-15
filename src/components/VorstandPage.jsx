@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { ArrowLeft, Download, ExternalLink, FileText } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 function VorstandContent() {
-  const [view, setView] = useState('full')
+  const location = useLocation()
+  const defaultView = location.pathname.endsWith('/hosting-entscheidung') ? 'short' : 'full'
+  const [view, setView] = useState(defaultView)
   const docUrl =
     view === 'full'
       ? `${import.meta.env.BASE_URL}docs/hosting-vergleich.html`
