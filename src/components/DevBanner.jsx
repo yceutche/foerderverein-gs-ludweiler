@@ -1,4 +1,5 @@
-import { FlaskConical } from 'lucide-react'
+import { FlaskConical, ChevronRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 export default function DevBanner() {
   return (
@@ -7,6 +8,13 @@ export default function DevBanner() {
       <span className="text-sm font-medium text-center">
         Testversion – Nur für interne Vorschau.
       </span>
+      <Link
+        to="/hosting-entscheidung"
+        className="flex items-center gap-1 bg-white text-amber-700 text-xs font-bold px-3 py-1 rounded-full hover:bg-amber-50 transition-colors shrink-0"
+      >
+        Hosting-Entscheidung
+        <ChevronRight className="w-3 h-3" />
+      </Link>
     </div>
   )
 }
