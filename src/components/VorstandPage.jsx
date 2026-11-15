@@ -1,9 +1,18 @@
+import { useState } from 'react'
 import { ArrowLeft, Download, ExternalLink, FileText } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import PasswordGate from './PasswordGate'
 
 function VorstandContent() {
-  const docUrl = `${import.meta.env.BASE_URL}docs/hosting-vergleich.html`
+  const [view, setView] = useState('full')
+  const docUrl =
+    view === 'full'
+      ? `${import.meta.env.BASE_URL}docs/hosting-vergleich.html`
+      : `${import.meta.env.BASE_URL}docs/hosting-vergleich-kurzfassung.html`
+  const downloadName =
+    view === 'full'
+      ? 'hosting-vergleich-foerderverein-ludweiler.html'
+      : 'hosting-vergleich-kurzfassung-foerderverein-ludweiler.html'
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -25,9 +34,29 @@ function VorstandContent() {
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <div className="flex items-center bg-gray-100 rounded-lg p-0.5 text-xs font-semibold">
+            <button
+              type="button"
+              onClick={() => setView('full')}
+              className={`px-3 py-1 rounded-md transition-colors ${
+                view === 'full' ? 'bg-white text-blue-700 shadow-sm' : 'text-gray-500 hover:text-gray-800'
+              }`}
+            >
+              Vollversion
+            </button>
+            <button
+              type="button"
+              onClick={() => setView('short')}
+              className={`px-3 py-1 rounded-md transition-colors ${
+                view === 'short' ? 'bg-white text-blue-700 shadow-sm' : 'text-gray-500 hover:text-gray-800'
+              }`}
+            >
+              Kurzfassung
+            </button>
+          </div>
           <a
             href={docUrl}
-            download="hosting-vergleich-foerderverein-ludweiler.html"
+            download={downloadName}
             className="flex items-center gap-1.5 text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg transition-colors"
           >
             <Download className="w-3.5 h-3.5" />

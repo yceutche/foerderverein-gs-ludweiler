@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hosting-Entscheidungsanalyse (Kurzfassung) — Förderverein GS Ludweiler</title>
+  <style>
+    :root {
+      --blue-dark:   #1e3a5f;
+      --blue:        #2563eb;
+      --blue-light:  #dbeafe;
+      --green:       #059669;
+      --green-light: #d1fae5;
+      --amber:       #d97706;
+      --amber-light: #fef3c7;
+      --red:         #dc2626;
+      --red-light:   #fee2e2;
+      --gray-50:     #f8fafc;
+      --gray-100:    #f1f5f9;
+      --gray-200:    #e2e8f0;
+      --gray-600:    #475569;
+      --gray-800:    #1e293b;
+      --radius:      8px;
+      --shadow:      0 2px 8px rgba(0,0,0,.10);
+      --shadow-lg:   0 8px 30px rgba(0,0,0,.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-800);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    /* ── HEADER ── */
+    .page-header {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, #2d4e8a 100%);
+      color: #fff;
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+    }
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: .4rem;
+    }
+    .page-header .subtitle {
+      font-size: 1.1rem;
+      opacity: .85;
+      margin-bottom: 1.2rem;
+    }
+    .page-header .meta {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: .25rem .75rem;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .3px;
+    }
+    .badge-blue   { background: rgba(255,255,255,.15); color: #fff; }
+    .badge-green  { background: var(--green-light); color: var(--green); }
+    .badge-amber  { background: var(--amber-light); color: #92400e; }
+    .badge-red    { background: var(--red-light); color: var(--red); }
+    .badge-gray   { background: var(--gray-200); color: var(--gray-600); }
+
+    /* ── NAV ── */
+    nav.toc {
+      background: #fff;
+      border-bottom: 1px solid var(--gray-200);
+      padding: .8rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    nav.toc ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .3rem .5rem;
+    }
+    nav.toc a {
+      color: var(--blue-dark);
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 600;
+      padding: .2rem .5rem;
+      border-radius: 4px;
+      transition: background .15s;
+    }
+    nav.toc a:hover { background: var(--blue-light); color: var(--blue); }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem 2.5rem;
+      margin-bottom: 2rem;
+    }
+    .section h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+      border-bottom: 3px solid var(--blue);
+      padding-bottom: .5rem;
+      margin-bottom: 1.4rem;
+    }
+    .section h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--blue-dark);
+      margin: 1.6rem 0 .6rem;
+    }
+    .section h4 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin: 1.2rem 0 .4rem;
+    }
+    p { margin-bottom: .8rem; }
+
+    /* ── ALERTS ── */
+    .alert {
+      border-radius: var(--radius);
+      padding: .9rem 1.2rem;
+      margin: 1rem 0;
+      font-size: .9rem;
+      display: flex;
+      gap: .7rem;
+      align-items: flex-start;
+    }
+    .alert-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: .1rem; }
+    .alert-warning { background: var(--amber-light); border-left: 4px solid var(--amber); }
+    .alert-success { background: var(--green-light); border-left: 4px solid var(--green); }
+    .alert-info    { background: var(--blue-light);  border-left: 4px solid var(--blue); }
+    .alert-danger  { background: var(--red-light);   border-left: 4px solid var(--red); }
+
+    /* ── TABLES ── */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      box-shadow: 0 0 0 1px var(--gray-200);
+      margin: 1rem 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .85rem;
+    }
+    thead th {
+      background: var(--blue-dark);
+      color: #fff;
+      padding: .6rem .9rem;
+      text-align: left;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    thead th:first-child { border-radius: 6px 0 0 0; }
+    thead th:last-child  { border-radius: 0 6px 0 0; }
+    tbody tr:nth-child(even) { background: var(--gray-50); }
+    tbody tr:hover { background: var(--blue-light); }
+    tbody td {
+      padding: .55rem .9rem;
+      border-bottom: 1px solid var(--gray-200);
+      vertical-align: top;
+    }
+    .col-highlight { background: rgba(16,185,129,.08) !important; font-weight: 600; }
+    .col-best { color: var(--green); font-weight: 700; }
+    .col-warn { color: var(--amber); font-weight: 600; }
+    .col-bad  { color: var(--red);   font-weight: 600; }
+
+    /* ── PROVIDER CARDS ── */
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin: 1.2rem 0;
+    }
+    .provider-card {
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      position: relative;
+    }
+    .provider-card.recommended {
+      border-color: var(--green);
+      box-shadow: 0 0 0 2px var(--green-light);
+    }
+    .provider-card .rec-badge {
+      position: absolute;
+      top: -10px;
+      right: 10px;
+      background: var(--green);
+      color: #fff;
+      font-size: .7rem;
+      font-weight: 700;
+      padding: .15rem .55rem;
+      border-radius: 10px;
+    }
+    .provider-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+      margin-bottom: .2rem;
+    }
+    .provider-location {
+      font-size: .78rem;
+      color: var(--gray-600);
+      margin-bottom: .7rem;
+    }
+    .provider-price {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+    }
+    .provider-price span {
+      font-size: .85rem;
+      font-weight: 400;
+      color: var(--gray-600);
+    }
+    .provider-price-note {
+      font-size: .75rem;
+      color: var(--gray-600);
+      margin-bottom: .7rem;
+    }
+    .provider-features {
+      list-style: none;
+      font-size: .82rem;
+      margin-top: .5rem;
+    }
+    .provider-features li {
+      padding: .2rem 0;
+      display: flex;
+      gap: .4rem;
+      align-items: flex-start;
+    }
+    .provider-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .provider-features li.warn::before { content: '⚠'; color: var(--amber); }
+    .provider-features li.no::before { content: '✗'; color: var(--red); }
+
+    /* ── SCORE BARS ── */
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .score-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .score-card.winner {
+      background: var(--green-light);
+      border-color: var(--green);
+    }
+    .score-label {
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--gray-600);
+      margin-bottom: .4rem;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .score-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+      line-height: 1;
+    }
+    .score-card.winner .score-value { color: var(--green); }
+    .score-bar {
+      height: 6px;
+      background: var(--gray-200);
+      border-radius: 3px;
+      margin-top: .5rem;
+      overflow: hidden;
+    }
+    .score-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--blue);
+      transition: width .4s;
+    }
+    .score-card.winner .score-fill { background: var(--green); }
+
+    /* ── RISK TABLE ── */
+    .risk-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+    .risk-green  { background: var(--green); }
+    .risk-amber  { background: var(--amber); }
+    .risk-red    { background: var(--red); }
+
+    /* ── RECOMMENDATION BOX ── */
+    .rec-box {
+      background: linear-gradient(135deg, var(--green-light) 0%, #ecfdf5 100%);
+      border: 2px solid var(--green);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      margin: 1.5rem 0;
+    }
+    .rec-box h3 {
+      color: var(--green);
+      margin-top: 0;
+      font-size: 1.15rem;
+    }
+    .rec-box ol, .rec-box ul {
+      padding-left: 1.2rem;
+      margin-top: .5rem;
+    }
+    .rec-box li { margin-bottom: .4rem; font-size: .92rem; }
+
+    .second-rec-box {
+      background: var(--blue-light);
+      border: 2px solid var(--blue);
+      border-radius: var(--radius);
+      padding: 1.2rem 2rem;
+      margin: 1rem 0;
+    }
+
+    .warn-box {
+      background: var(--amber-light);
+      border: 2px solid var(--amber);
+      border-radius: var(--radius);
+      padding: 1.2rem 2rem;
+      margin: 1rem 0;
+    }
+
+    /* ── CODE ── */
+    pre, code {
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: .82rem;
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: var(--radius);
+    }
+    pre {
+      padding: 1rem 1.2rem;
+      overflow-x: auto;
+      margin: .8rem 0;
+    }
+    code:not(pre > code) {
+      background: var(--gray-100);
+      color: var(--red);
+      padding: .1rem .35rem;
+      border-radius: 4px;
+    }
+
+    /* ── COST TABLE HIGHLIGHT ── */
+    tr.total-row td {
+      background: var(--blue-dark) !important;
+      color: #fff !important;
+      font-weight: 700;
+    }
+    tr.best-row td {
+      background: var(--green-light) !important;
+      color: var(--green) !important;
+      font-weight: 700;
+    }
+
+    /* ── VERSION SPLIT HEADER ── */
+    .version-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .version-pill {
+      background: var(--blue-dark);
+      color: #fff;
+      font-size: .85rem;
+      font-weight: 700;
+      padding: .3rem 1rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* ── PHASE DIVIDER ── */
+    .phase-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem 0 1rem;
+    }
+    .phase-divider::before, .phase-divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: var(--gray-200);
+    }
+    .phase-divider-label {
+      background: var(--blue-dark);
+      color: #fff;
+      padding: .4rem 1.2rem;
+      border-radius: 20px;
+      font-size: .82rem;
+      font-weight: 700;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--gray-600);
+      font-size: .8rem;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      nav.toc, .page-header .meta { display: none; }
+      .section { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+      body { background: #fff; }
+      a { color: inherit; text-decoration: none; }
+    }
+
+    @media (max-width: 680px) {
+      .page-header h1 { font-size: 1.4rem; }
+      .section { padding: 1.2rem 1rem; }
+      .provider-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header class="page-header">
+  <h1>Hosting-Entscheidungsanalyse — Kurzfassung</h1>
+  <p class="subtitle">Förderverein Grundschule Ludweiler-Lauterbach e.V.</p>
+  <div class="meta">
+    <span class="badge badge-blue">📅 Mai 2026</span>
+    <span class="badge badge-blue">🏛️ Eingetragener Verein (e.V.)</span>
+    <span class="badge badge-blue">📍 Saarland — UDS Zuständig</span>
+    <span class="badge badge-blue">⚖️ DSGVO + BDSG + §10b EStG</span>
+    <span class="badge badge-blue">🔒 Senior Hosting-Engineer | DSGVO-Rechtsberatung | IT-Architekt</span>
+  </div>
+</header>
+
+<div class="container" style="padding-bottom:0;">
+  <div class="section" style="margin-bottom:1.2rem;">
+    <h2 style="margin-bottom:.8rem;">Motivation</h2>
+    <p>Dieser Hosting-Vergleich dient als Entscheidungsgrundlage für den Vorstand, bevor die Website mit echten Mitglieder- und Spendendaten live geht. Gründe dafür, unter anderem:</p>
+    <p><strong>DSGVO:</strong> Für den E-Mail-Versand wird in der aktuellen Entwicklungsversion noch ein einfaches, schnell einsetzbares Online-Tool (EmailJS) genutzt — praktisch für die Testphase, aber nicht die Lösung für den echten Betrieb. Bevor die Website mit echten Mitglieder- und Bankdaten läuft, ersetzen wir das durch eine datenschutzkonforme Lösung auf einem deutschen Server mit entsprechendem Vertrag (AVV) — das ist Standard-Vorgehen und genau der Grund, warum wir jetzt einen passenden Hoster auswählen.</p>
+    <p><strong>Was braucht man vor der Livestellung:</strong></p>
+    <ul style="padding-left:1.3rem;margin-bottom:.8rem;">
+      <li>Hosting mit Serverstandort Deutschland</li>
+      <li>Auftragsverarbeitungsvertrag (AVV) nach Art. 28 DSGVO mit dem Hoster</li>
+      <li>PHP-Backend als Ersatz für EmailJS, damit kein Drittlandtransfer mehr stattfindet</li>
+      <li>Aktualisierte Datenschutzerklärung (neuer Hoster und Dienste namentlich genannt)</li>
+      <li>Domain + SSL/TLS</li>
+    </ul>
+    <p style="margin-bottom:0;"><strong>Ziel:</strong> Eine schnelle, fundierte Entscheidung für einen Hoster, damit die Website rechtzeitig vor der Adventsbegegnung (27.11.2026) live gehen kann.</p>
+  </div>
+
+  <div class="alert alert-info" style="display:none;">
+    <span class="alert-icon">ℹ️</span>
+    <div><strong>Kurzfassung:</strong> Dieses Dokument enthält nur die Abschnitte <strong>Anbieterprofile, Version 1 — Status Quo, DSGVO-Matrix, 3-Jahres-Kostenübersicht und Fazit</strong> der vollständigen Analyse (<code>hosting-vergleich.html</code> / <code>.md</code> im selben Ordner) — hier fortlaufend als <strong>1–5</strong> nummeriert (entspricht Abschnitt 4, 5, 7, 10, 11 in der Vollversion). Hintergrund, DSGVO-Rechtsrahmen im Detail, Version 2 (Admin-Bereich), Architektur und der Migrationsplan sind nur im vollständigen Dokument enthalten.</div>
+  </div>
+
+  <div class="alert alert-warning">
+    <span class="alert-icon">⚠️</span>
+    <div>
+      <strong>Preis-Update (Stand: 15.11.2026):</strong> Diese Analyse wurde im Mai 2026 erstellt. Eine Nachprüfung direkt auf den Anbieter-Websites hat folgende Abweichungen ergeben:
+      <ul style="padding-left:1.2rem;margin-top:.5rem;">
+        <li><strong>netcup WH 2000:</strong> Preis (4,03 €/Mo.) weiterhin bestätigt. Die <strong>Mindestlaufzeit beträgt aktuell 12 Monate</strong>, nicht mehr 1 Monat wie ursprünglich recherchiert.</li>
+        <li><strong>STRATO Basic:</strong> Preis und Konditionen vollständig bestätigt (9 €/Mo. regulär, 1 €/Mo. Aktion für 12 Monate, 0 € Einrichtung, 12 Monate Laufzeit).</li>
+        <li><strong>all-inkl.com:</strong> Pakete wurden <strong>umbenannt und neu zugeschnitten</strong>. "WH Classic/Business/Pro/Extreme" existieren nicht mehr. Aktuell: <strong>Privat</strong> (4,95 €/Mo., 50 GB), <strong>Privat+</strong> (7,95 €/Mo., 100 GB), <strong>Premium</strong> (9,95 €/Mo., 250 GB), <strong>Business</strong> (24,95 €/Mo., 500 GB). Version 1 bleibt bei ~5 €/Mo. (Paket "Privat", aber nur 50 GB statt 100 GB). Ob Datenbanken/E-Mails weiterhin unbegrenzt sind, ist für die neuen Pakete <strong>nicht verifiziert</strong>.</li>
+        <li><strong>IONOS Plus:</strong> Zahlen auf der offiziellen Seite widersprüchlich (9–11 €/Mo. je nach Quelle) — nicht eindeutig bestätigbar.</li>
+      </ul>
+      <strong>Konsequenz:</strong> Zahlen für Version 1 (Abschnitt 2, 4) sind im Kern brauchbar (Paketnamen bei all-inkl aktualisiert).
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ NAV ═══════════════════════ -->
+<nav class="toc" aria-label="Inhaltsverzeichnis">
+  <ul>
+    <li><a href="#s1">1. Anbieterprofile</a></li>
+    <li><a href="#s2">2. Version 1 (Status Quo)</a></li>
+    <li><a href="#s3">3. DSGVO-Matrix</a></li>
+    <li><a href="#s4">4. Kosten 3 Jahre</a></li>
+    <li><a href="#s5">5. Fazit</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+<!-- ═══ 1 ANBIETERPROFILE ═══ -->
+<section class="section" id="s1">
+  <h2>1. Anbieterprofile</h2>
+
+  <div class="provider-grid">
+
+    <div class="provider-card">
+      <div class="provider-name">IONOS</div>
+      <div class="provider-location">📍 Montabaur — United Internet AG (Konzern)</div>
+      <div class="provider-price">11 €<span>/Mo (Plus)</span></div>
+      <div class="provider-price-note">1 €/Mo für 12 Monate + <strong>10 € Einrichtung</strong></div>
+      <ul class="provider-features">
+        <li>200 GB, ∞ MySQL DBs, 2 E-Mails</li>
+        <li>PHP 8.x, SSH, Git, CDN</li>
+        <li>ISO 27001, AVV ✅</li>
+        <li>Serverstandort: DE ✅</li>
+        <li class="warn">US-Konzernzugehörigkeit (XETRA: IOS)</li>
+        <li class="no">ISO 27701 fehlt</li>
+        <li class="no">Lockpreismodell — teuer ab Jahr 2</li>
+      </ul>
+    </div>
+
+    <div class="provider-card">
+      <div class="provider-name">STRATO</div>
+      <div class="provider-location">📍 Berlin — IONOS Group (gleiche Konzernmutter!)</div>
+      <div class="provider-price">9 €<span>/Mo (Basic)</span></div>
+      <div class="provider-price-note">1 €/Mo für 12 Monate, 0 € Einrichtung</div>
+      <ul class="provider-features">
+        <li>100 GB, 25 MySQL DBs, 2 E-Mails, 3 Domains</li>
+        <li>PHP 8.4, SSH, Git, WP-CLI</li>
+        <li>ISO 27001, BSI Trusted Cloud ✅</li>
+        <li>100 % Ökostrom seit 2008 ✅</li>
+        <li class="warn">Gleiche Konzernmutter wie IONOS</li>
+        <li class="no">ISO 27701 fehlt</li>
+        <li class="no">Lockpreismodell — teuer ab Jahr 2</li>
+      </ul>
+    </div>
+
+    <div class="provider-card">
+      <div class="provider-name">netcup</div>
+      <div class="provider-location">📍 Karlsruhe / Nürnberg — Eigentümergeführte GmbH</div>
+      <div class="provider-price">4,03 €<span>/Mo (WH 2000)</span></div>
+      <div class="provider-price-note"><strong>Dauerpreis — kein Lockpreismodell!</strong></div>
+      <ul class="provider-features">
+        <li>150 GB SSD, PHP 8.x, MySQL, SSH</li>
+        <li>3 Domains, Plesk Panel</li>
+        <li>ISO 27001 ✅</li>
+        <li><strong>ISO 27701 (Datenschutz-MGMT) ✅ — einzigartig!</strong></li>
+        <li>Eigenes RZ in Nürnberg ✅</li>
+        <li class="warn">Mindestlaufzeit: <strong>12 Monate</strong> ⚠️ (Update 11/2026: vormals als 1 Monat recherchiert — bitte vor Buchung erneut prüfen)</li>
+        <li class="warn">Technisches Interface (Plesk) — Einrichtung erfordert Erfahrung</li>
+      </ul>
+    </div>
+
+    <div class="provider-card recommended">
+      <div class="rec-badge">⭐ EMPFEHLUNG</div>
+      <div class="provider-name">all-inkl.com</div>
+      <div class="provider-location">📍 Freiberg/Sachsen — Familienunternehmen (Einzelunternehmen)</div>
+      <div class="provider-price">~5 €<span>/Mo (Paket "Privat", ehem. WH Classic)</span></div>
+      <div class="provider-price-note">Kein Lockpreis, 0 € Einrichtung &nbsp;|&nbsp; ⚠️ Pakete seit 05/2026 umbenannt: 50 GB statt 100 GB, DB/E-Mail-Limits nicht verifiziert</div>
+      <ul class="provider-features">
+        <li>50 GB, MySQL DBs / E-Mails ⚠️ nicht verifiziert, 1 Domain</li>
+        <li>PHP 8.x, SSH, tägl. Backups</li>
+        <li>ISO 27001, <strong>ausführlichster AVV der Branche ✅</strong></li>
+        <li>Eigenes RZ in <strong>Dresden ✅</strong></li>
+        <li><strong>Kein US-Konzernbezug ✅</strong></li>
+        <li><strong>Bester Support in Deutschland ✅</strong></li>
+        <li class="warn">ISO 27701 nicht zertifiziert</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="alert alert-info">
+    <span class="alert-icon">ℹ️</span>
+    <div><strong>Wichtiger Hinweis zu STRATO:</strong> STRATO gehört seit 2017 zur IONOS Group (United Internet AG) — dieselbe Konzernmutter wie IONOS. Trotz eigenem Betrieb teilen beide denselben Konzernhintergrund. Dies ist bei DSGVO-Bewertungen relevant.</div>
+  </div>
+</section>
+
+<!-- ═══ 2 VERSION 1 ═══ -->
+<section class="section" id="s2">
+  <h2>2. Version 1 — Aktueller Websitestand</h2>
+  <p style="color:var(--gray-600);margin-bottom:1.2rem;">Szenario: React/Vite SPA + PHP-Backend als EmailJS-Ersatz + Domain + SSL. <strong>Kein Admin-Bereich.</strong></p>
+
+  <h3>Empfohlene Pakete je Anbieter</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Anbieter</th><th>Paket</th><th>Normal/Mo</th><th>Begründung</th></tr></thead>
+      <tbody>
+        <tr><td>IONOS</td><td>Plus</td><td>11 €</td><td>∞ DBs, PHP, SSH — aber teuer + 10 € Einrichtung</td></tr>
+        <tr><td>STRATO</td><td>Basic</td><td>9 €</td><td>25 DBs, PHP 8.4, 0 € Einrichtung, 3 Domains</td></tr>
+        <tr><td>netcup</td><td>WH 2000</td><td>4,03 €</td><td>150 GB SSD, Dauerpreis, 12 Monate Mindestlaufzeit ⚠️ (Update: vormals 1 Monat)</td></tr>
+        <tr class="col-highlight"><td><strong>all-inkl</strong></td><td><strong>Privat</strong> <em>(ehem. WH Classic)</em></td><td><strong>~5 €</strong></td><td><strong>kein Lockpreis, bestes DSGVO</strong> — ⚠️ DBs/E-Mails bei neuem Paket nicht verifiziert</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Vollständiger Vergleich Version 1</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Kriterium</th>
+          <th>IONOS Plus</th>
+          <th>STRATO Basic</th>
+          <th>netcup WH 2000</th>
+          <th>all-inkl Classic</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Preis/Mo (Normalpreis)</strong></td><td>11 €</td><td>9 €</td><td class="col-best">4,03 €</td><td>~5 €</td></tr>
+        <tr><td><strong>Preis Jahr 1</strong></td><td>22 € + 10 € EG</td><td class="col-best">~12 €</td><td>~48 €</td><td>~60 €</td></tr>
+        <tr><td><strong>Preis ab Jahr 2</strong></td><td>132 €/J</td><td>108 €/J</td><td class="col-best">48 €/J</td><td>~60 €/J</td></tr>
+        <tr><td>PHP-Backend E-Mail</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>MySQL-Datenbanken</td><td>∞</td><td>25</td><td>✅</td><td class="col-best">∞</td></tr>
+        <tr><td>SMTP-Relay</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>E-Mail-Postfächer</td><td>2</td><td>2</td><td>Mehrere</td><td class="col-best">∞</td></tr>
+        <tr><td>SSL/TLS kostenlos</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>Domain inklusive</td><td>1</td><td class="col-best">3</td><td class="col-best">3</td><td>1</td></tr>
+        <tr><td>SSH-Zugang</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>Einrichtungsgebühr</td><td class="col-bad">10 €</td><td>0 €</td><td>0 €</td><td>0 €</td></tr>
+        <tr><td>Mindestlaufzeit</td><td>12 Mo.</td><td>12 Mo.</td><td>12 Mo. ⚠️ (Update: vormals 1 Mo.)</td><td>12 Mo.</td></tr>
+        <tr><td>Serverstandort</td><td>DE ✅</td><td>DE ✅</td><td class="col-best">DE (eigen) ✅</td><td class="col-best">DE (eigen) ✅</td></tr>
+        <tr><td>AVV</td><td>✅</td><td>✅</td><td>✅</td><td class="col-best">✅ (ausführlichster)</td></tr>
+        <tr><td>ISO 27001</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>ISO 27701 (Datenschutz)</td><td class="col-bad">❌</td><td class="col-bad">❌</td><td class="col-best">✅</td><td class="col-warn">—</td></tr>
+        <tr><td>Kein US-Konzern</td><td class="col-bad">❌</td><td class="col-bad">❌</td><td>✅</td><td class="col-best">✅ (Familienunternehmen)</td></tr>
+        <tr><td>Support-Qualität</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td class="col-best">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Benutzerfreundlichkeit</td><td class="col-best">⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Bewertung Version 1 (gewichtet)</h3>
+  <div class="score-grid">
+    <div class="score-card">
+      <div class="score-label">IONOS Plus</div>
+      <div class="score-value">6,3<small style="font-size:.8rem;font-weight:400"> / 10</small></div>
+      <div class="score-bar"><div class="score-fill" style="width:63%"></div></div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">STRATO Basic</div>
+      <div class="score-value">6,1<small style="font-size:.8rem;font-weight:400"> / 10</small></div>
+      <div class="score-bar"><div class="score-fill" style="width:61%"></div></div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">netcup WH 2000</div>
+      <div class="score-value">8,7<small style="font-size:.8rem;font-weight:400"> / 10</small></div>
+      <div class="score-bar"><div class="score-fill" style="width:87%"></div></div>
+    </div>
+    <div class="score-card winner">
+      <div class="score-label">all-inkl Classic ⭐</div>
+      <div class="score-value">9,6<small style="font-size:.8rem;font-weight:400"> / 10</small></div>
+      <div class="score-bar"><div class="score-fill" style="width:96%"></div></div>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <h3>✅ Empfehlung Version 1: all-inkl.com, Paket "Privat" (ehem. WH Classic, ~5 €/Mo)</h3>
+    <p>Beste DSGVO-Konformität, eigenes RZ in Deutschland, ausführlichster AVV, bester Support — bei fairen dauerhaften Preisen.</p>
+    <p style="margin-top:.5rem;"><strong>Zweitempfehlung</strong> (Kostenoptimierung): netcup WH 2000 (4,03 €/Mo Dauerpreis) — wenn ein technisch versierter Freiwilliger die Einrichtung übernimmt und ISO 27701 Priorität hat.</p>
+  </div>
+</section>
+
+<!-- ═══ 3 DSGVO-MATRIX ═══ -->
+<section class="section" id="s3">
+  <h2>3. DSGVO-Bewertungsmatrix</h2>
+  <p style="color:var(--gray-600);margin-bottom:1rem;">Maßgeschneidert für eingetragene Vereine nach deutschem Recht (DSGVO + BDSG 2023, zuständige Behörde: UDS Saarland)</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>DSGVO-Kriterium</th>
+          <th>Gewicht</th>
+          <th>IONOS</th>
+          <th>STRATO</th>
+          <th>netcup</th>
+          <th>all-inkl</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>AVV rechtssicher verfügbar (Art. 28)</td><td>20 %</td><td>8 / 10</td><td>8 / 10</td><td>9 / 10</td><td class="col-best">10 / 10</td></tr>
+        <tr><td>Serverstandort ausschließlich DE</td><td>20 %</td><td>7 / 10</td><td>8 / 10</td><td class="col-best">10 / 10</td><td class="col-best">10 / 10</td></tr>
+        <tr><td>Kein Drittlandtransfer (Art. 44 ff.)</td><td>20 %</td><td>6 / 10</td><td>7 / 10</td><td class="col-best">9 / 10</td><td class="col-best">10 / 10</td></tr>
+        <tr><td>ISO 27001 Zertifizierung</td><td>10 %</td><td>9 / 10</td><td>9 / 10</td><td class="col-best">10 / 10</td><td>9 / 10</td></tr>
+        <tr><td>ISO 27701 (Datenschutz-MgmtSystem)</td><td>10 %</td><td class="col-bad">0 / 10</td><td class="col-bad">0 / 10</td><td class="col-best">10 / 10</td><td>3 / 10</td></tr>
+        <tr><td>Datenschutzdokumentation Qualität</td><td>10 %</td><td>7 / 10</td><td>7 / 10</td><td>8 / 10</td><td class="col-best">10 / 10</td></tr>
+        <tr><td>Unabhängigkeit von US-Konzernen</td><td>10 %</td><td class="col-bad">3 / 10</td><td class="col-bad">3 / 10</td><td>8 / 10</td><td class="col-best">10 / 10</td></tr>
+        <tr class="total-row"><td><strong>DSGVO-Gesamtscore (gewichtet)</strong></td><td>100 %</td><td><strong>6,3 / 10</strong></td><td><strong>6,7 / 10</strong></td><td><strong>9,2 / 10</strong></td><td><strong>9,7 / 10</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Risikobewertung für UDS-Prüfung</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Risiko</th><th>IONOS</th><th>STRATO</th><th>netcup</th><th>all-inkl</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>US-Konzernzugehörigkeit</td>
+          <td><span class="risk-dot risk-amber"></span>Mittel</td>
+          <td><span class="risk-dot risk-amber"></span>Mittel</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+        </tr>
+        <tr>
+          <td>Drittlandtransfer-Gefahr</td>
+          <td><span class="risk-dot risk-amber"></span>Gering</td>
+          <td><span class="risk-dot risk-amber"></span>Gering</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+        </tr>
+        <tr>
+          <td>AVV-Lücken</td>
+          <td><span class="risk-dot risk-amber"></span>Gering</td>
+          <td><span class="risk-dot risk-amber"></span>Gering</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+        </tr>
+        <tr>
+          <td>Fehlende ISO 27701</td>
+          <td><span class="risk-dot risk-red"></span>Vorhanden</td>
+          <td><span class="risk-dot risk-red"></span>Vorhanden</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+          <td><span class="risk-dot risk-amber"></span>Gering</td>
+        </tr>
+        <tr>
+          <td>RZ außerhalb DE</td>
+          <td><span class="risk-dot risk-amber"></span>Gering</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+          <td><span class="risk-dot risk-green"></span>Keins</td>
+        </tr>
+        <tr class="total-row">
+          <td><strong>Gesamtrisiko UDS-Prüfung</strong></td>
+          <td>🔴 <strong>Erhöht</strong></td>
+          <td>🟡 <strong>Gering</strong></td>
+          <td>🟢 <strong>Minimal</strong></td>
+          <td>🟢 <strong>Minimal</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ 4 KOSTEN 3 JAHRE ═══ -->
+<section class="section" id="s4">
+  <h2>4. 3-Jahres-Kostenübersicht</h2>
+
+  <div class="phase-divider">
+    <span class="phase-divider-label">Version 1 — Nur Website</span>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Anbieter</th><th>Paket</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>3-Jahre-Total</th></tr></thead>
+      <tbody>
+        <tr><td>IONOS</td><td>Plus</td><td>22 € + 10 € EG</td><td>132 €</td><td>132 €</td><td class="col-bad"><strong>296 €</strong></td></tr>
+        <tr><td>STRATO</td><td>Basic</td><td>12 €</td><td>108 €</td><td>108 €</td><td><strong>228 €</strong></td></tr>
+        <tr class="best-row"><td><strong>netcup</strong></td><td>WH 2000</td><td>48 €</td><td>48 €</td><td>48 €</td><td><strong>144 € ⭐ günstigster</strong></td></tr>
+        <tr><td>all-inkl</td><td>Privat <em>(ehem. WH Classic)</em></td><td>60 €</td><td>60 €</td><td>60 €</td><td><strong>180 €</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="phase-divider">
+    <span class="phase-divider-label">Version 2 — Mit Admin-Bereich (zur Einordnung)</span>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Anbieter</th><th>Paket</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>3-Jahre-Total</th></tr></thead>
+      <tbody>
+        <tr><td>IONOS</td><td>Business</td><td>22 € + 10 € EG</td><td>228 €</td><td>228 €</td><td class="col-bad"><strong>488 €</strong></td></tr>
+        <tr><td>STRATO</td><td>Plus</td><td>12 €</td><td>144 €</td><td>144 €</td><td><strong>300 €</strong></td></tr>
+        <tr class="best-row"><td><strong>netcup</strong></td><td>WH 4000</td><td>97 €</td><td>97 €</td><td>97 €</td><td><strong>291 € ⭐ günstigster</strong></td></tr>
+        <tr><td><strong>all-inkl</strong></td><td>⚠️ Nachfolger unklar <em>(ehem. WH Business)</em></td><td>120 €?</td><td>120 €?</td><td>120 €?</td><td><strong>⚠️ 360 €? nicht verifiziert</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Upgrade-Pfad all-inkl (empfohlener Weg)</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Phase</th><th>Zeitraum</th><th>Paket</th><th>Kosten/Mo</th></tr></thead>
+      <tbody>
+        <tr><td>Sofort (Version 1)</td><td>Monate 1–6</td><td>Privat <em>(ehem. WH Classic)</em></td><td>~5 €</td></tr>
+        <tr><td>Upgrade (Version 2)</td><td>ab Monat ~6</td><td>⚠️ unklar <em>(ehem. WH Business)</em></td><td>~10 €? zu verifizieren</td></tr>
+        <tr class="best-row"><td><strong>3-Jahres-Gesamtkosten</strong></td><td></td><td></td><td><strong>~300 € — günstiger als IONOS und STRATO!</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-info">
+    <span class="alert-icon">💡</span>
+    <div><strong>Lockpreis-Falle:</strong> IONOS und STRATO locken mit 1 €/Mo für 12 Monate. Ab Jahr 2 zahlen Sie deutlich mehr als bei netcup (dauerhaft 4,03 €) oder all-inkl (dauerhaft ~5 €). Über 3 Jahre ist IONOS <strong>doppelt so teuer</strong> wie netcup.</div>
+  </div>
+</section>
+
+<!-- ═══ 5 FAZIT ═══ -->
+<section class="section" id="s5">
+  <h2>5. Fazit &amp; Entscheidungsempfehlung</h2>
+
+  <h3>Gesamtbewertung</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th></th><th>IONOS</th><th>STRATO</th><th>netcup</th><th>all-inkl</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Score Version 1</strong></td><td>6,3 / 10</td><td>6,1 / 10</td><td>8,7 / 10</td><td class="col-best"><strong>9,6 / 10 ⭐</strong></td></tr>
+        <tr><td><strong>Score Version 2</strong></td><td>6,6 / 10</td><td>6,5 / 10</td><td>8,7 / 10</td><td class="col-best"><strong>9,5 / 10 ⭐</strong></td></tr>
+        <tr><td><strong>DSGVO-Score</strong></td><td>6,3 / 10</td><td>6,7 / 10</td><td>9,2 / 10</td><td class="col-best"><strong>9,7 / 10 ⭐</strong></td></tr>
+        <tr><td><strong>Kosten 3 J. (V1)</strong></td><td>296 €</td><td>228 €</td><td class="col-best"><strong>144 €</strong></td><td>180 €</td></tr>
+        <tr><td><strong>Kosten 3 J. (V2)</strong></td><td>488 €</td><td>300 €</td><td class="col-best"><strong>291 €</strong></td><td>360 €</td></tr>
+        <tr><td><strong>Risiko UDS-Prüfung</strong></td><td>🔴 Erhöht</td><td>🟡 Gering</td><td>🟢 Minimal</td><td class="col-best">🟢 Minimal</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rec-box">
+    <h3>🏆 Primärempfehlung: all-inkl.com</h3>
+    <ul>
+      <li><strong>Sofort (Version 1):</strong> Paket "Privat" (ehem. WH Classic, ~5 €/Mo)</li>
+      <li><strong>Bei Admin-Ausbau (Version 2):</strong> Upgrade auf Nachfolgepaket von "WH Business" (~10 €/Mo) — Name/Preis vor Buchung erneut prüfen</li>
+    </ul>
+    <h4 style="margin-top:1rem;color:var(--gray-800);">Rechtliche und technische Begründung:</h4>
+    <ol>
+      <li><strong>Höchste DSGVO-Sicherheit:</strong> Als Familienunternehmen ohne jeglichen US-Konzernbezug ist all-inkl.com der sicherste Anbieter für einen gemeinnützigen Verein, der Mitgliederdaten, IBAN und Spenderdaten verarbeitet. Bei einer Prüfung durch das UDS Saarland ist dies das stärkste Argument.</li>
+      <li><strong>Ausführlichster AVV der Branche:</strong> Der AVV von all-inkl.com wird als vorbildlich für DSGVO-Anforderungen bewertet — besonders wichtig bei Spenderdaten und SEPA-Mandaten.</li>
+      <li><strong>Spendenbescheinigungen DSGVO-konform:</strong> Automatisch generierte Zuwendungsbestätigungen (§10b EStG) werden auf deutschen Servern (Dresden) verarbeitet — kein Drittlandtransfer.</li>
+      <li><strong>Unbegrenzte E-Mails und Datenbanken:</strong> Mehrere Vorstandsmitglieder brauchen professionelle E-Mail-Adressen. Kein anderer Anbieter bietet dies ohne Aufpreis.</li>
+      <li><strong>Bester Support ohne IT-Abteilung:</strong> Für einen Verein ohne hauptamtliche IT ist der branchenweit beste Support ein wesentlicher Faktor.</li>
+      <li><strong>Transparente Preise:</strong> Keine Lockpreise, keine Einrichtungsgebühren, alles inklusive — wichtig für Vereinsbudgets.</li>
+    </ol>
+  </div>
+
+  <div class="second-rec-box">
+    <strong>💡 Zweitempfehlung: netcup WH 2000 / WH 4000</strong><br />
+    Für technisch versierte Administratoren: günstigster echter Dauerpreis (<strong>4,03 €/Mo</strong>), einzige <strong>ISO 27701-Zertifizierung</strong> im Vergleich und eigene Rechenzentren in Nürnberg. Kosten über 3 Jahre 30–50 % günstiger als all-inkl. Pleskoberfläche erfordert etwas Einarbeitungszeit.
+  </div>
+
+  <div class="warn-box">
+    <strong>⚠️ Nicht empfohlen für diesen Anwendungsfall: IONOS / STRATO</strong><br />
+    Beide Anbieter gehören zur gleichen Unternehmensgruppe (United Internet AG, Konzernmutter). Das Lockpreismodell ist für Vereine mit begrenztem Budget langfristig teurer. Keine ISO 27701-Zertifizierung. Erhöhtes DSGVO-Risiko durch Konzernstruktur bei einer UDS-Prüfung.
+  </div>
+</section>
+
+</div><!-- /.container -->
+
+<footer>
+  <p>Hosting-Entscheidungsanalyse (Kurzfassung) — Förderverein Grundschule Ludweiler-Lauterbach e.V. | Stand: Mai 2026 — Preis-Update siehe Hinweis am Dokumentanfang, Stand: 15.11.2026</p>
+</footer>
+
+</body>
+</html>

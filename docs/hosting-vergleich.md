@@ -8,6 +8,19 @@
 
 ---
 
+> ## ⚠️ Preis-Update (Stand: 15.11.2026)
+>
+> Diese Analyse wurde im Mai 2026 erstellt. Eine Nachprüfung direkt auf den Anbieter-Websites am 15.11.2026 hat folgende Abweichungen ergeben:
+>
+> - **netcup WH 2000**: Preis (4,03 €/Mo.) weiterhin bestätigt. Die **Mindestlaufzeit beträgt laut aktueller netcup-Produktseite 12 Monate**, nicht mehr 1 Monat wie ursprünglich recherchiert. Der in Abschnitt 4.3/5.2 genannte Vorteil "einziger Anbieter mit 1 Monat Mindestlaufzeit" gilt damit **nicht mehr**.
+> - **STRATO Basic**: Preis und Konditionen (9 €/Mo. regulär, 1 €/Mo. Aktion für 12 Monate, 0 € Einrichtung, 12 Monate Laufzeit) vollständig bestätigt.
+> - **all-inkl.com**: Die Pakete wurden **umbenannt und neu zugeschnitten**. "WH Classic" / "WH Business" / "WH Pro" / "WH Extreme" existieren nicht mehr. Aktuell: **Privat** (4,95 €/Mo., 50 GB), **Privat+** (7,95 €/Mo., 100 GB), **Premium** (9,95 €/Mo., 250 GB), **Business** (24,95 €/Mo., 500 GB). Der Einstiegspreis für Version 1 ist weiterhin ~5 €/Mo. (Paket "Privat"), aber mit **weniger Speicher** (50 GB statt 100 GB). Für Version 2 ist unklar, welches neue Paket dem alten "WH Business" (~10 €/Mo.) entspricht — preislich am nächsten liegt "Premium" (9,95 €/Mo.), das neue Paket namens "Business" kostet mit 24,95 €/Mo. deutlich mehr. Ob Datenbanken/E-Mail-Postfächer weiterhin unbegrenzt sind, ist für die neuen Pakete **nicht verifiziert**.
+> - **IONOS Plus**: Zahlen auf der offiziellen Seite widersprüchlich (Angaben zwischen 9–11 €/Mo. je nach Quelle/Block) — nicht eindeutig bestätigbar.
+>
+> **Konsequenz:** Die Zahlen für Version 1 (Abschnitt 5, 10) sind im Kern noch brauchbar, die Paketnamen bei all-inkl müssen aber aktualisiert werden. Die Zahlen für Version 2 (Abschnitt 6, 10) sind bei all-inkl mit Vorsicht zu genießen und sollten vor einer Entscheidung erneut direkt beim Anbieter verifiziert werden.
+
+---
+
 ## Inhaltsverzeichnis
 
 1. [Ausgangslage & Projektbeschreibung](#1-ausgangslage--projektbeschreibung)
@@ -266,7 +279,7 @@ Jedes SEPA-Mandat muss zwingend enthalten:
 | WH 8000 | 13,17 €/Mo | 1.000 GB SSD | 12 | ✅ | 0 € |
 
 **Technisches:** PHP 8.x, MySQL/MariaDB, Plesk Panel, Let's Encrypt SSL, ab WH 4000: Ruby + Node.js  
-**Mindestlaufzeit:** **1 Monat** (einziger Anbieter im Vergleich!)  
+**Mindestlaufzeit:** 12 Monate ⚠️ *(Update 11/2026: laut aktueller netcup-Produktseite 12 Monate Mindestvertragslaufzeit — ursprünglich als 1 Monat recherchiert; vor Buchung erneut prüfen)*  
 **DSGVO:** ISO 27001 ✅ | **ISO 27701** (Datenschutz-Managementsystem) ✅ | ISO 9001 ✅ | ISO 14001 ✅ | AVV ✅ | Serverstandort Nürnberg DE ✅ | DNSSEC ✅
 
 > 💡 **ISO 27701** ist die internationale Norm für Datenschutz-Informationsmanagementsysteme (PIMS). Sie ist eine Erweiterung zu ISO 27001 speziell für den Datenschutz und entspricht dem DSGVO-Anforderungsprofil. **Kein anderer Anbieter in diesem Vergleich besitzt diese Zertifizierung.**
@@ -283,14 +296,23 @@ Jedes SEPA-Mandat muss zwingend enthalten:
 - Name ist Programm: "all inclusive" — keine Mengenlimits, keine versteckten Kosten
 - **Branchenweit bekannt für besten Datenschutz und Support**
 
-**Relevante Pakete:**
+**Relevante Pakete (⚠️ Stand 05/2026, inzwischen umbenannt — siehe Update-Hinweis):**
 
-| Paket | Preis/Mo | Speicher | DBs | E-Mails | Domains | Einrichtung |
+| Paket (alt, Mai 2026) | Preis/Mo | Speicher | DBs | E-Mails | Domains | Einrichtung |
 |-------|----------|----------|-----|---------|---------|-------------|
 | WH Classic | ~5 € | 100 GB | **∞** | **∞** | 1 | 0 € |
 | **WH Business** | **~10 €** | **200 GB** | **∞** | **∞** | **3** | **0 €** |
 | WH Pro | ~15 € | 400 GB | ∞ | ∞ | 5 | 0 € |
 | WH Extreme | ~25 € | 800 GB | ∞ | ∞ | 10 | 0 € |
+
+**Aktuelle Pakete (Stand 11/2026, offizielle Seite):**
+
+| Paket (neu) | Preis/Mo | Speicher | DBs / E-Mails |
+|-------|----------|----------|-----|
+| Privat | 4,95 € | 50 GB | nicht verifiziert |
+| Privat+ | 7,95 € | 100 GB | nicht verifiziert |
+| Premium | 9,95 € | 250 GB | nicht verifiziert |
+| Business | 24,95 € | 500 GB | nicht verifiziert |
 
 **Technisches:** PHP 8.x, MySQL/MariaDB, SSH, SFTP, Git, tägl. automatische Backups  
 **Mindestlaufzeit:** 12 Monate  
@@ -309,7 +331,7 @@ Jedes SEPA-Mandat muss zwingend enthalten:
 | IONOS | Plus | 11 € | Unbegrenzte DBs, PHP, SSH |
 | STRATO | Basic | 9 € | 25 DBs, PHP 8.4, 0 € Einrichtung |
 | netcup | WH 2000 | 4,03 € | 150 GB SSD, Dauerpreis |
-| all-inkl | WH Classic | ~5 € | Unbegrenzte DBs + E-Mails |
+| all-inkl | Privat *(ehem. WH Classic)* | ~5 € | DBs/E-Mails bei neuem Paket nicht verifiziert ⚠️ |
 
 ### 5.2 Vergleichstabelle Version 1
 
@@ -326,7 +348,7 @@ Jedes SEPA-Mandat muss zwingend enthalten:
 | **Domain inklusive** | 1 | **3** | **3** | 1 |
 | **SSH-Zugang** | ✅ | ✅ | ✅ | ✅ |
 | **Einrichtungsgebühr** | **10 €** | 0 € | 0 € | 0 € |
-| **Mindestlaufzeit** | 12 Mo. | 12 Mo. | **1 Mo.** | 12 Mo. |
+| **Mindestlaufzeit** | 12 Mo. | 12 Mo. | 12 Mo. ⚠️ *(Update: vormals 1 Mo. recherchiert)* | 12 Mo. |
 | **Serverstandort** | DE ✅ | DE ✅ | **DE (eigen) ✅** | **DE (eigen) ✅** |
 | **AVV** | ✅ | ✅ | ✅ | ✅ |
 | **ISO 27001** | ✅ | ✅ | ✅ | ✅ |
@@ -346,7 +368,7 @@ Jedes SEPA-Mandat muss zwingend enthalten:
 | Unabhängigkeit | 15 % | 4 | 4 | 8 | **10** |
 | **Gewichteter Score** | | **6,3** | **6,1** | **8,7** | **9,6** |
 
-### ✅ Empfehlung Version 1: **all-inkl.com WH Classic (~5 €/Mo)**
+### ✅ Empfehlung Version 1: **all-inkl.com, Paket "Privat" (ehem. WH Classic, ~5 €/Mo)**
 
 **Zweitempfehlung (Kostenoptimierung):** netcup WH 2000 (4,03 €/Mo Dauerpreis) — wenn ein technisch versierter Freiwilliger die Einrichtung übernimmt.
 
@@ -376,7 +398,7 @@ Jedes SEPA-Mandat muss zwingend enthalten:
 | IONOS | Business | 19 € | ∞ DBs, 5 E-Mails, 500 GB |
 | STRATO | Plus | 12 € | 50 DBs, 150 GB, 5 Domains |
 | netcup | WH 4000 | 8,10 € | 500 GB SSD, 6 Domains, Dauerpreis |
-| all-inkl | WH Business | ~10 € | ∞ DBs, ∞ E-Mails, 200 GB |
+| all-inkl | ⚠️ unklar (ehem. WH Business, ~10 €) | ⚠️ zu verifizieren | Paketstruktur seit 05/2026 geändert — siehe Update-Hinweis; preislich am nächsten liegt "Premium" (9,95 €), das neue Paket "Business" kostet 24,95 € |
 
 ### 6.3 Vergleichstabelle Version 2
 
@@ -418,7 +440,7 @@ Jedes SEPA-Mandat muss zwingend enthalten:
 | Zukunftssicherheit | 10 % | 6 | 5 | 8 | **9** |
 | **Gewichteter Score** | | **6,6** | **6,5** | **8,7** | **9,5** |
 
-### ✅ Empfehlung Version 2: **all-inkl.com WH Business (~10 €/Mo)**
+### ✅ Empfehlung Version 2: **all-inkl.com (ehem. WH Business, ~10 €/Mo) ⚠️ Paket & Preis vor Umsetzung erneut verifizieren (siehe Update-Hinweis oben)**
 
 **Zweitempfehlung (Kostenoptimierung):** netcup WH 4000 (8,10 €/Mo Dauerpreis) — für technisch erfahrene Administratoren.
 
@@ -575,7 +597,7 @@ CREATE TABLE audit_log (
 
 | Schritt | Aufgabe | Zeitaufwand | Priorität |
 |---------|---------|-------------|-----------|
-| 1 | all-inkl.com WH Classic buchen | 30 Min. | 🔴 Hoch |
+| 1 | all-inkl.com Paket "Privat" (ehem. WH Classic) buchen | 30 Min. | 🔴 Hoch |
 | 2 | AVV mit all-inkl abschließen (im Kundenportal) | 1 Std. | 🔴 Hoch |
 | 3 | Domain registrieren / transferieren + DNS konfigurieren | 1–2 Tage | 🔴 Hoch |
 | 4 | E-Mail-Postfächer anlegen (info@, vorstand@, kassierer@) | 1 Std. | 🟡 Mittel |
@@ -610,7 +632,7 @@ CREATE TABLE audit_log (
 | IONOS | Plus | 22 € (+10 € EG) | 132 € | 132 € | **296 €** |
 | STRATO | Basic | 12 € | 108 € | 108 € | **228 €** |
 | netcup | WH 2000 | 48 € | 48 € | 48 € | **144 €** |
-| **all-inkl** | **WH Classic** | **60 €** | **60 €** | **60 €** | **180 €** |
+| **all-inkl** | **Privat** *(ehem. WH Classic)* | **60 €** | **60 €** | **60 €** | **180 €** |
 
 > 💡 IONOS/STRATO wirken im 1. Jahr günstig (1 €/Mo), aber ab Jahr 2 zahlen sie deutlich mehr als netcup und all-inkl.
 
@@ -621,14 +643,14 @@ CREATE TABLE audit_log (
 | IONOS | Business | 22 € (+10 € EG) | 228 € | 228 € | **488 €** |
 | STRATO | Plus | 12 € | 144 € | 144 € | **300 €** |
 | netcup | WH 4000 | 97 € | 97 € | 97 € | **291 €** |
-| **all-inkl** | **WH Business** | **120 €** | **120 €** | **120 €** | **360 €** |
+| **all-inkl** | ⚠️ WH Business-Nachfolger unklar | **120 €?** | **120 €?** | **120 €?** | **⚠️ 360 €? — nicht verifiziert, siehe Update-Hinweis** |
 
 ### Upgrade-Pfad all-inkl (empfohlener Weg)
 
 | Phase | Zeitraum | Paket | Kosten/Mo |
 |-------|----------|-------|-----------|
-| Sofort | ab Monat 1 | WH Classic | ~5 € |
-| Upgrade bei Admin-Entwicklung | ab Monat ~6 | WH Business | ~10 € |
+| Sofort | ab Monat 1 | Privat *(ehem. WH Classic)* | ~5 € |
+| Upgrade bei Admin-Entwicklung | ab Monat ~6 | ⚠️ unklar *(ehem. WH Business)* | ~10 €? zu verifizieren |
 
 **Gesamtkosten 3 Jahre (Upgrade-Pfad):** ~5×12 + ~10×24 = **~300 €** — günstiger als alle anderen Anbieter bei Version 2!
 
@@ -650,8 +672,8 @@ CREATE TABLE audit_log (
 ### Finale Empfehlung
 
 > **🏆 Primärempfehlung: all-inkl.com**
-> - **Sofort: WH Classic (~5 €/Mo)**
-> - **Bei Admin-Ausbau: WH Business (~10 €/Mo)**
+> - **Sofort: Paket "Privat" (ehem. WH Classic, ~5 €/Mo)**
+> - **Bei Admin-Ausbau: Nachfolgepaket von "WH Business" (~10 €/Mo) — Name/Preis vor Buchung erneut prüfen, siehe Update-Hinweis**
 
 **Rechtliche Begründung (DSGVO für eingetragene Vereine):**
 
@@ -675,4 +697,4 @@ CREATE TABLE audit_log (
 
 *Dokument erstellt im Rahmen der IT- und Datenschutzberatung für den Förderverein Grundschule Ludweiler-Lauterbach e.V.*  
 *Alle Preisangaben ohne Gewähr — bitte vor Buchung aktuell auf den Anbieter-Websites prüfen.*  
-*Stand: Mai 2026*
+*Stand: Mai 2026 — Preis-Update siehe Hinweis am Dokumentanfang, Stand: 15.11.2026*
